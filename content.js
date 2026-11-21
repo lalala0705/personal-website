@@ -82,10 +82,11 @@ const careerDetails = [
       }
     ],
     "documents": [],
-    "primaryTitle": "北京｜私域裂变增长与分层运营"
+    "primaryTitle": "北京｜私域裂变增长与分层运营",
+    "period": "2022.08—2023.02"
   },
   {
-    "fullName": "好未来 · 学家优品",
+    "fullName": "好未来·学家优品",
     "location": "电商业务",
     "scope": "抖音电商私域运营，覆盖用户调研、增长活动、小程序、直播及达人合作。",
     "metrics": [
@@ -155,7 +156,8 @@ const careerDetails = [
       "小程序搭建方案（鸡蛋履约）",
       "学家在路上 · 志愿者招募"
     ],
-    "primaryTitle": "私域运营与小程序商业化落地"
+    "primaryTitle": "私域运营与小程序商业化落地",
+    "period": "2023.02—2024.03"
   },
   {
     "fullName": "上海新东方文旅",
@@ -198,7 +200,8 @@ const careerDetails = [
       "社群运营 SOP",
       "研学手册"
     ],
-    "primaryTitle": "研学文旅社群从 0 到 1"
+    "primaryTitle": "研学文旅社群从 0 到 1",
+    "period": "2024.06—2025.03"
   },
   {
     "fullName": "厦门浪起教育",
@@ -244,7 +247,8 @@ const careerDetails = [
     "documents": [
       "浪起课程顾问个人 SOP"
     ],
-    "primaryTitle": "用户诊断与直播转化 SOP"
+    "primaryTitle": "用户诊断与直播转化 SOP",
+    "period": "2025.03—2026.01"
   },
   {
     "fullName": "荣怀学校",
