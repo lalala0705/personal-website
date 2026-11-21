@@ -8,7 +8,9 @@
 
 网站由 GitHub Pages 从 `main` 分支根目录发布。每次向 `main` 推送后，GitHub 自动更新在线网站，不需要手动重新上传。
 
-在线地址以仓库 Settings → Pages 显示的地址为准。
+在线地址：[个人网站](https://lalala0705.github.io/personal-website/)。
+
+发布来源已配置为 `main` 分支的 `/ (root)`。可在仓库 Actions 中查看 `pages build and deployment` 的进度；发布成功后才代表在线版本已更新。
 
 本仓库是后续网站内容和样式的主要来源。通过 Codex 修改后，应完成必要检查、提交并推送到本仓库；直接在 GitHub 编辑文件并提交到 `main` 也会自动发布。此配置不监听其他平台的独立修改，其他地方的改动需要先同步进本仓库。
 
