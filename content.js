@@ -245,7 +245,11 @@ const careerDetails = [
     ],
     "extraProjects": [],
     "documents": [
-      "浪起课程顾问个人 SOP"
+      {
+        "title": "浪起课程顾问个人转化 SOP",
+        "url": "https://my.feishu.cn/sheets/F1FVsUpSkh2Rv8tYiyKcz8lXnYd?from=from_copylink&sheet=qeSqA6",
+        "access": "需飞书登录，访问权限以文档设置为准"
+      }
     ],
     "primaryTitle": "用户诊断与直播转化 SOP",
     "period": "2025.03—2026.01"
