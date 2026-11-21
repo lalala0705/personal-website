@@ -197,8 +197,16 @@ const careerDetails = [
     ],
     "extraProjects": [],
     "documents": [
-      "社群运营 SOP",
-      "研学手册"
+      {
+        "title": "新东方文旅研学手册（文件夹）",
+        "url": "https://my.feishu.cn/drive/folder/MZBQfGW7blLAxkd2LL1cY3Xcnad",
+        "access": "需飞书登录，访问权限以文件夹设置为准"
+      },
+      {
+        "title": "新东方文旅社群运营 SOP",
+        "url": "https://my.feishu.cn/sheets/LEkDs02sjhS03KtZIXAcFcPjnEg",
+        "access": "需飞书登录，访问权限以文档设置为准"
+      }
     ],
     "primaryTitle": "研学文旅社群从 0 到 1",
     "period": "2024.06—2025.03"
