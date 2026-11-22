@@ -479,7 +479,12 @@ const practiceLayouts = [
         "subtitle": "升学政策",
         "kind": "video",
         "category": "videos",
-        "status": "原片待接入"
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-01.mp4",
+        "poster": "assets/video-posters/ronghuai-01.jpg",
+        "duration": "2:06",
+        "width": 1920,
+        "height": 1080
       },
       {
         "title": "春江秋季开课",
