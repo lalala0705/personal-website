@@ -308,3 +308,158 @@ const careerDetails = [
   }
 ];
 experienceData.forEach((item,index)=>Object.assign(item,careerDetails[index]));
+
+// 代表实践按业务类型展示，未提供的作品素材不作虚构。
+const practiceLayouts = [
+  {
+    "type": "storyboard",
+    "flows": [
+      [
+        [
+          "理解用户",
+          "按年龄、地域、年级与弱势学科建立标签。",
+          "users"
+        ],
+        [
+          "设计激励",
+          "策划阶梯奖励，搭建裂变活动和任务标签。",
+          "plan"
+        ],
+        [
+          "迭代触达",
+          "调整社群与朋友圈曝光节奏，跟踪任务进度。",
+          "content"
+        ],
+        [
+          "沉淀用户",
+          "引导参与用户入群，衔接后续促活。",
+          "handoff"
+        ]
+      ],
+      [
+        [
+          "新增沉淀",
+          "将裂变新增用户引导至专属社群。",
+          "users"
+        ],
+        [
+          "建立激励",
+          "制定社群规则、成长激励与活动方案。",
+          "plan"
+        ],
+        [
+          "内容促活",
+          "开展打卡、直播问答和商品竞猜。",
+          "content"
+        ],
+        [
+          "观察转化",
+          "结合活跃度与私域成交反馈继续复盘。",
+          "chart"
+        ]
+      ],
+      [
+        [
+          "明确目标",
+          "围绕用户生命周期与直播场观拆解指标。",
+          "plan"
+        ],
+        [
+          "搭建体系",
+          "建立账号、社群、营销日历和日常 SOP。",
+          "content"
+        ],
+        [
+          "分层服务",
+          "结合问卷与用户反馈开展差异化活动。",
+          "users"
+        ],
+        [
+          "持续复盘",
+          "按日、周总结用户行为与内容偏好。",
+          "chart"
+        ]
+      ]
+    ]
+  },
+  {
+    "type": "split"
+  },
+  {
+    "type": "storyboard",
+    "flows": [
+      [
+        [
+          "地推建池",
+          "通过地推建立初始用户池。",
+          "users"
+        ],
+        [
+          "裂变扩流",
+          "组合裂变活动，扩大社群触达。",
+          "content"
+        ],
+        [
+          "打卡留存",
+          "通过社群内容、打卡活动维护关系。",
+          "plan"
+        ],
+        [
+          "顾问承接",
+          "开口沟通、留资，再转顾问跟进成交。",
+          "handoff"
+        ]
+      ]
+    ]
+  },
+  {
+    "type": "storyboard",
+    "flows": [
+      [
+        [
+          "需求诊断",
+          "通过表单、1 对 1 沟通和测试卷了解用户。",
+          "users"
+        ],
+        [
+          "用户分层",
+          "把需求与诊断结果整理为标签体系。",
+          "plan"
+        ],
+        [
+          "直播课 SOP",
+          "设计 3 天直播课流程，沉淀新人执行方法。",
+          "content"
+        ]
+      ]
+    ],
+    "aside": "同时使用 AI 辅助朋友圈文案与话术优化；未提供量化提效结果。"
+  },
+  {
+    "type": "gallery",
+    "gallery": [
+      {
+        "title": "视频作品",
+        "subtitle": "独立拍摄与剪辑",
+        "category": "content",
+        "icon": "film",
+        "status": "视频素材待补充"
+      },
+      {
+        "title": "公众号内容",
+        "subtitle": "内容策划与文案",
+        "category": "content",
+        "icon": "content",
+        "status": "文章截图待补充"
+      },
+      {
+        "title": "线下活动",
+        "subtitle": "活动策划与执行",
+        "category": "events",
+        "icon": "plan",
+        "status": "活动照片待补充"
+      }
+    ]
+  }
+];
+experienceData.forEach((item,index)=>item.practiceLayout=practiceLayouts[index]);
