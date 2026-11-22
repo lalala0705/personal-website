@@ -456,11 +456,11 @@ const practiceLayouts = [
         "kind": "video",
         "category": "videos",
         "status": "可播放 · 视频作品",
-        "src": "assets/videos/ronghuai-08.mp4",
-        "poster": "assets/video-posters/ronghuai-08.jpg",
+        "src": "assets/videos/ronghuai-08.mp4?v=20261122-batch2",
+        "poster": "assets/video-posters/ronghuai-08.jpg?v=20261122-batch2",
         "duration": "1:15",
-        "width": 1280,
-        "height": 720
+        "width": 1920,
+        "height": 1080
       },
       {
         "title": "陈校长口播",
@@ -468,8 +468,8 @@ const practiceLayouts = [
         "kind": "video",
         "category": "videos",
         "status": "可播放 · 视频作品",
-        "src": "assets/videos/ronghuai-02.mp4",
-        "poster": "assets/video-posters/ronghuai-02.jpg",
+        "src": "assets/videos/ronghuai-02.mp4?v=20261122-batch2",
+        "poster": "assets/video-posters/ronghuai-02.jpg?v=20261122-batch2",
         "duration": "1:54",
         "width": 480,
         "height": 854
@@ -487,6 +487,30 @@ const practiceLayouts = [
         "height": 1080
       },
       {
+        "title": "暑假学什么（奥数篇）",
+        "subtitle": "学习方法",
+        "kind": "video",
+        "category": "videos",
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-06.mp4?v=20261122-batch2",
+        "poster": "assets/video-posters/ronghuai-06.jpg?v=20261122-batch2",
+        "duration": "2:21",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "title": "暑假怎么学英语篇",
+        "subtitle": "学习方法",
+        "kind": "video",
+        "category": "videos",
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-07.mp4?v=20261122-batch2",
+        "poster": "assets/video-posters/ronghuai-07.jpg?v=20261122-batch2",
+        "duration": "2:12",
+        "width": 1920,
+        "height": 1080
+      },
+      {
         "title": "春江秋季开课",
         "subtitle": "校区动态",
         "kind": "video",
@@ -495,20 +519,6 @@ const practiceLayouts = [
       },
       {
         "title": "分班考试卷解析",
-        "subtitle": "学习方法",
-        "kind": "video",
-        "category": "videos",
-        "status": "原片待接入"
-      },
-      {
-        "title": "暑假学什么（奥数篇）",
-        "subtitle": "学习方法",
-        "kind": "video",
-        "category": "videos",
-        "status": "原片待接入"
-      },
-      {
-        "title": "暑假怎么学英语篇",
         "subtitle": "学习方法",
         "kind": "video",
         "category": "videos",
