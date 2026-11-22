@@ -511,6 +511,66 @@ const practiceLayouts = [
         "height": 1080
       },
       {
+        "title": "如何做不内耗的成长型父母",
+        "subtitle": "家庭教育",
+        "kind": "video",
+        "category": "videos",
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-10.mp4?v=20261122-batch3",
+        "poster": "assets/video-posters/ronghuai-10.jpg?v=20261122-batch3",
+        "duration": "1:19",
+        "width": 480,
+        "height": 854
+      },
+      {
+        "title": "读懂孩子行为背后的心理需求",
+        "subtitle": "家庭教育",
+        "kind": "video",
+        "category": "videos",
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-11.mp4?v=20261122-batch3",
+        "poster": "assets/video-posters/ronghuai-11.jpg?v=20261122-batch3",
+        "duration": "1:30",
+        "width": 480,
+        "height": 854
+      },
+      {
+        "title": "父母的嘴，是孩子的风水",
+        "subtitle": "家庭教育",
+        "kind": "video",
+        "category": "videos",
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-12.mp4?v=20261122-batch3",
+        "poster": "assets/video-posters/ronghuai-12.jpg?v=20261122-batch3",
+        "duration": "1:49",
+        "width": 480,
+        "height": 854
+      },
+      {
+        "title": "期中考试，家长如何正确引导",
+        "subtitle": "家庭教育",
+        "kind": "video",
+        "category": "videos",
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-13.mp4?v=20261122-batch3",
+        "poster": "assets/video-posters/ronghuai-13.jpg?v=20261122-batch3",
+        "duration": "2:00",
+        "width": 480,
+        "height": 854
+      },
+      {
+        "title": "少批判多倾听：托住长大的少年",
+        "subtitle": "家庭教育",
+        "kind": "video",
+        "category": "videos",
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-14.mp4?v=20261122-batch3",
+        "poster": "assets/video-posters/ronghuai-14.jpg?v=20261122-batch3",
+        "duration": "1:54",
+        "width": 480,
+        "height": 854
+      },
+      {
         "title": "春江秋季开课",
         "subtitle": "校区动态",
         "kind": "video",
@@ -526,41 +586,6 @@ const practiceLayouts = [
       },
       {
         "title": "为什么不建议家长亲自辅导孩子功课",
-        "subtitle": "家庭教育",
-        "kind": "video",
-        "category": "videos",
-        "status": "原片待接入"
-      },
-      {
-        "title": "如何做不内耗的成长型父母",
-        "subtitle": "家庭教育",
-        "kind": "video",
-        "category": "videos",
-        "status": "原片待接入"
-      },
-      {
-        "title": "读懂孩子行为背后的心理需求",
-        "subtitle": "家庭教育",
-        "kind": "video",
-        "category": "videos",
-        "status": "原片待接入"
-      },
-      {
-        "title": "父母的嘴，是孩子的风水",
-        "subtitle": "家庭教育",
-        "kind": "video",
-        "category": "videos",
-        "status": "原片待接入"
-      },
-      {
-        "title": "期中考试，家长如何正确引导",
-        "subtitle": "家庭教育",
-        "kind": "video",
-        "category": "videos",
-        "status": "原片待接入"
-      },
-      {
-        "title": "少批判多倾听：托住长大的少年",
         "subtitle": "家庭教育",
         "kind": "video",
         "category": "videos",
