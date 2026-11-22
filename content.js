@@ -439,6 +439,30 @@ const practiceLayouts = [
     "type": "gallery",
     "gallery": [
       {
+        "title": "科学一对一精英训练营",
+        "subtitle": "课程主题与师资介绍",
+        "category": "posters",
+        "image": "assets/荣怀培训中心-名师介绍海报.jpg",
+        "alt": "荣怀培训中心科学一对一精英训练营招生海报，含课程标题与师资介绍",
+        "status": "招生海报制作"
+      },
+      {
+        "title": "2026 年秋季招生课程总览",
+        "subtitle": "课程分类与校区信息",
+        "category": "posters",
+        "image": "assets/秋招海报1.jpg",
+        "alt": "荣怀培训中心2026年秋季招生海报，展示托管伴学课程和校区信息",
+        "status": "招生海报制作"
+      },
+      {
+        "title": "新学期课程宣传",
+        "subtitle": "课程亮点与课程设置",
+        "category": "posters",
+        "image": "assets/秋季开学季K12教育培训课程营销宣传全屏竖版海报.jpg",
+        "alt": "荣怀培训中心新学期课程宣传海报，展示课程亮点、课程设置与咨询信息",
+        "status": "招生海报制作"
+      },
+      {
         "title": "视频作品",
         "subtitle": "独立拍摄与剪辑",
         "category": "content",

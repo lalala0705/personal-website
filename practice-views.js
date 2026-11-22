@@ -24,7 +24,14 @@ function renderStoryboard(project,steps,aside){
 }
 
 function renderGallery(project,layout){
- return `<article class="practice-view practice-gallery">${practiceHeader(project,'作品画廊')}<p class="practice-view-intro">内容策划、拍摄剪辑与活动落地。真实作品将在这里补充展示。</p><div class="gallery-controls" role="group" aria-label="筛选作品类型"><button type="button" data-gallery-filter="all" aria-pressed="true">全部</button><button type="button" data-gallery-filter="content" aria-pressed="false">视频与文案</button><button type="button" data-gallery-filter="events" aria-pressed="false">线下活动</button></div><div class="practice-gallery-grid">${layout.gallery.map(item=>`<section class="gallery-slot" data-gallery-category="${item.category}"><div class="gallery-slot-art">${practiceIcon(item.icon)}<span>展示位 · 素材待补充</span><div class="placeholder-lines" aria-hidden="true"><i></i><i></i><i></i></div></div><div class="gallery-slot-caption"><h5>${escapeHtml(item.title)}</h5><p>${escapeHtml(item.subtitle)}</p><span>${escapeHtml(item.status)}</span></div></section>`).join('')}</div><p class="practice-aside">新媒体内容获取的有效线索，由招生团队承接与跟进成交。</p>${practiceRecord(project)}</article>`;
+ const posterCount=layout.gallery.filter(item=>item.image).length;
+ const selected=posterCount?'posters':'all';
+ const filters=[['all','全部'],...(posterCount?[['posters','招生海报']]:[]),['content','视频与文案'],['events','线下活动']];
+ const cards=layout.gallery.map(item=>{
+  const media=item.image?`<button type="button" class="gallery-artwork" data-artwork-src="${escapeHtml(item.image)}" data-artwork-title="${escapeHtml(item.title)}" data-artwork-alt="${escapeHtml(item.alt)}" aria-haspopup="dialog" aria-controls="artwork-dialog" aria-label="放大查看${escapeHtml(item.title)}"><span class="gallery-artwork-image"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async"></span><span class="gallery-artwork-label">查看完整海报</span></button>`:`<div class="gallery-slot-art">${practiceIcon(item.icon)}<span>展示位 · 素材待补充</span><div class="placeholder-lines" aria-hidden="true"><i></i><i></i><i></i></div></div>`;
+  return `<section class="gallery-slot${item.image?' gallery-slot-work':''}" data-gallery-category="${item.category}"${selected!=='all'&&item.category!==selected?' hidden':''}>${media}<div class="gallery-slot-caption"><h5>${escapeHtml(item.title)}</h5><p>${escapeHtml(item.subtitle)}</p><span>${escapeHtml(item.status)}</span></div></section>`;
+ }).join('');
+ return `<article class="practice-view practice-gallery">${practiceHeader(project,'作品画廊')}<p class="practice-view-intro">${posterCount?`已收录 ${posterCount} 张招生海报。点击查看完整海报，其他作品持续补充。`:'内容策划、拍摄剪辑与活动落地。真实作品将在这里补充展示。'}</p><div class="gallery-controls" role="group" aria-label="筛选作品类型">${filters.map(([value,label])=>`<button type="button" data-gallery-filter="${value}" aria-pressed="${value===selected}">${label}</button>`).join('')}</div><div class="practice-gallery-grid">${cards}</div><p class="practice-aside">新媒体内容获取的有效线索，由招生团队承接与跟进成交。海报在此作为作品展示，不单独归因整体获客与成交数据。</p>${practiceRecord(project)}</article>`;
 }
 
 function renderSplitPractice(project,item,index){
@@ -54,6 +61,10 @@ function activatePracticeTab(tab){
 }
 
 function setupPracticeInteractions(container){
+ container.querySelectorAll('[data-artwork-src]').forEach(button=>button.addEventListener('click',()=>{
+  const artworks=Array.from(button.closest('.practice-gallery').querySelectorAll('[data-artwork-src]')).map(control=>({src:control.dataset.artworkSrc,title:control.dataset.artworkTitle,alt:control.dataset.artworkAlt}));
+  openArtworkViewer(artworks,Array.from(button.closest('.practice-gallery').querySelectorAll('[data-artwork-src]')).indexOf(button));
+ }));
  container.querySelectorAll('[data-gallery-filter]').forEach(button=>button.addEventListener('click',()=>{
   const gallery=button.closest('.practice-gallery');
   gallery.querySelectorAll('[data-gallery-filter]').forEach(control=>control.setAttribute('aria-pressed',String(control===button)));

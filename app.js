@@ -30,9 +30,26 @@ document.querySelectorAll('[data-case]').forEach(button=>button.addEventListener
  setupPracticeInteractions(document.querySelector('#case-body'));
  caseDialog.showModal();caseDialog.scrollTop=0;document.body.classList.add('modal-open');
 }));
+const artworkDialog=document.querySelector('#artwork-dialog');
+let currentArtworks=[],artworkIndex=0;
+function showArtwork(index){
+ artworkIndex=(index+currentArtworks.length)%currentArtworks.length;
+ const artwork=currentArtworks[artworkIndex];
+ document.querySelector('#artwork-title').textContent=artwork.title;
+ const image=document.querySelector('#artwork-image');image.src=artwork.src;image.alt=artwork.alt;
+ document.querySelector('#artwork-original').href=artwork.src;
+ document.querySelector('#artwork-count').textContent=`${artworkIndex+1} / ${currentArtworks.length}`;
+ artworkDialog.scrollTop=0;
+}
+function openArtworkViewer(artworks,index){
+ currentArtworks=artworks;showArtwork(index);artworkDialog.showModal();document.body.classList.add('modal-open');
+}
+document.querySelector('#artwork-prev').addEventListener('click',()=>showArtwork(artworkIndex-1));
+document.querySelector('#artwork-next').addEventListener('click',()=>showArtwork(artworkIndex+1));
+artworkDialog.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();showArtwork(artworkIndex+(event.key==='ArrowLeft'?-1:1));}});
 const photoDialog=document.querySelector('#photo-dialog');
 document.querySelectorAll('[data-photo]').forEach(button=>button.addEventListener('click',()=>{const photo=document.querySelector('#large-photo');photo.src=button.dataset.photo;photo.alt=button.querySelector('img').alt;document.querySelector('#photo-caption').textContent=button.dataset.caption;photoDialog.showModal();document.body.classList.add('modal-open');}));
-document.querySelectorAll('dialog').forEach(dialog=>{dialog.querySelector('.close').addEventListener('click',()=>dialog.close());dialog.addEventListener('close',()=>document.body.classList.remove('modal-open'));dialog.addEventListener('click',event=>{const r=dialog.getBoundingClientRect();if(event.target===dialog&&(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom))dialog.close();});});
+document.querySelectorAll('dialog').forEach(dialog=>{dialog.querySelector('.close').addEventListener('click',()=>dialog.close());dialog.addEventListener('close',()=>{if(!document.querySelector('dialog[open]'))document.body.classList.remove('modal-open');});dialog.addEventListener('click',event=>{const r=dialog.getBoundingClientRect();if(event.target===dialog&&(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom))dialog.close();});});
 const menu=document.querySelector('.menu'),nav=document.querySelector('nav');menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.textContent=open?'收起':'目录';});
 nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='目录';}));
 const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){nav.querySelectorAll('a').forEach(link=>link.classList.toggle('active',link.hash==='#'+entry.target.id));}});},{rootMargin:'-10% 0px -65% 0px',threshold:0});document.querySelectorAll('main section[id]').forEach(section=>observer.observe(section));
