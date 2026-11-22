@@ -30,6 +30,16 @@ document.querySelectorAll('[data-case]').forEach(button=>button.addEventListener
  setupPracticeInteractions(document.querySelector('#case-body'));
  caseDialog.showModal();caseDialog.scrollTop=0;document.body.classList.add('modal-open');
 }));
+const videoDialog=document.querySelector('#video-dialog');
+const workVideo=document.querySelector('#work-video');
+function openVideoViewer(item){
+ document.querySelector('#video-title').textContent=item.title;
+ document.querySelector('#video-status').textContent='';
+ workVideo.src=item.src;workVideo.poster=item.poster;workVideo.preload='metadata';workVideo.load();
+ videoDialog.showModal();document.body.classList.add('modal-open');
+}
+videoDialog.addEventListener('close',()=>{workVideo.pause();workVideo.removeAttribute('src');workVideo.removeAttribute('poster');workVideo.load();document.querySelector('#video-status').textContent='';});
+workVideo.addEventListener('error',()=>{if(workVideo.getAttribute('src'))document.querySelector('#video-status').textContent='视频暂时无法加载，请稍后重试。';});
 const artworkDialog=document.querySelector('#artwork-dialog');
 let currentArtworks=[],artworkIndex=0;
 function showArtwork(index){

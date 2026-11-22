@@ -23,15 +23,23 @@ function renderStoryboard(project,steps,aside){
  return `<article class="practice-view practice-storyboard">${practiceHeader(project,'流程故事板')}<ol class="story-steps">${steps.map(([title,body,icon],index)=>`<li><div class="story-step-art">${practiceIcon(icon)}<span class="story-step-number" aria-hidden="true">${String(index+1).padStart(2,'0')}</span></div><h5>${escapeHtml(title)}</h5><p>${highlightText(body)}</p></li>`).join('')}</ol>${aside?`<p class="practice-aside">${highlightText(aside)}</p>`:''}${practiceRecord(project)}</article>`;
 }
 
+function renderVideoMedia(item){
+ if(!item.src)return `<div class="video-thumb video-thumb-pending">${practiceIcon('film')}<span>视频原片待接入</span></div>`;
+ return `<button type="button" class="gallery-video" data-video-src="${escapeHtml(item.src)}" data-video-poster="${escapeHtml(item.poster)}" data-video-title="${escapeHtml(item.title)}" aria-haspopup="dialog" aria-controls="video-dialog" aria-label="观看${escapeHtml(item.title)}"><span class="video-thumb"><img src="${escapeHtml(item.poster)}" alt="${escapeHtml(item.title)}视频画面封面" loading="lazy" decoding="async"><span class="video-play" aria-hidden="true">▶</span><span class="video-duration">${escapeHtml(item.duration)}</span></span><span class="gallery-artwork-label">观看视频</span></button>`;
+}
+
 function renderGallery(project,layout){
- const posterCount=layout.gallery.filter(item=>item.image).length;
- const selected=posterCount?'posters':'all';
- const filters=[['all','全部'],...(posterCount?[['posters','招生海报']]:[]),['content','视频与文案'],['events','线下活动']];
+ const posterCount=layout.gallery.filter(item=>item.category==='posters').length;
+ const videoCount=layout.gallery.filter(item=>item.kind==='video').length;
+ const playableCount=layout.gallery.filter(item=>item.kind==='video'&&item.src).length;
+ const selected=videoCount?'videos':posterCount?'posters':'all';
+ const filters=[['all','全部'],...(posterCount?[['posters','招生海报']]:[]),...(videoCount?[['videos','视频作品']]:[]),['content','图文内容'],['events','线下活动']];
  const cards=layout.gallery.map(item=>{
-  const media=item.image?`<button type="button" class="gallery-artwork" data-artwork-src="${escapeHtml(item.image)}" data-artwork-title="${escapeHtml(item.title)}" data-artwork-alt="${escapeHtml(item.alt)}" aria-haspopup="dialog" aria-controls="artwork-dialog" aria-label="放大查看${escapeHtml(item.title)}"><span class="gallery-artwork-image"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async"></span><span class="gallery-artwork-label">查看完整海报</span></button>`:`<div class="gallery-slot-art">${practiceIcon(item.icon)}<span>展示位 · 素材待补充</span><div class="placeholder-lines" aria-hidden="true"><i></i><i></i><i></i></div></div>`;
-  return `<section class="gallery-slot${item.image?' gallery-slot-work':''}" data-gallery-category="${item.category}"${selected!=='all'&&item.category!==selected?' hidden':''}>${media}<div class="gallery-slot-caption"><h5>${escapeHtml(item.title)}</h5><p>${escapeHtml(item.subtitle)}</p><span>${escapeHtml(item.status)}</span></div></section>`;
+  const media=item.kind==='video'?renderVideoMedia(item):item.image?`<button type="button" class="gallery-artwork" data-artwork-src="${escapeHtml(item.image)}" data-artwork-title="${escapeHtml(item.title)}" data-artwork-alt="${escapeHtml(item.alt)}" aria-haspopup="dialog" aria-controls="artwork-dialog" aria-label="放大查看${escapeHtml(item.title)}"><span class="gallery-artwork-image"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async"></span><span class="gallery-artwork-label">查看完整海报</span></button>`:`<div class="gallery-slot-art">${practiceIcon(item.icon)}<span>展示位 · 素材待补充</span><div class="placeholder-lines" aria-hidden="true"><i></i><i></i><i></i></div></div>`;
+  return `<section class="gallery-slot${item.image?' gallery-slot-work':''}${item.kind==='video'?' gallery-slot-video':''}" data-gallery-category="${item.category}"${selected!=='all'&&item.category!==selected?' hidden':''}>${media}<div class="gallery-slot-caption"><h5>${escapeHtml(item.title)}</h5><p>${escapeHtml(item.subtitle)}</p><span>${escapeHtml(item.status)}</span></div></section>`;
  }).join('');
- return `<article class="practice-view practice-gallery">${practiceHeader(project,'作品画廊')}<p class="practice-view-intro">${posterCount?`已收录 ${posterCount} 张招生海报。点击查看完整海报，其他作品持续补充。`:'内容策划、拍摄剪辑与活动落地。真实作品将在这里补充展示。'}</p><div class="gallery-controls" role="group" aria-label="筛选作品类型">${filters.map(([value,label])=>`<button type="button" data-gallery-filter="${value}" aria-pressed="${value===selected}">${label}</button>`).join('')}</div><div class="practice-gallery-grid">${cards}</div><p class="practice-aside">新媒体内容获取的有效线索，由招生团队承接与跟进成交。海报在此作为作品展示，不单独归因整体获客与成交数据。</p>${practiceRecord(project)}</article>`;
+ const intro=videoCount?`已整理 ${videoCount} 个视频条目，其中 ${playableCount} 条可播放、${videoCount-playableCount} 条原片待接入；另有 ${posterCount} 张招生海报。`:posterCount?`已收录 ${posterCount} 张招生海报。点击查看完整海报，其他作品持续补充。`:'内容策划、拍摄剪辑与活动落地。真实作品将在这里补充展示。';
+ return `<article class="practice-view practice-gallery">${practiceHeader(project,'作品画廊')}<p class="practice-view-intro">${intro}</p><div class="gallery-controls" role="group" aria-label="筛选作品类型">${filters.map(([value,label])=>`<button type="button" data-gallery-filter="${value}" aria-pressed="${value===selected}">${label}</button>`).join('')}</div><div class="practice-gallery-grid">${cards}</div><p class="practice-aside">新媒体内容获取的有效线索，由招生团队承接与跟进成交。作品在此展示，不单独归因整体获客与成交数据。</p>${practiceRecord(project)}</article>`;
 }
 
 function renderSplitPractice(project,item,index){
@@ -61,6 +69,7 @@ function activatePracticeTab(tab){
 }
 
 function setupPracticeInteractions(container){
+ container.querySelectorAll('[data-video-src]').forEach(button=>button.addEventListener('click',()=>openVideoViewer({src:button.dataset.videoSrc,poster:button.dataset.videoPoster,title:button.dataset.videoTitle})));
  container.querySelectorAll('[data-artwork-src]').forEach(button=>button.addEventListener('click',()=>{
   const artworks=Array.from(button.closest('.practice-gallery').querySelectorAll('[data-artwork-src]')).map(control=>({src:control.dataset.artworkSrc,title:control.dataset.artworkTitle,alt:control.dataset.artworkAlt}));
   openArtworkViewer(artworks,Array.from(button.closest('.practice-gallery').querySelectorAll('[data-artwork-src]')).indexOf(button));

@@ -439,6 +439,114 @@ const practiceLayouts = [
     "type": "gallery",
     "gallery": [
       {
+        "title": "诸暨分配生政策深度拆解",
+        "subtitle": "升学政策",
+        "kind": "video",
+        "category": "videos",
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-04.mp4",
+        "poster": "assets/video-posters/ronghuai-04.jpg",
+        "duration": "2:18",
+        "width": 720,
+        "height": 1280
+      },
+      {
+        "title": "月考后复盘指南",
+        "subtitle": "学习方法",
+        "kind": "video",
+        "category": "videos",
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-08.mp4",
+        "poster": "assets/video-posters/ronghuai-08.jpg",
+        "duration": "1:15",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "title": "诸暨高中2+4模式",
+        "subtitle": "升学政策",
+        "kind": "video",
+        "category": "videos",
+        "status": "原片待接入"
+      },
+      {
+        "title": "陈校长口播",
+        "subtitle": "校区介绍",
+        "kind": "video",
+        "category": "videos",
+        "status": "原片待接入"
+      },
+      {
+        "title": "春江秋季开课",
+        "subtitle": "校区动态",
+        "kind": "video",
+        "category": "videos",
+        "status": "原片待接入"
+      },
+      {
+        "title": "分班考试卷解析",
+        "subtitle": "学习方法",
+        "kind": "video",
+        "category": "videos",
+        "status": "原片待接入"
+      },
+      {
+        "title": "暑假学什么（奥数篇）",
+        "subtitle": "学习方法",
+        "kind": "video",
+        "category": "videos",
+        "status": "原片待接入"
+      },
+      {
+        "title": "暑假怎么学英语篇",
+        "subtitle": "学习方法",
+        "kind": "video",
+        "category": "videos",
+        "status": "原片待接入"
+      },
+      {
+        "title": "为什么不建议家长亲自辅导孩子功课",
+        "subtitle": "家庭教育",
+        "kind": "video",
+        "category": "videos",
+        "status": "原片待接入"
+      },
+      {
+        "title": "如何做不内耗的成长型父母",
+        "subtitle": "家庭教育",
+        "kind": "video",
+        "category": "videos",
+        "status": "原片待接入"
+      },
+      {
+        "title": "读懂孩子行为背后的心理需求",
+        "subtitle": "家庭教育",
+        "kind": "video",
+        "category": "videos",
+        "status": "原片待接入"
+      },
+      {
+        "title": "父母的嘴，是孩子的风水",
+        "subtitle": "家庭教育",
+        "kind": "video",
+        "category": "videos",
+        "status": "原片待接入"
+      },
+      {
+        "title": "期中考试，家长如何正确引导",
+        "subtitle": "家庭教育",
+        "kind": "video",
+        "category": "videos",
+        "status": "原片待接入"
+      },
+      {
+        "title": "少批判多倾听：托住长大的少年",
+        "subtitle": "家庭教育",
+        "kind": "video",
+        "category": "videos",
+        "status": "原片待接入"
+      },
+      {
         "title": "科学一对一精英训练营",
         "subtitle": "课程主题与师资介绍",
         "category": "posters",
@@ -461,13 +569,6 @@ const practiceLayouts = [
         "image": "assets/秋季开学季K12教育培训课程营销宣传全屏竖版海报.jpg",
         "alt": "荣怀培训中心新学期课程宣传海报，展示课程亮点、课程设置与咨询信息",
         "status": "招生海报制作"
-      },
-      {
-        "title": "视频作品",
-        "subtitle": "独立拍摄与剪辑",
-        "category": "content",
-        "icon": "film",
-        "status": "视频素材待补充"
       },
       {
         "title": "公众号内容",
