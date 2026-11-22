@@ -34,12 +34,14 @@ function renderGallery(project,layout){
  const playableCount=layout.gallery.filter(item=>item.kind==='video'&&item.src).length;
  const selected=videoCount?'videos':posterCount?'posters':'all';
  const filters=[['all','全部'],...(posterCount?[['posters','招生海报']]:[]),...(videoCount?[['videos','视频作品']]:[]),['content','图文内容'],['events','线下活动']];
+ const topics=['升学政策','学习方法','校长口播','家庭教育','校区动态'];
+ const videoTopics=videoCount?`<div class="video-topic-controls" role="group" aria-label="筛选视频主题"${selected!=='videos'?' hidden':''}><span class="video-topic-label">视频分类</span>${[['all','全部视频'],...topics.map(topic=>[topic,topic])].map(([value,label])=>{const count=layout.gallery.filter(item=>item.kind==='video'&&(value==='all'||item.subtitle===value)).length;return `<button type="button" data-video-topic="${value}" aria-pressed="${value==='all'}">${label}<span>${count}</span></button>`;}).join('')}</div>`:'';
  const cards=layout.gallery.map(item=>{
   const media=item.kind==='video'?renderVideoMedia(item):item.image?`<button type="button" class="gallery-artwork" data-artwork-src="${escapeHtml(item.image)}" data-artwork-title="${escapeHtml(item.title)}" data-artwork-alt="${escapeHtml(item.alt)}" aria-haspopup="dialog" aria-controls="artwork-dialog" aria-label="放大查看${escapeHtml(item.title)}"><span class="gallery-artwork-image"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async"></span><span class="gallery-artwork-label">查看完整海报</span></button>`:`<div class="gallery-slot-art">${practiceIcon(item.icon)}<span>展示位 · 素材待补充</span><div class="placeholder-lines" aria-hidden="true"><i></i><i></i><i></i></div></div>`;
-  return `<section class="gallery-slot${item.image?' gallery-slot-work':''}${item.kind==='video'?' gallery-slot-video':''}" data-gallery-category="${item.category}"${selected!=='all'&&item.category!==selected?' hidden':''}>${media}<div class="gallery-slot-caption"><h5>${escapeHtml(item.title)}</h5><p>${escapeHtml(item.subtitle)}</p><span>${escapeHtml(item.status)}</span></div></section>`;
+  return `<section class="gallery-slot${item.image?' gallery-slot-work':''}${item.kind==='video'?' gallery-slot-video':''}" data-gallery-category="${item.category}"${item.kind==='video'?` data-video-category="${escapeHtml(item.subtitle)}"`:''}${selected!=='all'&&item.category!==selected?' hidden':''}>${media}<div class="gallery-slot-caption"><h5>${escapeHtml(item.title)}</h5><p>${escapeHtml(item.subtitle)}</p><span>${escapeHtml(item.status)}</span></div></section>`;
  }).join('');
  const intro=videoCount?`已整理 ${videoCount} 个视频条目，其中 ${playableCount} 条可播放、${videoCount-playableCount} 条原片待接入；另有 ${posterCount} 张招生海报。`:posterCount?`已收录 ${posterCount} 张招生海报。点击查看完整海报，其他作品持续补充。`:'内容策划、拍摄剪辑与活动落地。真实作品将在这里补充展示。';
- return `<article class="practice-view practice-gallery">${practiceHeader(project,'作品画廊')}<p class="practice-view-intro">${intro}</p><div class="gallery-controls" role="group" aria-label="筛选作品类型">${filters.map(([value,label])=>`<button type="button" data-gallery-filter="${value}" aria-pressed="${value===selected}">${label}</button>`).join('')}</div><div class="practice-gallery-grid">${cards}</div><p class="practice-aside">新媒体内容获取的有效线索，由招生团队承接与跟进成交。作品在此展示，不单独归因整体获客与成交数据。</p>${practiceRecord(project)}</article>`;
+ return `<article class="practice-view practice-gallery">${practiceHeader(project,'作品画廊')}<p class="practice-view-intro">${intro}</p><div class="gallery-controls" role="group" aria-label="筛选作品类型">${filters.map(([value,label])=>`<button type="button" data-gallery-filter="${value}" aria-pressed="${value===selected}">${label}</button>`).join('')}</div>${videoTopics}<div class="practice-gallery-grid">${cards}</div><p class="practice-aside">新媒体内容获取的有效线索，由招生团队承接与跟进成交。作品在此展示，不单独归因整体获客与成交数据。</p>${practiceRecord(project)}</article>`;
 }
 
 function renderSplitPractice(project,item,index){
@@ -77,7 +79,17 @@ function setupPracticeInteractions(container){
  container.querySelectorAll('[data-gallery-filter]').forEach(button=>button.addEventListener('click',()=>{
   const gallery=button.closest('.practice-gallery');
   gallery.querySelectorAll('[data-gallery-filter]').forEach(control=>control.setAttribute('aria-pressed',String(control===button)));
+  const topics=gallery.querySelector('.video-topic-controls');
+  if(topics){
+   topics.hidden=button.dataset.galleryFilter!=='videos';
+   topics.querySelectorAll('[data-video-topic]').forEach(control=>control.setAttribute('aria-pressed',String(control.dataset.videoTopic==='all')));
+  }
   gallery.querySelectorAll('[data-gallery-category]').forEach(card=>card.hidden=button.dataset.galleryFilter!=='all'&&card.dataset.galleryCategory!==button.dataset.galleryFilter);
+ }));
+ container.querySelectorAll('[data-video-topic]').forEach(button=>button.addEventListener('click',()=>{
+  const gallery=button.closest('.practice-gallery');
+  gallery.querySelectorAll('[data-video-topic]').forEach(control=>control.setAttribute('aria-pressed',String(control===button)));
+  gallery.querySelectorAll('[data-gallery-category]').forEach(card=>card.hidden=card.dataset.galleryCategory!=='videos'||(button.dataset.videoTopic!=='all'&&card.dataset.videoCategory!==button.dataset.videoTopic));
  }));
  container.querySelectorAll('.practice-tabs [role="tab"]').forEach(tab=>{
   tab.addEventListener('click',()=>activatePracticeTab(tab));
