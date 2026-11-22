@@ -463,15 +463,20 @@ const practiceLayouts = [
         "height": 720
       },
       {
-        "title": "诸暨高中2+4模式",
-        "subtitle": "升学政策",
+        "title": "陈校长口播",
+        "subtitle": "校长口播",
         "kind": "video",
         "category": "videos",
-        "status": "原片待接入"
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-02.mp4",
+        "poster": "assets/video-posters/ronghuai-02.jpg",
+        "duration": "1:54",
+        "width": 480,
+        "height": 854
       },
       {
-        "title": "陈校长口播",
-        "subtitle": "校区介绍",
+        "title": "诸暨高中2+4模式",
+        "subtitle": "升学政策",
         "kind": "video",
         "category": "videos",
         "status": "原片待接入"
