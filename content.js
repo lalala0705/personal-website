@@ -736,3 +736,13 @@ const practiceLayouts = [
   }
 ];
 experienceData.forEach((item,index)=>item.practiceLayout=practiceLayouts[index]);
+
+// 根据已确认职责与成长描述归纳能力标签。
+const careerGrowthTags = [
+ ['用户分层','裂变增长','社群从 0 到 1','运营复盘'],
+ ['用户研究','电商转化','小程序落地','跨部门协作','直播运营'],
+ ['社群矩阵搭建','长周期用户维护','获客与留存','顾问协作','SOP 沉淀'],
+ ['需求诊断','用户分层','转化 SOP','新人赋能','AI 辅助运营'],
+ ['内容策划','品牌表达','拍摄剪辑','活动执行','内容获客']
+];
+experienceData.forEach((item,index)=>item.growthTags=careerGrowthTags[index]);
