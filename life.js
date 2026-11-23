@@ -115,3 +115,13 @@ document.addEventListener('visibilitychange',()=>gramophoneCard.classList.toggle
 
 lifeDialog.addEventListener('close',()=>AmapTravel.destroy());
 
+
+// 首页书架入口与真实同步书目保持一致。
+if(lifeContent.books.length){
+ document.querySelector('.life-reading .life-art-hint').textContent='轻触书封，翻阅我的阅读记录';
+ document.querySelectorAll('[data-shelf-preview]').forEach((button,index)=>{
+  const book=lifeContent.books[index]||lifeContent.books[0];
+  button.setAttribute('aria-label','翻阅'+book.title);
+  button.innerHTML='<b>'+lifeEscape(book.title)+'</b>';
+ });
+}

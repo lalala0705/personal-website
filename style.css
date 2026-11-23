@@ -85,3 +85,5 @@ article.life-portal{cursor:default}article.life-portal>.life-portal-action{width
 
 /* 微信读书真实封面保持书架交互 */
 .shelf-book-front.has-cover{padding:0;border-left:3px solid #6c604c;overflow:hidden}.shelf-book-front img{width:100%;height:100%;object-fit:contain;background:#f6f2e8}.book-author{margin:0 0 12px}.book-reader-link{display:inline-block;margin-top:12px;color:var(--green);text-underline-offset:4px;font-size:14px}.book-detail .life-sample-label{font-size:12px}
+
+.shelf-books .book-cover b{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;padding:4px;font-size:12px;line-height:1.5}
