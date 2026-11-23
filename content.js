@@ -643,11 +643,44 @@ const practiceLayouts = [
         "status": "招生海报制作"
       },
       {
-        "title": "公众号内容",
-        "subtitle": "内容策划与文案",
+        "title": "线上英语演讲比赛",
+        "subtitle": "公众号活动内容 · 两篇推文",
         "category": "content",
         "icon": "content",
-        "status": "文章截图待补充"
+        "status": "已关联原文",
+        "kind": "article-campaign",
+        "goal": "借助线上投票活动，扩大校区曝光与影响力，为公众号涨粉提供支持。",
+        "audience": "校区及周边社区家长",
+        "contribution": "负责选手参赛作品的录制与剪辑，以及公众号推文的撰写与排版。",
+        "metrics": [
+          [
+            "3,640",
+            "阅读量"
+          ],
+          [
+            "179",
+            "点赞"
+          ],
+          [
+            "153",
+            "转发"
+          ],
+          [
+            "119",
+            "评论"
+          ]
+        ],
+        "metricNote": "两篇推文数据合计，由本人提供；不代表去重触达人数。",
+        "links": [
+          [
+            "查看推文一",
+            "https://mp.weixin.qq.com/s/Xe3TK4VHOz-lZrBWHYLBtg"
+          ],
+          [
+            "查看推文二",
+            "https://mp.weixin.qq.com/s/kMOnTzXODi_FgzwRMwMpkw"
+          ]
+        ]
       },
       {
         "title": "线下活动",
