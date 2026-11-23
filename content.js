@@ -439,6 +439,18 @@ const practiceLayouts = [
     "type": "gallery",
     "gallery": [
       {
+        "kind": "video",
+        "category": "videos",
+        "title": "孩子偏科内耗？试试这三招",
+        "subtitle": "学习方法",
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-15.mp4?v=20261123-latest",
+        "poster": "assets/video-posters/ronghuai-15.jpg?v=20261123-latest",
+        "duration": "2:11",
+        "width": 480,
+        "height": 854
+      },
+      {
         "title": "诸暨分配生政策深度拆解",
         "subtitle": "升学政策",
         "kind": "video",
