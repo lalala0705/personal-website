@@ -18,3 +18,37 @@ class AuthDiagnosticsTest(unittest.TestCase):
         self.assertIn('TLS_CERT',auth.safe_error(urllib.error.URLError(ssl.SSLCertVerificationError('PRIVATE'))))
         self.assertIn('TIMEOUT',auth.safe_error(TimeoutError('PRIVATE')))
         self.assertNotIn('PRIVATE',auth.safe_error(ValueError('PRIVATE')))
+
+    def test_qr_confirm_saves_tokens_without_logging_them(self):
+        import contextlib
+        import io
+        import json
+        import tempfile
+        from unittest.mock import patch
+        class Response:
+            def __init__(self,body,headers=None):
+                self.data=io.BytesIO(json.dumps(body).encode())
+                self.headers=headers or {}
+            def read(self,*args): return self.data.read(*args)
+            def __enter__(self): return self
+            def __exit__(self,*args): pass
+        class Opener:
+            calls=[]
+            def open(self,req,timeout):
+                self.calls.append(req.full_url)
+                if req.full_url.endswith('/create'):
+                    return Response({'id':'test-id','url':'https://www.xiaoyuzhoufm.com/qr-code?test=PRIVATE_QR'})
+                return Response({'status':'CONFIRMED'},{'x-jike-access-token':'PRIVATE_ACCESS','x-jike-refresh-token':'PRIVATE_REFRESH'})
+        opener=Opener()
+        with tempfile.TemporaryDirectory() as folder:
+            home=Path(folder)
+            output=io.StringIO()
+            with patch.object(auth.Path,'home',return_value=home), patch('urllib.request.build_opener',return_value=opener), patch('webbrowser.open'), patch('time.sleep'), contextlib.redirect_stdout(output):
+                self.assertEqual(auth.main(),0)
+            saved=json.loads((home/'.personal-website/xiaoyuzhou-token.json').read_text())
+            self.assertEqual(saved['access_token'],'PRIVATE_ACCESS')
+            self.assertNotIn('PRIVATE_ACCESS',output.getvalue())
+            self.assertNotIn('PRIVATE_REFRESH',output.getvalue())
+            self.assertNotIn('PRIVATE_QR',output.getvalue())
+            self.assertFalse((home/'.personal-website/xiaoyuzhou-login.svg').exists())
+            self.assertTrue(all(url.startswith('https://web-api.xiaoyuzhoufm.com/v1/auth/qrcode/') for url in opener.calls))

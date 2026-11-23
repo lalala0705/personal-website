@@ -1,5 +1,4 @@
 """Run locally with Python 3. Credentials are never printed or sent to GitHub."""
-import getpass
 import importlib.util
 import json
 import os
@@ -37,28 +36,7 @@ def safe_error(error):
     return prefix + 'FAILED：未完成；错误类型 ' + type(error).__name__ + '（未输出响应正文或凭据）。'
 
 
-def main():
-    global STAGE
-    print('授权工具 v2 · 仅在首次登录时请求短信')
-    print('小宇宙账号授权：手机号和验证码只发送到小宇宙官方域名。')
-    print('本次仅登录已有账号。若提示需注册或验证码校验，请在官方客户端处理后再继续。')
-    phone = input('请输入已有小宇宙账号手机号：').strip()
-    if not phone.isdigit() or len(phone) != 11:
-        raise ValueError('请输入正确的中国大陆手机号。')
-    STAGE = '发送验证码'
-    print('正在请求发送验证码，请稍候…')
-    sent, _ = xyz.request(xyz.AUTH, '/v1/auth/send-code', {'mobilePhoneNumber': phone, 'areaCode': '+86'})
-    if sent.get('success') is False or sent.get('code', 0) not in (0, 200, '0', '200', None):
-        print('[发送验证码] API_REJECTED：接口未接受请求；请勿连续重试。', file=sys.stderr)
-        return 1
-    print('接口已返回，短信是否送达以手机实际接收为准。')
-    STAGE = '校验验证码'
-    code = getpass.getpass('请输入短信验证码（隐藏输入）：').strip()
-    body, headers = xyz.request(xyz.AUTH, '/v1/auth/login-with-sms', {'mobilePhoneNumber': phone, 'areaCode': '+86', 'verifyCode': code})
-    credentials = {'access_token': headers.get('x-jike-access-token'), 'refresh_token': headers.get('x-jike-refresh-token')}
-    if not all(credentials.values()):
-        raise ValueError('未获得有效授权，请在官方客户端确认账号后重试。')
-    STAGE = '保存授权文件'
+def save_credentials(credentials):
     directory = Path.home() / '.personal-website'
     directory.mkdir(mode=0o700, exist_ok=True)
     target = directory / 'xiaoyuzhou-token.json'
@@ -67,6 +45,85 @@ def main():
         json.dump(credentials, file)
     print('授权文件已保存到：' + str(target))
     print('将该文件内容填入仓库 Actions Secret：XIAOYUZHOU_TOKEN_JSON。不要发到聊天或上传到公开仓库。')
+
+
+def main():
+    global STAGE
+    import http.cookiejar
+    import time
+    import urllib.request
+    from urllib.parse import urlsplit
+    import webbrowser
+    try:
+        import qrcode
+        from qrcode.image.svg import SvgPathImage
+    except ImportError:
+        print('请先运行：python -m pip install qrcode==8.2')
+        return 1
+    print('授权工具 v3 · 小宇宙 App 扫码登录，不发送短信')
+    print('二维码仅保存在本机，请不要分享或上传。可随时按 Ctrl+C 取消。')
+    jar = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+    headers = {'Content-Type': 'application/json;charset=UTF-8',
+               'Accept': 'application/json, text/plain, */*',
+               'Origin': 'https://accounts.xiaoyuzhoufm.com',
+               'Referer': 'https://accounts.xiaoyuzhoufm.com/login',
+               'x-jike-allow-app-token-in-cookie': 'true',
+               'x-midway-app-id': 'v6worU4NnWyL',
+               'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36'}
+    def post(path, body):
+        req = urllib.request.Request('https://web-api.xiaoyuzhoufm.com/v1/auth/qrcode/' + path,
+            data=json.dumps(body).encode(), headers=headers, method='POST')
+        with opener.open(req, timeout=15) as response:
+            return json.load(response), response.headers
+    STAGE = '生成登录二维码'
+    created, _ = post('create', {'clientId': 'xyz-web'})
+    qr_id, qr_url = created.get('id'), created.get('url')
+    if not isinstance(qr_id, str) or not isinstance(qr_url, str):
+        raise ValueError('二维码返回格式异常')
+    url = urlsplit(qr_url)
+    if url.scheme != 'https' or not url.hostname or url.username or url.password or not any(url.hostname == host or url.hostname.endswith('.' + host) for host in ('xiaoyuzhoufm.com', 'xiaoyuzhou.fm')):
+        raise ValueError('二维码地址无效')
+    directory = Path.home() / '.personal-website'
+    directory.mkdir(mode=0o700, exist_ok=True)
+    qr_file = directory / 'xiaoyuzhou-login.svg'
+    qr = qrcode.QRCode(border=4)
+    qr.add_data(qr_url)
+    qr.make(fit=True)
+    qr.make_image(image_factory=SvgPathImage, attrib={'style': 'background:white'}).save(str(qr_file))
+    try:
+        webbrowser.open(qr_file.as_uri())
+        print('已尝试在浏览器打开本机二维码。若未打开，请手动打开：' + str(qr_file))
+        print('请用小宇宙 App 的扫一扫扫描，并在手机上确认登录（约 3 分钟有效）。')
+        STAGE = '等待扫码确认'
+        scanned = False
+        for attempt in range(90):
+            time.sleep(2)
+            try:
+                body, response_headers = post('login', {'id': qr_id})
+            except urllib.error.HTTPError as error:
+                if error.code == 401:
+                    print('二维码已失效或登录未获接受。请重新运行工具，不会自动重试创建。')
+                    return 1
+                raise
+            status = body.get('status')
+            if status == 'SCANNED' and not scanned:
+                print('已扫码，请在手机上确认登录。')
+                scanned = True
+            if status in ('CONFIRMED', 'USED'):
+                cookies = {cookie.name: cookie.value for cookie in jar if cookie.domain.lstrip('.').endswith('xiaoyuzhoufm.com')}
+                credentials = {'access_token': response_headers.get('x-jike-access-token') or cookies.get('x-jike-access-token'),
+                               'refresh_token': response_headers.get('x-jike-refresh-token') or cookies.get('x-jike-refresh-token')}
+                if not all(credentials.values()):
+                    print('扫码已确认，但接口未提供完整授权令牌；未保存文件。')
+                    return 1
+                STAGE = '保存授权文件'
+                save_credentials(credentials)
+                return 0
+        print('等待超时。请重新运行工具生成新二维码。')
+        return 1
+    finally:
+        qr_file.unlink(missing_ok=True)
 
 
 if __name__ == '__main__':
