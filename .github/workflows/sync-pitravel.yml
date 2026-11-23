@@ -1,0 +1,34 @@
+name: Sync travel itineraries
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: pitravel-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Read selected public journeys
+        run: python3 scripts/sync-pitravel.py
+      - name: Save public itinerary fields
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/pitravel.js
+          if ! git diff --cached --quiet; then
+            git commit -m 'Sync selected Pi Travel itineraries'
+            git pull --rebase origin main
+            git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push origin HEAD:main
+          fi
+  deploy:
+    needs: sync
+    uses: ./.github/workflows/deploy.yml

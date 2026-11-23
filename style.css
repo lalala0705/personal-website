@@ -151,3 +151,23 @@ article.life-portal{cursor:default}article.life-portal>.life-portal-action{width
 .recognition-more[open] .recognition-collapse{display:inline}
 .recognition-more summary:focus-visible{outline:2px solid var(--green);outline-offset:4px;border-radius:3px}
 @media(max-width:600px){.recognition-grid{grid-template-columns:1fr;gap:16px}.recognition-card{padding:20px}.recognition-item-name{font-size:15px}.recognition-heading{align-items:flex-start;flex-direction:column;gap:4px}}
+
+/* 仅在对应旅程的攻略内展示已同步的每日计划 */
+.trip-itinerary-heading{padding:4px 0 17px;border-bottom:1px solid #dce0d3}
+.trip-itinerary-heading h5{font-family:var(--serif);font-weight:500;font-size:18px;line-height:1.7;margin:0 0 7px;color:var(--green)}
+.trip-itinerary-heading p{font-size:13px!important;margin:0 0 9px}
+.trip-itinerary-heading a{display:inline-block;font-size:13px;color:var(--green);text-decoration:underline;text-underline-offset:4px}
+.trip-itinerary-day{border-bottom:1px solid #dce0d3}
+.trip-itinerary-day summary{display:flex;align-items:center;gap:12px;padding:16px 0;list-style:none;cursor:pointer;color:var(--green);font-size:15px}
+.trip-itinerary-day summary::-webkit-details-marker{display:none}
+.trip-itinerary-day summary>span{margin-left:auto;font-size:12px;color:var(--muted)}
+.trip-itinerary-day summary:after{content:'＋';font-size:16px}
+.trip-itinerary-day[open] summary:after{content:'−'}
+.trip-itinerary-day summary:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+.trip-itinerary-day ol{list-style:none;margin:0;padding:0 0 7px}
+.trip-itinerary-day li{display:grid;grid-template-columns:65px minmax(0,1fr);gap:12px;padding:13px 0;border-top:1px solid #e6e8df}
+.itinerary-time{color:var(--green);font-size:14px;font-variant-numeric:tabular-nums;line-height:1.8}
+.itinerary-time small{display:block;color:var(--muted);font-size:12px}
+.itinerary-event h6{font-size:14px;font-weight:500;color:var(--green);margin:0 0 5px;line-height:1.8}
+.itinerary-event p{font-size:13px!important;line-height:1.9!important;white-space:pre-line;overflow-wrap:anywhere;margin:0}
+@media(max-width:760px){.trip-itinerary-day li{grid-template-columns:58px minmax(0,1fr);gap:10px}.trip-itinerary-heading h5{font-size:17px}}
