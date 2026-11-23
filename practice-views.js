@@ -11,16 +11,12 @@ function practiceIcon(name){
  return `<svg class="practice-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.plan}</svg>`;
 }
 
-function practiceRecord(project){
- return `<details class="practice-record"><summary>查看完整项目记录</summary><div class="practice-body">${project.blocks.map(([label,body])=>`<section class="case-part"><h5>${escapeHtml(label)}</h5><p>${highlightText(body)}</p></section>`).join('')}</div></details>`;
-}
-
 function practiceHeader(project,type){
  return `<header class="practice-view-heading"><span class="practice-format">${type}</span><h4>${escapeHtml(project.title)}</h4></header>`;
 }
 
 function renderStoryboard(project,steps,aside){
- return `<article class="practice-view practice-storyboard">${practiceHeader(project,'流程故事板')}<ol class="story-steps">${steps.map(([title,body,icon],index)=>`<li><div class="story-step-art">${practiceIcon(icon)}<span class="story-step-number" aria-hidden="true">${String(index+1).padStart(2,'0')}</span></div><h5>${escapeHtml(title)}</h5><p>${highlightText(body)}</p></li>`).join('')}</ol>${aside?`<p class="practice-aside">${highlightText(aside)}</p>`:''}${practiceRecord(project)}</article>`;
+ return `<article class="practice-view practice-storyboard">${practiceHeader(project,'流程故事板')}<ol class="story-steps">${steps.map(([title,body,icon],index)=>`<li><div class="story-step-art">${practiceIcon(icon)}<span class="story-step-number" aria-hidden="true">${String(index+1).padStart(2,'0')}</span></div><h5>${escapeHtml(title)}</h5><p>${highlightText(body)}</p></li>`).join('')}</ol>${aside?`<p class="practice-aside">${highlightText(aside)}</p>`:''}</article>`;
 }
 
 function renderVideoMedia(item){
@@ -45,14 +41,14 @@ function renderGallery(project,layout){
   return `<section class="gallery-slot${item.kind==='article-campaign'?' gallery-slot-campaign':''}${item.image?' gallery-slot-work':''}${item.kind==='video'?' gallery-slot-video':''}" data-gallery-category="${item.category}"${item.kind==='video'?` data-video-category="${escapeHtml(item.subtitle)}"`:''}${selected!=='all'&&item.category!==selected?' hidden':''}>${media}${item.kind==='article-campaign'?'':`<div class="gallery-slot-caption"><h5>${escapeHtml(item.title)}</h5><p>${escapeHtml(item.subtitle)}</p><span>${escapeHtml(item.status)}</span></div>`}</section>`;
  }).join('');
  const intro=videoCount?`已整理 ${videoCount} 个视频条目，${playableCount===videoCount?'均可播放':`其中 ${playableCount} 条可播放、${videoCount-playableCount} 条原片待接入`}；另有 ${posterCount} 张招生海报。`:posterCount?`已收录 ${posterCount} 张招生海报。点击查看完整海报，其他作品持续补充。`:'内容策划、拍摄剪辑与活动落地。真实作品将在这里补充展示。';
- return `<article class="practice-view practice-gallery">${practiceHeader(project,'作品画廊')}<p class="practice-view-intro">${intro}</p><div class="gallery-controls" role="group" aria-label="筛选作品类型">${filters.map(([value,label])=>`<button type="button" data-gallery-filter="${value}" aria-pressed="${value===selected}">${label}</button>`).join('')}</div>${videoTopics}<div class="practice-gallery-grid">${cards}</div><p class="practice-aside">新媒体内容获取的有效线索，由招生团队承接与跟进成交。作品在此展示，不单独归因整体获客与成交数据。</p>${practiceRecord(project)}</article>`;
+ return `<article class="practice-view practice-gallery">${practiceHeader(project,'作品画廊')}<p class="practice-view-intro">${intro}</p><div class="gallery-controls" role="group" aria-label="筛选作品类型">${filters.map(([value,label])=>`<button type="button" data-gallery-filter="${value}" aria-pressed="${value===selected}">${label}</button>`).join('')}</div>${videoTopics}<div class="practice-gallery-grid">${cards}</div><p class="practice-aside">新媒体内容获取的有效线索，由招生团队承接与跟进成交。作品在此展示，不单独归因整体获客与成交数据。</p></article>`;
 }
 
 function renderSplitPractice(project,item,index){
  const uid=`practice-${index}`;
  const background=project.blocks.filter(([label])=>['问题','判断'].includes(label));
  const results=project.blocks.filter(([label])=>label==='结果');
- return `<article class="practice-view practice-split">${practiceHeader(project,'过程与成果')}<div class="practice-split-grid"><div><div class="practice-tabs" role="tablist" aria-label="${escapeHtml(project.title)}内容"><button type="button" id="${uid}-background-tab" role="tab" aria-selected="false" aria-controls="${uid}-background" tabindex="-1">工作背景</button><button type="button" id="${uid}-actions-tab" role="tab" aria-selected="true" aria-controls="${uid}-actions" tabindex="0">我的行动</button><button type="button" id="${uid}-results-tab" role="tab" aria-selected="false" aria-controls="${uid}-results" tabindex="-1">结果复盘</button></div><section id="${uid}-background" class="practice-tab-panel" role="tabpanel" aria-labelledby="${uid}-background-tab" tabindex="0" hidden>${background.map(([label,body])=>`<h5>${escapeHtml(label)}</h5><p>${highlightText(body)}</p>`).join('')}</section><section id="${uid}-actions" class="practice-tab-panel" role="tabpanel" aria-labelledby="${uid}-actions-tab" tabindex="0"><ol class="practice-action-list">${item.duties.map(([title,body])=>`<li><h5>${escapeHtml(title)}</h5><p>${highlightText(body)}</p></li>`).join('')}</ol></section><section id="${uid}-results" class="practice-tab-panel" role="tabpanel" aria-labelledby="${uid}-results-tab" tabindex="0" hidden>${results.map(([label,body])=>`<h5>${escapeHtml(label)}</h5><p>${highlightText(body)}</p>`).join('')}<h5>能力积累</h5><p>${highlightText(item.growth)}</p></section></div><aside class="practice-evidence"><h5>相关成果</h5><dl>${item.metrics.slice(0,3).map(([value,label])=>`<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl><p>该阶段多项运营工作的结果；统计周期、口径及个人贡献边界待补充。</p></aside></div>${practiceRecord(project)}</article>`;
+ return `<article class="practice-view practice-split">${practiceHeader(project,'过程与成果')}<div class="practice-split-grid"><div><div class="practice-tabs" role="tablist" aria-label="${escapeHtml(project.title)}内容"><button type="button" id="${uid}-background-tab" role="tab" aria-selected="false" aria-controls="${uid}-background" tabindex="-1">工作背景</button><button type="button" id="${uid}-actions-tab" role="tab" aria-selected="true" aria-controls="${uid}-actions" tabindex="0">我的行动</button><button type="button" id="${uid}-results-tab" role="tab" aria-selected="false" aria-controls="${uid}-results" tabindex="-1">结果复盘</button></div><section id="${uid}-background" class="practice-tab-panel" role="tabpanel" aria-labelledby="${uid}-background-tab" tabindex="0" hidden>${background.map(([label,body])=>`<h5>${escapeHtml(label)}</h5><p>${highlightText(body)}</p>`).join('')}</section><section id="${uid}-actions" class="practice-tab-panel" role="tabpanel" aria-labelledby="${uid}-actions-tab" tabindex="0"><ol class="practice-action-list">${item.duties.map(([title,body])=>`<li><h5>${escapeHtml(title)}</h5><p>${highlightText(body)}</p></li>`).join('')}</ol></section><section id="${uid}-results" class="practice-tab-panel" role="tabpanel" aria-labelledby="${uid}-results-tab" tabindex="0" hidden>${results.map(([label,body])=>`<h5>${escapeHtml(label)}</h5><p>${highlightText(body)}</p>`).join('')}<h5>能力积累</h5><p>${highlightText(item.growth)}</p></section></div><aside class="practice-evidence"><h5>相关成果</h5><dl>${item.metrics.slice(0,3).map(([value,label])=>`<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl><p>该阶段多项运营工作的结果；统计周期、口径及个人贡献边界待补充。</p></aside></div></article>`;
 }
 
 function renderPractices(item,projects){
@@ -61,8 +57,8 @@ function renderPractices(item,projects){
   if(layout.type==='gallery')return renderGallery(project,layout);
   if(layout.type==='split' && index===0)return renderSplitPractice(project,item,index);
   if(layout.type==='storyboard' && layout.flows[index])return renderStoryboard(project,layout.flows[index],index===0?layout.aside:'');
-  // 辅助实践仍可展开完整阅读，不合并不同项目的成果。
-  return `<article class="practice-view">${practiceHeader(project,'相关实践')}${practiceRecord(project)}</article>`;
+  // 辅助实践直接呈现已有内容，避免额外折叠入口。
+  return `<article class="practice-view">${practiceHeader(project,'相关实践')}<div class="practice-body">${project.blocks.map(([label,body])=>`<section class="case-part"><h5>${escapeHtml(label)}</h5><p>${highlightText(body)}</p></section>`).join('')}</div></article>`;
  }).join('');
 }
 
