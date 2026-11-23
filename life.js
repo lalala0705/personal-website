@@ -38,3 +38,25 @@ lifeDialog.addEventListener('click',e=>{
  for(const [key,handler] of handlers){if(b.dataset[key]!==undefined){const val=b.dataset[key];handler(val);renderLife();const attr='data-'+key.replace(/[A-Z]/g,c=>'-'+c.toLowerCase());const target=lifeView.querySelector(`[${attr}="${CSS.escape(val)}"]`);if(target&&!target.disabled)target.focus({preventScroll:true});return;}}
  if(b.dataset.lifePhoto){const photo=document.querySelector('#large-photo');photo.src=b.dataset.lifePhoto;photo.alt='旅行照片交互示例，非本人作品';document.querySelector('#photo-caption').textContent='旅行相册 · 示意照片';photoDialog.showModal();}
 });
+
+// 首页书封可独立操作；真实书目未填入时明确打开示例笔记。
+document.querySelectorAll('[data-shelf-preview]').forEach(button=>button.addEventListener('click',()=>{
+ lifeDemo=true;selectLife('reading');lifeSelection=button.dataset.shelfPreview;renderLife();
+ lifeDialog.showModal();lifeDialog.scrollTop=0;document.body.classList.add('modal-open');
+}));
+const gramophoneToggle=document.querySelector('.gramophone-toggle');
+const gramophoneCard=document.querySelector('.life-podcast');
+gramophoneToggle.addEventListener('click',()=>{
+ const turning=gramophoneToggle.getAttribute('aria-pressed')!=='true';
+ gramophoneToggle.setAttribute('aria-pressed',String(turning));
+ gramophoneToggle.setAttribute('aria-label',turning?'暂停唱片转动，仅视觉效果':'开始转动唱片，仅视觉效果');
+ gramophoneCard.classList.toggle('is-turning',turning);
+ gramophoneToggle.querySelector('[data-record-symbol]').textContent=turning?'Ⅱ':'▶';
+ gramophoneToggle.querySelector('[data-record-label]').textContent=turning?'暂停转动':'转动唱片';
+ gramophoneCard.querySelector('[data-record-status]').textContent=turning?'唱片转动中 · 仅视觉效果，无声音':'轻触留声机，让唱片转起来 · 无声音';
+});
+// 离开可见区域或切换标签页时暂停绘制，返回后恢复主动开启的状态。
+if('IntersectionObserver' in window){new IntersectionObserver(entries=>{
+ for(const entry of entries)entry.target.classList.toggle('motion-offscreen',!entry.isIntersecting);
+}).observe(gramophoneCard);}
+document.addEventListener('visibilitychange',()=>gramophoneCard.classList.toggle('motion-background',document.hidden));
