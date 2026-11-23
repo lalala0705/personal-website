@@ -131,3 +131,23 @@ article.life-portal{cursor:default}article.life-portal>.life-portal-action{width
 
 .record-audio-controls{display:flex;align-items:center;gap:10px;min-height:26px;margin:-5px 0 14px;color:var(--muted);font-size:12px}.record-audio-controls input{min-width:0;flex:1;height:20px;accent-color:var(--green);cursor:pointer}.record-audio-controls output{width:34px;text-align:right;font-variant-numeric:tabular-nums}.record-audio-controls label{white-space:nowrap}.record-audio-controls input:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:3px}
 .life-portal-copy{margin-top:auto}
+
+/* 已确认的荣誉和证书以简短清单呈现，其余项使用原生展开控件 */
+.recognition-card-heading{display:flex;align-items:center;gap:9px;margin-bottom:13px;position:relative}
+.recognition-card-heading svg{width:23px;height:23px;margin:0;flex-shrink:0}
+.recognition-card-heading h4{font-size:17px;margin:0}
+.recognition-count{font-size:12px;color:var(--muted);white-space:nowrap;margin-left:auto}
+.recognition-list{list-style:none;margin:0;padding:0;position:relative}
+.recognition-list li{padding:13px 0;border-top:1px solid #e9e4d9}
+.recognition-item-name{display:block;font-size:14px;line-height:1.8;color:#465340;overflow-wrap:anywhere}
+.recognition-item-detail{display:inline-block;margin-top:6px;font-size:12px;line-height:1.7;color:#8c6241;background:#f6eee0;padding:2px 7px;border-radius:4px}
+.recognition-more{position:relative;margin-top:4px;border-top:1px solid #e9e4d9}
+.recognition-more summary{display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;list-style:none;padding:13px 0 0;font-size:13px;color:var(--green)}
+.recognition-more summary::-webkit-details-marker{display:none}
+.recognition-more summary:after{content:'＋';font-size:16px}
+.recognition-more[open] summary:after{content:'−'}
+.recognition-more[open] summary{padding-bottom:12px}
+.recognition-collapse,.recognition-more[open] .recognition-expand{display:none}
+.recognition-more[open] .recognition-collapse{display:inline}
+.recognition-more summary:focus-visible{outline:2px solid var(--green);outline-offset:4px;border-radius:3px}
+@media(max-width:600px){.recognition-grid{grid-template-columns:1fr;gap:16px}.recognition-card{padding:20px}.recognition-item-name{font-size:15px}.recognition-heading{align-items:flex-start;flex-direction:column;gap:4px}}
