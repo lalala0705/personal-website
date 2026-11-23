@@ -1,0 +1,49 @@
+name: Sync Xiaoyuzhou podcasts
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: xiaoyuzhou-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Install credential encryption library
+        run: python3 -m pip install 'cryptography==46.0.3'
+      - uses: actions/cache/restore@v4
+        with:
+          path: .private-xyz-cache
+          key: xyz-credentials-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: xyz-credentials-
+      - name: Read subscriptions and latest episodes
+        env:
+          XIAOYUZHOU_TOKEN_JSON: ${{ secrets.XIAOYUZHOU_TOKEN_JSON }}
+        run: python3 scripts/sync-xiaoyuzhou.py
+      - name: Preserve encrypted refreshed credentials
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .private-xyz-cache
+          key: xyz-credentials-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Save public podcast information
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/podcasts.js
+          if ! git diff --cached --quiet; then
+            git commit -m 'Sync Xiaoyuzhou subscriptions and recent episodes'
+            git pull --rebase origin main
+            git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push origin HEAD:main
+          fi
+  deploy:
+    needs: sync
+    uses: ./.github/workflows/deploy.yml

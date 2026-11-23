@@ -2,3 +2,5 @@ __pycache__/
 *.pyc
 .env
 .env.*
+.private-xyz-cache/
+*token.json
