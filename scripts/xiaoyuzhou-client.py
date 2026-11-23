@@ -16,6 +16,13 @@ def request(base, path, payload=None, token='', refresh=''):
                'app-version': '2.99.1', 'os': 'android',
                'Origin': 'https://podcaster.xiaoyuzhoufm.com',
                'Referer': 'https://podcaster.xiaoyuzhoufm.com/'}
+    if base == AUTH:
+        # Login endpoints use the web client headers, unlike app read endpoints.
+        headers = {'Content-Type': 'application/json;charset=UTF-8',
+                   'Accept': 'application/json, text/plain, */*',
+                   'Origin': 'https://podcaster.xiaoyuzhoufm.com',
+                   'Referer': 'https://podcaster.xiaoyuzhoufm.com/',
+                   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36'}
     if token:
         headers['x-jike-access-token'] = token
     if refresh:
