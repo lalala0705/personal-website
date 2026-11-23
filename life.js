@@ -1,5 +1,5 @@
-// 真实生活记录尚待提供；示例仅在访客主动开启后展示。
-const lifeContent={trips:[],books:[],podcasts:[]};
+// 仅填入用户已确认的生活记录；示例在访客主动开启后展示。
+const lifeContent={trips:[{"id": "xuancheng-jing-202610", "title": "安徽宣城 · 泾县", "startDate": "2026-10-11", "endDate": "2026-10-13", "dateLabel": "2026 年 10 月 11–13 日", "position": [118.419552, 30.688793], "places": [{"title": "安徽 · 宣城", "position": [118.759127, 30.939278]}, {"title": "安徽 · 泾县", "position": [118.419552, 30.688793]}], "photos": [], "intro": "安徽宣城、泾县的旅行记录。", "guide": ""}],books:[],podcasts:[]};
 const lifeExamples={
  trips:[{id:'a',title:'旅程 A · 示例',x:50,y:32,position:[116.397,39.909],image:'assets/mountain.jpg',intro:'这里将放一段旅程的故事。',guide:'路线安排、交通方式、落脚点，以及途中值得记下的小事。'},{id:'b',title:'旅程 B · 示例',x:76,y:44,position:[121.474,31.23],image:'assets/sea.jpg',intro:'把值得回看的风景留在这里。',guide:'这里可以整理目的地攻略、行程与个人建议。'},{id:'c',title:'旅程 C · 示例',x:24,y:42,position:[104.066,30.572],image:'assets/light.jpg',intro:'慢一点，看看沿途。',guide:'这里可以补充散步路线、拍照位置与旅途提醒。'}],
  books:[{id:'a',title:'书籍 A',status:'read',tone:'cream'},{id:'b',title:'书籍 B',status:'reading',tone:'sage'},{id:'c',title:'书籍 C',status:'wish',tone:'clay'},{id:'d',title:'书籍 D',status:'read',tone:'blue'},{id:'e',title:'书籍 E',status:'reading',tone:'cream'},{id:'f',title:'书籍 F',status:'read',tone:'sage'}],
@@ -11,11 +11,25 @@ let lifeSpace='travel',lifeDemo=false,lifeSelection='',lifeFilter='all',lifeTrip
 const lifeEscape=escapeHtml;
 function lifeItems(key){return lifeDemo?lifeExamples[key]:lifeContent[key];}
 function lifeEmpty(title,body){return `<div class="life-empty"><span aria-hidden="true">✳</span><h3>${title}</h3><p>${body}</p></div>`;}
-function lifeNotice(){return `<div class="life-demo-bar"><p>${lifeDemo?'正在体验示例 · 地点、书目、节目与图片均为占位，不是个人真实记录。':'真实旅行、阅读与播客记录正在整理，当前未填入个人内容。'}</p><button type="button" data-life-demo aria-pressed="${lifeDemo}">${lifeDemo?'退出样例':'体验样例'} <span aria-hidden="true">↗</span></button></div>`;}
+function lifeNotice(){
+ const message=lifeDemo?'正在体验示例 · 地点、书目、节目与图片均为占位，不是个人真实记录。':lifeSpace==='travel'&&lifeContent.trips.length?`已记录 ${lifeContent.trips.length} 段真实旅程，照片与攻略陆续补充。`:'阅读与播客记录正在整理，可先体验样例。';
+ return `<div class="life-demo-bar"><p>${message}</p><button type="button" data-life-demo aria-pressed="${lifeDemo}">${lifeDemo?'退出样例':'体验样例'} <span aria-hidden="true">↗</span></button></div>`;
+}
+function worldTripPoint(item){
+ if(item.position&&!lifeDemo)return {x:(item.position[0]+180)/3.6,y:(90-item.position[1])/1.65};
+ return {x:item.x,y:item.y};
+}
+function renderTripDetail(selected){
+ if(!selected)return lifeEmpty(lifeItems('trips').length?'选择一段旅程':'地图，等你点亮','点击地图标记查看攻略和照片；也可以先开启上方的体验样例。');
+ const photos=lifeDemo?[{src:selected.image,alt:'旅行风格示意图，非本人作品'}]:(selected.photos||[]);
+ const cover=photos[0]?`<img class="trip-cover" src="${lifeEscape(photos[0].src)}" alt="${lifeEscape(photos[0].alt||selected.title)}">`:`<div class="trip-cover-empty"><span aria-hidden="true">⌑</span><span>旅途照片，稍后见</span></div>`;
+ const photoContent=photos.length?photos.map(photo=>`<button class="trip-photo-button" data-life-photo="${lifeEscape(photo.src)}" data-life-photo-title="${lifeEscape(selected.title)}" data-life-photo-alt="${lifeEscape(photo.alt||selected.title)}" aria-label="放大${lifeDemo?'示意照片':'旅行照片'}"><img src="${lifeEscape(photo.src)}" alt="${lifeEscape(photo.alt||selected.title)}"><span>放大照片 ↗</span></button>`).join(''):lifeEmpty('照片待上传','这段旅程的照片，正在整理中。');
+ return `${cover}<div class="trip-detail-body"><span class="life-sample-label">${lifeDemo?'交互示例':'旅行记录'}</span><h4>${lifeEscape(selected.title)}</h4>${selected.dateLabel?`<p class="trip-date"><time datetime="${lifeEscape(selected.startDate)}">${lifeEscape(selected.dateLabel)}</time></p>`:''}<p>${lifeEscape(selected.intro||'')}</p><div class="life-small-tabs" role="group" aria-label="旅行记录内容"><button data-life-trip-tab="guide" aria-pressed="${lifeTripTab==='guide'}">攻略</button><button data-life-trip-tab="photos" aria-pressed="${lifeTripTab==='photos'}">照片${photos.length&&!lifeDemo?' · '+photos.length:''}</button></div>${lifeTripTab==='guide'?(selected.guide?`<p class="trip-guide">${lifeEscape(selected.guide)}</p>`:lifeEmpty('攻略与感受待补充','路线、途中见闻与感受，稍后慢慢写。')):photoContent}</div>`;
+}
 function renderTravelMap(items){
  const controls=`<div class="life-small-tabs map-provider" role="group" aria-label="选择地图"><button data-travel-provider="amap" aria-pressed="${travelProvider==='amap'}">国内 · 高德地图</button><button data-travel-provider="world" aria-pressed="${travelProvider==='world'}">世界地图</button></div>`;
- const map=travelProvider==='amap'?`<div class="amap-map-host" id="amap-travel-map" role="region" aria-label="可拖动和缩放的高德旅行地图"></div><p class="amap-map-status" data-amap-status role="status">正在打开高德地图…</p>`:`<div class="travel-map-window"><div class="travel-map-canvas" style="transform:scale(${lifeZoom})"><img src="assets/life/world-map.svg" alt="世界地图；真实旅行地点待补充">${items.map(x=>`<button class="travel-pin${x.id===lifeSelection?' selected':''}" data-life-trip="${lifeEscape(x.id)}" style="left:${x.x}%;top:${x.y}%" aria-pressed="${x.id===lifeSelection}" aria-label="查看${lifeEscape(x.title)}"><i></i><span>${lifeEscape(x.title)}</span></button>`).join('')}</div></div>`;
- return `<div class="travel-map-area">${controls}<div class="travel-map-label"><span>我的旅行地图</span><span>${lifeDemo?'示例地点，非本人行程':`${items.length} 个地点已点亮`}</span></div>${map}<div class="travel-map-footer"><span>${travelProvider==='amap'?'拖动地图，点击标记查看旅程':'点击亮点，打开一段旅程'}</span><div class="map-zoom" role="group" aria-label="地图缩放"><button data-life-zoom="out" aria-label="缩小地图" ${travelProvider==='world'&&lifeZoom===1?'disabled':''}>−</button><button data-life-zoom="reset" aria-label="重置地图缩放">复位</button><button data-life-zoom="in" aria-label="放大地图" ${travelProvider==='world'&&lifeZoom>=1.6?'disabled':''}>＋</button></div></div>${travelProvider==='world'?'<p class="map-credit">地图：Natural Earth / world-atlas</p>':''}</div>`;
+ const map=travelProvider==='amap'?`<div class="amap-map-host" id="amap-travel-map" role="region" aria-label="可拖动和缩放的高德旅行地图"></div><p class="amap-map-status" data-amap-status role="status">正在打开高德地图…</p>`:`<div class="travel-map-window"><div class="travel-map-canvas" style="transform:scale(${lifeZoom})"><img src="assets/life/world-map.svg" alt="世界地图与旅行足迹">${items.map(x=>`<button class="travel-pin${x.id===lifeSelection?' selected':''}" data-life-trip="${lifeEscape(x.id)}" style="left:${worldTripPoint(x).x}%;top:${worldTripPoint(x).y}%" aria-pressed="${x.id===lifeSelection}" aria-label="查看${lifeEscape(x.title)}"><i></i><span>${lifeEscape(x.title)}</span></button>`).join('')}</div></div>`;
+ return `<div class="travel-map-area">${controls}<div class="travel-map-label"><span>我的旅行地图</span><span>${lifeDemo?'示例地点，非本人行程':`${items.reduce((n,item)=>n+(item.places?.length||1),0)} 个地点 · ${items.length} 段旅程`}</span></div>${map}<div class="travel-map-footer"><span>${travelProvider==='amap'?'拖动地图，点击标记查看旅程':'点击亮点，打开一段旅程'}</span><div class="map-zoom" role="group" aria-label="地图缩放"><button data-life-zoom="out" aria-label="缩小地图" ${travelProvider==='world'&&lifeZoom===1?'disabled':''}>−</button><button data-life-zoom="reset" aria-label="重置地图缩放">复位</button><button data-life-zoom="in" aria-label="放大地图" ${travelProvider==='world'&&lifeZoom>=1.6?'disabled':''}>＋</button></div></div>${travelProvider==='world'?'<p class="map-credit">地图：Natural Earth / world-atlas</p>':''}</div>`;
 }
 function updateTravelDetail(){
  const template=document.createElement('template');template.innerHTML=renderTravel();
@@ -24,7 +38,7 @@ function updateTravelDetail(){
 }
 function renderTravel(){
  const items=lifeItems('trips'),selected=items.find(x=>x.id===lifeSelection);
- return `<div class="life-view-title"><span class="eyebrow">01 / TRAVEL</span><h3>推开门，去远一点的地方。</h3><p>把走过的路，慢慢收进地图。</p></div><div class="travel-layout">${renderTravelMap(items)}<aside class="trip-detail" aria-label="旅行详情">${selected?`<img class="trip-cover" src="${lifeEscape(selected.image)}" alt="旅行风格示意图"><div class="trip-detail-body"><span class="life-sample-label">交互示例</span><h4>${lifeEscape(selected.title)}</h4><p>${lifeEscape(selected.intro)}</p><div class="life-small-tabs" role="group" aria-label="旅行记录内容"><button data-life-trip-tab="guide" aria-pressed="${lifeTripTab==='guide'}">攻略</button><button data-life-trip-tab="photos" aria-pressed="${lifeTripTab==='photos'}">照片</button></div>${lifeTripTab==='guide'?`<p class="trip-guide">${lifeEscape(selected.guide)}</p>`:`<button class="trip-photo-button" data-life-photo="${lifeEscape(selected.image)}" aria-label="放大旅行示意图"><img src="${lifeEscape(selected.image)}" alt="示例相册中的风景，非本人旅行作品"><span>放大照片 ↗</span></button>`}</div>`:lifeEmpty(items.length?'选择一段旅程':'地图，等你点亮','点击地图标记查看攻略和照片；也可以先开启上方的体验样例。')}</aside></div>`;
+ return `<div class="life-view-title"><span class="eyebrow">01 / TRAVEL</span><h3>推开门，去远一点的地方。</h3><p>把走过的路，慢慢收进地图。</p></div><div class="travel-layout">${renderTravelMap(items)}<aside class="trip-detail" aria-label="旅行详情">${renderTripDetail(selected)}</aside></div>`;
 }
 const bookStates={read:'读过',reading:'在读',wish:'想读'};
 function renderReading(){
@@ -41,7 +55,7 @@ function renderLife(){
  lifeView.innerHTML=lifeNotice()+({travel:renderTravel,reading:renderReading,podcast:renderPodcast}[lifeSpace])();
  if(lifeSpace==='travel'&&travelProvider==='amap'){AmapTravel.mount(lifeView.querySelector('#amap-travel-map'),lifeItems('trips'),id=>{lifeSelection=id;updateTravelDetail();});}
 }
-function selectLife(space){lifeSpace=space;lifeSelection='';lifeFilter='all';lifeTripTab='guide';lifePodcastTab='shows';lifeZoom=1;renderLife();}
+function selectLife(space){lifeSpace=space;lifeSelection=space==='travel'&&!lifeDemo?(lifeContent.trips[0]?.id||''):'';lifeFilter='all';lifeTripTab='guide';lifePodcastTab='shows';lifeZoom=1;renderLife();}
 document.querySelectorAll('[data-life-open]').forEach(b=>b.addEventListener('click',()=>{lifeDemo=false;selectLife(b.dataset.lifeOpen);lifeDialog.showModal();lifeDialog.scrollTop=0;document.body.classList.add('modal-open');}));
 lifeDialog.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
@@ -50,10 +64,10 @@ lifeDialog.addEventListener('click',e=>{
  if(b.dataset.lifeTripTab){lifeTripTab=b.dataset.lifeTripTab;updateTravelDetail();return;}
  if(b.dataset.lifeZoom&&travelProvider==='amap'){AmapTravel.zoom(b.dataset.lifeZoom);return;}
  if(b.hasAttribute('data-life-tab')){selectLife(b.dataset.lifeTab);return;}
- if(b.hasAttribute('data-life-demo')){lifeDemo=!lifeDemo;lifeSelection='';renderLife();lifeView.querySelector('[data-life-demo]').focus({preventScroll:true});return;}
+ if(b.hasAttribute('data-life-demo')){lifeDemo=!lifeDemo;lifeSelection=lifeSpace==='travel'&&!lifeDemo?(lifeContent.trips[0]?.id||''):'';renderLife();lifeView.querySelector('[data-life-demo]').focus({preventScroll:true});return;}
  const handlers=[['lifeTrip',v=>{lifeSelection=v;}],['lifeTripTab',v=>{lifeTripTab=v;}],['lifeBookFilter',v=>{lifeFilter=v;lifeSelection='';}],['lifeBook',v=>{lifeSelection=v;}],['lifePodcastTab',v=>{lifePodcastTab=v;lifeSelection='';}],['lifePodcast',v=>{lifeSelection=v;}],['lifeZoom',v=>{lifeZoom=v==='reset'?1:Math.max(1,Math.min(1.6,Math.round((lifeZoom+(v==='in'?.2:-.2))*10)/10));}]];
  for(const [key,handler] of handlers){if(b.dataset[key]!==undefined){const val=b.dataset[key];handler(val);renderLife();const attr='data-'+key.replace(/[A-Z]/g,c=>'-'+c.toLowerCase());const target=lifeView.querySelector(`[${attr}="${CSS.escape(val)}"]`);if(target&&!target.disabled)target.focus({preventScroll:true});return;}}
- if(b.dataset.lifePhoto){const photo=document.querySelector('#large-photo');photo.src=b.dataset.lifePhoto;photo.alt='旅行照片交互示例，非本人作品';document.querySelector('#photo-caption').textContent='旅行相册 · 示意照片';photoDialog.showModal();}
+ if(b.dataset.lifePhoto){const photo=document.querySelector('#large-photo');photo.src=b.dataset.lifePhoto;photo.alt=b.dataset.lifePhotoAlt||'旅行照片';document.querySelector('#photo-caption').textContent=lifeDemo?'旅行相册 · 示意照片':b.dataset.lifePhotoTitle||'旅行相册';document.querySelector('#photo-dialog .small').textContent=lifeDemo?'摄影风格示意，非本人旅行作品。':'个人旅行照片';photoDialog.showModal();}
 });
 
 // 首页书封可独立操作；真实书目未填入时明确打开示例笔记。

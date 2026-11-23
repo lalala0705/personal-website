@@ -27,11 +27,14 @@ const AmapTravel=(()=>{
    completeTimer=setTimeout(()=>say('地图加载较慢，可切换世界地图继续查看旅行记录。'),12000);
    map.on('complete',()=>{clearTimeout(completeTimer);say('拖动或缩放地图，点击已点亮地点查看旅行记录。');});
    const markers=[];
-   for(const item of items){
+   for(const trip of items){
+    const locations=trip.places?.length?trip.places:[{title:trip.title,position:trip.position}];
+    for(const item of locations){
     if(!Array.isArray(item.position)||item.position.length!==2)continue;
-    const node=document.createElement('button');node.type='button';node.className='amap-trip-pin';node.setAttribute('aria-label',`查看${item.title}`);node.textContent=item.title;node.dataset.tripId=item.id;node.setAttribute('aria-pressed','false');
-    node.addEventListener('click',()=>onSelect(item.id));
+    const node=document.createElement('button');node.type='button';node.className='amap-trip-pin';node.setAttribute('aria-label',`查看${item.title}`);node.textContent=item.title;node.dataset.tripId=trip.id;node.setAttribute('aria-pressed','false');
+    node.addEventListener('click',()=>onSelect(trip.id));
     const marker=new AMap.Marker({position:item.position,content:node,anchor:'bottom-center'});marker.setMap(map);markers.push(marker);
+    }
    }
    if(markers.length)map.setFitView(markers,false,[40,40,40,40],9);
   }catch(error){if(version!==sequence)return;say(error.message==='地图配置尚未完成'?'高德地图正在配置，暂可切换世界地图浏览。':'地图暂时无法加载，请稍后重试，或切换世界地图。');}
