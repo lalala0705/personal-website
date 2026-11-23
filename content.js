@@ -746,3 +746,87 @@ const careerGrowthTags = [
  ['内容策划','品牌表达','拍摄剪辑','活动执行','内容获客']
 ];
 experienceData.forEach((item,index)=>item.growthTags=careerGrowthTags[index]);
+
+// 学家优品原始工作资料；标题暂按发送顺序编号，待用户提供正式名称。
+experienceData[1].documentArchive = [
+  {
+    "title": "工作资料 01 · 飞书文档",
+    "url": "https://my.feishu.cn/docx/Rv5Idlwboom2vPxq4wvcKwsFnMb?from=from_copylink",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 02 · 飞书文档",
+    "url": "https://my.feishu.cn/docx/Gqfqdje0zosTmVxX6tEc4uPinnf?from=from_copylink",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 03 · 飞书表格",
+    "url": "https://my.feishu.cn/sheets/SWwEsYcRHhLv0GtTlG6cfD05ntb?from=from_copylink&sheet=0UGoXB",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 04 · 飞书表格",
+    "url": "https://my.feishu.cn/sheets/FtTIsj933h4yrTtMNcQc2f3Onuf?from=from_copylink&sheet=15MWdH",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 05 · 飞书文档",
+    "url": "https://my.feishu.cn/docx/VG1TdXNncotHGKxDVoOcXF4Jnlf?from=from_copylink",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 06 · 飞书文档",
+    "url": "https://my.feishu.cn/docx/ABiAdaAdEoHN4lxm0OccAUrPnnb?from=from_copylink",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 07 · 飞书文档",
+    "url": "https://my.feishu.cn/docx/XpffdK4ivoxN7ExEYRtcm9djnIf?from=from_copylink",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 08 · 飞书文档",
+    "url": "https://my.feishu.cn/docx/Pm61ddniro6vjCxgYkLcwVzgnic?from=from_copylink",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 09 · 飞书文档",
+    "url": "https://my.feishu.cn/docx/P3j2dixIJoxVtYxKLkscGh5QnAf?from=from_copylink",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 10 · 飞书文档",
+    "url": "https://my.feishu.cn/docx/ELYqdAymOoT9T3x4v5RcVY0mnsb?from=from_copylink",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 11 · 飞书表格",
+    "url": "https://my.feishu.cn/sheets/Re02srPC4hbJ09t3Z7Ncqh7Wn9d?from=from_copylink&sheet=3aeCjf",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 12 · 飞书文档",
+    "url": "https://my.feishu.cn/docx/TZvAdXtkVoEsMrxoHmRcMIWTnbe?from=from_copylink",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 13 · 飞书文档",
+    "url": "https://my.feishu.cn/docx/LnQsdI3Mmok9Y4xoatwcmHJCnmh?from=from_copylink",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 14 · 飞书文档",
+    "url": "https://my.feishu.cn/docx/Bhg2deFzfoVwHSxcyO5cjZTpnUf?from=from_copylink",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 15 · 附件文件",
+    "url": "https://my.feishu.cn/file/Fla7bIwnqogBu1xl67jcCiaBnqb?from=from_copylink",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  },
+  {
+    "title": "工作资料 16 · 资料文件夹",
+    "url": "https://my.feishu.cn/drive/folder/WAqwfTM10l0XAtdh3Mych3eFnXd",
+    "access": "需飞书登录；访问权限以原资料设置为准"
+  }
+];
