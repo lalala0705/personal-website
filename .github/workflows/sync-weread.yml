@@ -1,0 +1,36 @@
+name: Sync WeRead bookshelf
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: weread-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Read public bookshelf
+        env:
+          WEREAD_API_KEY: ${{ secrets.WEREAD_API_KEY }}
+        run: python3 scripts/sync-weread.py
+      - name: Save public book information
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/books.js
+          if ! git diff --cached --quiet; then
+            git commit -m 'Sync public WeRead bookshelf'
+            git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push origin HEAD:main
+          fi
+  deploy:
+    needs: sync
+    uses: ./.github/workflows/deploy.yml

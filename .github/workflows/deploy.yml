@@ -1,0 +1,24 @@
+name: Publish synced bookshelf
+on:
+  workflow_call:
+permissions:
+  contents: read
+  pages: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rebuild existing branch-based GitHub Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          gh api --method POST "repos/$REPOSITORY/pages/builds" --jq '.status'
+          for attempt in $(seq 1 40); do
+            status=$(gh api "repos/$REPOSITORY/pages/builds/latest" --jq '.status')
+            if [ "$status" = built ]; then exit 0; fi
+            if [ "$status" = errored ]; then echo 'Pages build failed'; exit 1; fi
+            sleep 5
+          done
+          echo 'Pages build timed out'
+          exit 1
