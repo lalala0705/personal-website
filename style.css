@@ -89,3 +89,35 @@ article.life-portal{cursor:default}article.life-portal>.life-portal-action{width
 .shelf-books .book-cover b{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;padding:4px;font-size:12px;line-height:1.5}
 
 .podcast-cover img{width:65px;height:65px;object-fit:cover;border-radius:6px}.podcast-detail-art img{width:120px;height:120px;object-fit:cover;border-radius:6px}.podcast-list{max-height:600px;overflow-y:auto;overscroll-behavior:contain}.podcast-detail p{white-space:pre-line}
+
+/* 个人介绍下的学习坐标；首页照片采用相纸叠层，保留原图及裁切 */
+.hero-photo{justify-content:center;padding:22px 12px 0;isolation:isolate}
+.portrait-mount{position:relative;width:100%;max-width:386px;align-self:center;padding:12px 12px 36px;background:#fffefa;box-shadow:0 10px 28px #273c2c14,0 2px 5px #273c2c10;transform:rotate(1.5deg);border:1px solid #e2e1d8}
+.portrait-mount:before{content:'';position:absolute;inset:-7px 8px 5px -7px;border:1px solid #8d9a83;transform:rotate(-4deg);z-index:-1;background:#eeeee5}
+.hero-photo .portrait-frame{max-width:none;width:100%;outline:0;background:#e5e7df}
+.portrait-paper-label{display:block;position:absolute;bottom:10px;left:15px;right:15px;text-align:center;font-size:11px;letter-spacing:.2em;color:#727969}
+.hero-photo:has(.portrait-frame) figcaption{max-width:386px;margin-top:23px;padding:0 4px;line-height:1.8;flex-wrap:wrap}
+.hero-photo figcaption span{position:relative;padding-left:22px}
+.hero-photo figcaption span:before{content:'';position:absolute;left:0;top:50%;width:14px;height:1px;background:#ac6a4b}
+.about{row-gap:36px}
+.education-band{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:36px;padding:30px;background:linear-gradient(110deg,#f0f2e9,#f8f6ef);border:1px solid #d7ddce;border-radius:12px}
+.education-coordinate{align-self:center;padding-right:28px;border-right:1px solid #d7ddce}
+.education-heading{display:flex;align-items:center;gap:12px;color:var(--green);margin-bottom:18px}
+.education-heading svg{width:30px;height:30px;flex-shrink:0}
+.education-heading h3,.recognition-heading h3{font-family:var(--serif);font-size:23px;font-weight:500;letter-spacing:.03em}
+.education-school{font-size:18px;color:var(--green);margin-bottom:12px}
+.education-major{font-size:16px;color:#505d4c}
+.education-major span{font-size:13px;color:#77806f;margin-left:12px}
+.education-pending{font-size:14px;color:var(--muted);margin-top:7px}
+.recognition-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px;color:var(--green)}
+.recognition-heading>span{font-size:12px;color:var(--muted)}
+.recognition-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.recognition-card{position:relative;padding:22px 18px 18px;background:#fffdf7;border:1px solid #dbd6c8;border-radius:7px;min-width:0}
+.recognition-card:before{content:'';position:absolute;inset:6px;border:1px solid #eee9de;pointer-events:none;border-radius:3px}
+.recognition-card svg{width:29px;height:29px;color:#99714d;margin-bottom:9px}
+.recognition-card h4{margin:0 0 8px;font-family:var(--serif);font-size:18px;font-weight:500;color:var(--green)}
+.recognition-card p{font-size:14px;line-height:1.8;color:var(--muted)}
+.recognition-status{display:inline-block;font-size:12px;color:#86704f;border-top:1px solid #e9e3d5;margin-top:16px;padding-top:9px;width:100%}
+@media(max-width:1000px){.education-band{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:24px;padding:25px}.recognition-heading{align-items:flex-start;flex-direction:column;gap:4px}.education-coordinate{padding-right:22px}}
+@media(max-width:760px){.hero-photo{padding:12px 10px 0}.portrait-mount{width:calc(100% - 14px);max-width:380px;padding:10px 10px 34px}.hero-photo .portrait-frame{max-width:none}.hero-photo:has(.portrait-frame) figcaption{width:calc(100% - 14px);margin-top:20px}.education-band{grid-template-columns:1fr;gap:24px;padding:22px;margin-top:4px}.education-coordinate{border-right:0;border-bottom:1px solid #d7ddce;padding:0 0 23px}.education-heading{margin-bottom:13px}.recognition-heading{flex-direction:row;align-items:center}.recognition-heading h3{font-size:21px}.recognition-heading>span{font-size:12px}.recognition-grid{gap:12px}.recognition-card{padding:20px 14px 16px}.recognition-card p{font-size:14px}.about{row-gap:26px}}
+@media(prefers-reduced-motion:reduce){.portrait-mount{transform:none}.portrait-mount:before{transform:none;inset:-6px 6px 6px -6px}}
