@@ -1,19 +1,30 @@
 // 真实生活记录尚待提供；示例仅在访客主动开启后展示。
 const lifeContent={trips:[],books:[],podcasts:[]};
 const lifeExamples={
- trips:[{id:'a',title:'旅程 A · 示例',x:50,y:32,image:'assets/mountain.jpg',intro:'这里将放一段旅程的故事。',guide:'路线安排、交通方式、落脚点，以及途中值得记下的小事。'},{id:'b',title:'旅程 B · 示例',x:76,y:44,image:'assets/sea.jpg',intro:'把值得回看的风景留在这里。',guide:'这里可以整理目的地攻略、行程与个人建议。'},{id:'c',title:'旅程 C · 示例',x:24,y:42,image:'assets/light.jpg',intro:'慢一点，看看沿途。',guide:'这里可以补充散步路线、拍照位置与旅途提醒。'}],
+ trips:[{id:'a',title:'旅程 A · 示例',x:50,y:32,position:[116.397,39.909],image:'assets/mountain.jpg',intro:'这里将放一段旅程的故事。',guide:'路线安排、交通方式、落脚点，以及途中值得记下的小事。'},{id:'b',title:'旅程 B · 示例',x:76,y:44,position:[121.474,31.23],image:'assets/sea.jpg',intro:'把值得回看的风景留在这里。',guide:'这里可以整理目的地攻略、行程与个人建议。'},{id:'c',title:'旅程 C · 示例',x:24,y:42,position:[104.066,30.572],image:'assets/light.jpg',intro:'慢一点，看看沿途。',guide:'这里可以补充散步路线、拍照位置与旅途提醒。'}],
  books:[{id:'a',title:'书籍 A',status:'read',tone:'cream'},{id:'b',title:'书籍 B',status:'reading',tone:'sage'},{id:'c',title:'书籍 C',status:'wish',tone:'clay'},{id:'d',title:'书籍 D',status:'read',tone:'blue'},{id:'e',title:'书籍 E',status:'reading',tone:'cream'},{id:'f',title:'书籍 F',status:'read',tone:'sage'}],
  podcasts:[{id:'a',title:'播客 A',topic:'生活观察',description:'那些关于生活的具体问题。',tone:'sage'},{id:'b',title:'播客 B',topic:'人物对谈',description:'听见不同的经历与选择。',tone:'cream'},{id:'c',title:'播客 C',topic:'知识与好奇',description:'留一点时间，给新的想法。',tone:'blue'}]
 };
 const lifeDialog=document.querySelector('#life-dialog'),lifeView=document.querySelector('#life-view');
+let travelProvider=(travelMapConfig.serviceHost||travelMapConfig.securityJsCode)?'amap':'world';
 let lifeSpace='travel',lifeDemo=false,lifeSelection='',lifeFilter='all',lifeTripTab='guide',lifePodcastTab='shows',lifeZoom=1;
 const lifeEscape=escapeHtml;
 function lifeItems(key){return lifeDemo?lifeExamples[key]:lifeContent[key];}
 function lifeEmpty(title,body){return `<div class="life-empty"><span aria-hidden="true">✳</span><h3>${title}</h3><p>${body}</p></div>`;}
 function lifeNotice(){return `<div class="life-demo-bar"><p>${lifeDemo?'正在体验示例 · 地点、书目、节目与图片均为占位，不是个人真实记录。':'真实旅行、阅读与播客记录正在整理，当前未填入个人内容。'}</p><button type="button" data-life-demo aria-pressed="${lifeDemo}">${lifeDemo?'退出样例':'体验样例'} <span aria-hidden="true">↗</span></button></div>`;}
+function renderTravelMap(items){
+ const controls=`<div class="life-small-tabs map-provider" role="group" aria-label="选择地图"><button data-travel-provider="amap" aria-pressed="${travelProvider==='amap'}">国内 · 高德地图</button><button data-travel-provider="world" aria-pressed="${travelProvider==='world'}">世界地图</button></div>`;
+ const map=travelProvider==='amap'?`<div class="amap-map-host" id="amap-travel-map" role="region" aria-label="可拖动和缩放的高德旅行地图"></div><p class="amap-map-status" data-amap-status role="status">正在打开高德地图…</p>`:`<div class="travel-map-window"><div class="travel-map-canvas" style="transform:scale(${lifeZoom})"><img src="assets/life/world-map.svg" alt="世界地图；真实旅行地点待补充">${items.map(x=>`<button class="travel-pin${x.id===lifeSelection?' selected':''}" data-life-trip="${lifeEscape(x.id)}" style="left:${x.x}%;top:${x.y}%" aria-pressed="${x.id===lifeSelection}" aria-label="查看${lifeEscape(x.title)}"><i></i><span>${lifeEscape(x.title)}</span></button>`).join('')}</div></div>`;
+ return `<div class="travel-map-area">${controls}<div class="travel-map-label"><span>我的旅行地图</span><span>${lifeDemo?'示例地点，非本人行程':`${items.length} 个地点已点亮`}</span></div>${map}<div class="travel-map-footer"><span>${travelProvider==='amap'?'拖动地图，点击标记查看旅程':'点击亮点，打开一段旅程'}</span><div class="map-zoom" role="group" aria-label="地图缩放"><button data-life-zoom="out" aria-label="缩小地图" ${travelProvider==='world'&&lifeZoom===1?'disabled':''}>−</button><button data-life-zoom="reset" aria-label="重置地图缩放">复位</button><button data-life-zoom="in" aria-label="放大地图" ${travelProvider==='world'&&lifeZoom>=1.6?'disabled':''}>＋</button></div></div>${travelProvider==='world'?'<p class="map-credit">地图：Natural Earth / world-atlas</p>':''}</div>`;
+}
+function updateTravelDetail(){
+ const template=document.createElement('template');template.innerHTML=renderTravel();
+ lifeView.querySelector('.trip-detail').replaceWith(template.content.querySelector('.trip-detail'));
+ lifeView.querySelectorAll('.amap-trip-pin,.travel-pin').forEach(button=>{const active=(button.dataset.tripId||button.dataset.lifeTrip)===lifeSelection;button.setAttribute('aria-pressed',String(active));button.classList.toggle('selected',active);});
+}
 function renderTravel(){
  const items=lifeItems('trips'),selected=items.find(x=>x.id===lifeSelection);
- return `<div class="life-view-title"><span class="eyebrow">01 / TRAVEL</span><h3>推开门，去远一点的地方。</h3><p>把走过的路，慢慢收进地图。</p></div><div class="travel-layout"><div class="travel-map-area"><div class="travel-map-label"><span>我的旅行地图</span><span>${lifeDemo?'示意标记':`${items.length} 个地点已点亮`}</span></div><div class="travel-map-window"><div class="travel-map-canvas" style="transform:scale(${lifeZoom})"><img src="assets/life/world-map.svg" alt="世界地图；真实旅行地点待补充">${items.map(x=>`<button class="travel-pin${x.id===lifeSelection?' selected':''}" data-life-trip="${lifeEscape(x.id)}" style="left:${x.x}%;top:${x.y}%" aria-pressed="${x.id===lifeSelection}" aria-label="查看${lifeEscape(x.title)}"><i></i><span>${lifeEscape(x.title)}</span></button>`).join('')}</div></div><div class="travel-map-footer"><span>点击亮点，打开一段旅程</span><div class="map-zoom" role="group" aria-label="地图缩放"><button data-life-zoom="out" aria-label="缩小地图" ${lifeZoom===1?'disabled':''}>−</button><button data-life-zoom="reset" aria-label="重置地图缩放">复位</button><button data-life-zoom="in" aria-label="放大地图" ${lifeZoom>=1.6?'disabled':''}>＋</button></div></div><p class="map-credit">地图：Natural Earth / world-atlas</p></div><aside class="trip-detail" aria-label="旅行详情">${selected?`<img class="trip-cover" src="${lifeEscape(selected.image)}" alt="旅行风格示意图"><div class="trip-detail-body"><span class="life-sample-label">交互示例</span><h4>${lifeEscape(selected.title)}</h4><p>${lifeEscape(selected.intro)}</p><div class="life-small-tabs" role="group" aria-label="旅行记录内容"><button data-life-trip-tab="guide" aria-pressed="${lifeTripTab==='guide'}">攻略</button><button data-life-trip-tab="photos" aria-pressed="${lifeTripTab==='photos'}">照片</button></div>${lifeTripTab==='guide'?`<p class="trip-guide">${lifeEscape(selected.guide)}</p>`:`<button class="trip-photo-button" data-life-photo="${lifeEscape(selected.image)}" aria-label="放大旅行示意图"><img src="${lifeEscape(selected.image)}" alt="示例相册中的风景，非本人旅行作品"><span>放大照片 ↗</span></button>`}</div>`:lifeEmpty(items.length?'选择一段旅程':'地图，等你点亮','点击地图标记查看攻略和照片；也可以先开启上方的体验样例。')}</aside></div>`;
+ return `<div class="life-view-title"><span class="eyebrow">01 / TRAVEL</span><h3>推开门，去远一点的地方。</h3><p>把走过的路，慢慢收进地图。</p></div><div class="travel-layout">${renderTravelMap(items)}<aside class="trip-detail" aria-label="旅行详情">${selected?`<img class="trip-cover" src="${lifeEscape(selected.image)}" alt="旅行风格示意图"><div class="trip-detail-body"><span class="life-sample-label">交互示例</span><h4>${lifeEscape(selected.title)}</h4><p>${lifeEscape(selected.intro)}</p><div class="life-small-tabs" role="group" aria-label="旅行记录内容"><button data-life-trip-tab="guide" aria-pressed="${lifeTripTab==='guide'}">攻略</button><button data-life-trip-tab="photos" aria-pressed="${lifeTripTab==='photos'}">照片</button></div>${lifeTripTab==='guide'?`<p class="trip-guide">${lifeEscape(selected.guide)}</p>`:`<button class="trip-photo-button" data-life-photo="${lifeEscape(selected.image)}" aria-label="放大旅行示意图"><img src="${lifeEscape(selected.image)}" alt="示例相册中的风景，非本人旅行作品"><span>放大照片 ↗</span></button>`}</div>`:lifeEmpty(items.length?'选择一段旅程':'地图，等你点亮','点击地图标记查看攻略和照片；也可以先开启上方的体验样例。')}</aside></div>`;
 }
 const bookStates={read:'读过',reading:'在读',wish:'想读'};
 function renderReading(){
@@ -25,13 +36,19 @@ function renderPodcast(){
  return `<div class="life-view-title"><span class="eyebrow">03 / PODCAST</span><h3>让耳朵，带我去别人的世界。</h3><p>通勤、散步，或是不着急的片刻。</p></div><div class="podcast-layout"><div class="podcast-collection"><div class="life-small-tabs" role="group" aria-label="播客收藏内容"><button data-life-podcast-tab="shows" aria-pressed="${lifePodcastTab==='shows'}">关注的节目</button><button data-life-podcast-tab="episodes" aria-pressed="${lifePodcastTab==='episodes'}">推荐单集</button></div>${items.length?`<div class="podcast-list">${items.map(x=>`<button class="podcast-item${x.id===lifeSelection?' selected':''}" data-life-podcast="${lifeEscape(x.id)}" aria-pressed="${x.id===lifeSelection}"><span class="podcast-cover ${lifeEscape(x.tone)}" aria-hidden="true">${lifePodcastTab==='shows'?'◎':'≋'}</span><span><strong>${lifePodcastTab==='shows'?lifeEscape(x.title):`${lifeEscape(x.title)} · 单集示例`}</strong><small>${lifeEscape(x.description)}</small><em>${lifeEscape(x.topic)} · 示意</em></span><span aria-hidden="true">↗</span></button>`).join('')}</div>`:lifeEmpty('收藏，还在慢慢整理','未来放关注的节目、推荐单集与听后感。可以先开启体验样例。')}</div><aside class="podcast-detail">${selected?`<div class="podcast-detail-art ${lifeEscape(selected.tone)}" aria-hidden="true">◎</div><span class="life-sample-label">${lifePodcastTab==='shows'?'节目':'单集'}示例</span><h4>${lifeEscape(selected.title)}</h4><h5>为什么想分享给你</h5><p>${lifeEscape(selected.description)}这里将补充推荐理由与听后感。</p><p class="life-pending-link">真实节目与原平台收听链接待补充</p>`:lifeEmpty('听一段不同的生活','选择一个节目，看看推荐理由。这里不会自动播放声音。')}</aside></div>`;
 }
 function renderLife(){
+ AmapTravel.destroy();
  lifeDialog.querySelectorAll('[data-life-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lifeTab===lifeSpace)));
  lifeView.innerHTML=lifeNotice()+({travel:renderTravel,reading:renderReading,podcast:renderPodcast}[lifeSpace])();
+ if(lifeSpace==='travel'&&travelProvider==='amap'){AmapTravel.mount(lifeView.querySelector('#amap-travel-map'),lifeItems('trips'),id=>{lifeSelection=id;updateTravelDetail();});}
 }
 function selectLife(space){lifeSpace=space;lifeSelection='';lifeFilter='all';lifeTripTab='guide';lifePodcastTab='shows';lifeZoom=1;renderLife();}
 document.querySelectorAll('[data-life-open]').forEach(b=>b.addEventListener('click',()=>{lifeDemo=false;selectLife(b.dataset.lifeOpen);lifeDialog.showModal();lifeDialog.scrollTop=0;document.body.classList.add('modal-open');}));
 lifeDialog.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.travelProvider){travelProvider=b.dataset.travelProvider;renderLife();return;}
+ if(b.dataset.lifeTrip){lifeSelection=b.dataset.lifeTrip;updateTravelDetail();return;}
+ if(b.dataset.lifeTripTab){lifeTripTab=b.dataset.lifeTripTab;updateTravelDetail();return;}
+ if(b.dataset.lifeZoom&&travelProvider==='amap'){AmapTravel.zoom(b.dataset.lifeZoom);return;}
  if(b.hasAttribute('data-life-tab')){selectLife(b.dataset.lifeTab);return;}
  if(b.hasAttribute('data-life-demo')){lifeDemo=!lifeDemo;lifeSelection='';renderLife();lifeView.querySelector('[data-life-demo]').focus({preventScroll:true});return;}
  const handlers=[['lifeTrip',v=>{lifeSelection=v;}],['lifeTripTab',v=>{lifeTripTab=v;}],['lifeBookFilter',v=>{lifeFilter=v;lifeSelection='';}],['lifeBook',v=>{lifeSelection=v;}],['lifePodcastTab',v=>{lifePodcastTab=v;lifeSelection='';}],['lifePodcast',v=>{lifeSelection=v;}],['lifeZoom',v=>{lifeZoom=v==='reset'?1:Math.max(1,Math.min(1.6,Math.round((lifeZoom+(v==='in'?.2:-.2))*10)/10));}]];
@@ -60,3 +77,5 @@ if('IntersectionObserver' in window){new IntersectionObserver(entries=>{
  for(const entry of entries)entry.target.classList.toggle('motion-offscreen',!entry.isIntersecting);
 }).observe(gramophoneCard);}
 document.addEventListener('visibilitychange',()=>gramophoneCard.classList.toggle('motion-background',document.hidden));
+
+lifeDialog.addEventListener('close',()=>AmapTravel.destroy());
