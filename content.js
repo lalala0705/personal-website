@@ -442,7 +442,7 @@ const practiceLayouts = [
         "kind": "video",
         "category": "videos",
         "title": "孩子偏科内耗？试试这三招",
-        "subtitle": "学习方法",
+        "subtitle": "家庭教育",
         "status": "可播放 · 视频作品",
         "src": "assets/videos/ronghuai-15.mp4?v=20261123-latest",
         "poster": "assets/video-posters/ronghuai-15.jpg?v=20261123-latest",
@@ -596,7 +596,7 @@ const practiceLayouts = [
       },
       {
         "title": "为什么不建议家长亲自辅导孩子功课",
-        "subtitle": "家庭教育",
+        "subtitle": "学习方法",
         "kind": "video",
         "category": "videos",
         "status": "可播放 · 视频作品",
