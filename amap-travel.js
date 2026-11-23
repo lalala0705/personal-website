@@ -2,8 +2,8 @@
 // 有代理服务时优先配置 serviceHost；它应在服务器端保管 securityJsCode。
 const travelMapConfig={jsKey:'b3b3088a600d4820d8558f2af3e70192',serviceHost:'',securityJsCode:'6ca99b4f65ed3700032a968c693c8922'};
 const AmapTravel=(()=>{
- let sdkPromise=null,map=null,currentHost=null,completeTimer=null,sequence=0;
- function destroy(){sequence++;clearTimeout(completeTimer);if(map){map.destroy();map=null;}currentHost=null;}
+ let sdkPromise=null,map=null,currentHost=null,completeTimer=null,sequence=0,tripMarkers=new Map();
+ function destroy(){sequence++;tripMarkers.clear();clearTimeout(completeTimer);if(map){map.destroy();map=null;}currentHost=null;}
  function sdk(){
   if(window.AMap?.Map)return Promise.resolve(window.AMap);
   if(sdkPromise)return sdkPromise;
@@ -34,11 +34,13 @@ const AmapTravel=(()=>{
     const node=document.createElement('button');node.type='button';node.className='amap-trip-pin';node.setAttribute('aria-label',`查看${item.title}`);node.textContent=item.title;node.dataset.tripId=trip.id;node.setAttribute('aria-pressed','false');
     node.addEventListener('click',()=>onSelect(trip.id));
     const marker=new AMap.Marker({position:item.position,content:node,anchor:'bottom-center'});marker.setMap(map);markers.push(marker);
+    if(!tripMarkers.has(trip.id))tripMarkers.set(trip.id,[]);tripMarkers.get(trip.id).push(marker);
     }
    }
    if(markers.length)map.setFitView(markers,false,[40,40,40,40],9);
   }catch(error){if(version!==sequence)return;say(error.message==='地图配置尚未完成'?'高德地图正在配置，暂可切换世界地图浏览。':'地图暂时无法加载，请稍后重试，或切换世界地图。');}
  }
  function zoom(direction){if(!map)return;if(direction==='reset'){map.setZoomAndCenter(4,[104.2,35.8]);}else if(direction==='in'){map.zoomIn();}else{map.zoomOut();}}
- return {mount,destroy,zoom};
+ function focusTrip(id){const markers=tripMarkers.get(id);if(map&&markers?.length)map.setFitView(markers,false,[45,45,45,45],10);}
+ return {mount,destroy,zoom,focusTrip};
 })();
