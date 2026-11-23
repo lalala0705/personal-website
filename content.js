@@ -571,22 +571,32 @@ const practiceLayouts = [
         "height": 854
       },
       {
-        "title": "春江秋季开课",
-        "subtitle": "校区动态",
-        "kind": "video",
-        "category": "videos",
-        "status": "原片待接入"
-      },
-      {
-        "title": "分班考试卷解析",
+        "title": "分班考题型分析",
         "subtitle": "学习方法",
         "kind": "video",
         "category": "videos",
-        "status": "原片待接入"
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-05.mp4?v=20261123-batch4",
+        "poster": "assets/video-posters/ronghuai-05.jpg?v=20261123-batch4",
+        "duration": "4:16",
+        "width": 854,
+        "height": 480
       },
       {
         "title": "为什么不建议家长亲自辅导孩子功课",
         "subtitle": "家庭教育",
+        "kind": "video",
+        "category": "videos",
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-09.mp4?v=20261123-batch4",
+        "poster": "assets/video-posters/ronghuai-09.jpg?v=20261123-batch4",
+        "duration": "1:45",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "title": "春江秋季开课",
+        "subtitle": "校区动态",
         "kind": "video",
         "category": "videos",
         "status": "原片待接入"
