@@ -599,7 +599,12 @@ const practiceLayouts = [
         "subtitle": "校区动态",
         "kind": "video",
         "category": "videos",
-        "status": "原片待接入"
+        "status": "可播放 · 视频作品",
+        "src": "assets/videos/ronghuai-03.mp4?v=20261123-campus",
+        "poster": "assets/video-posters/ronghuai-03.jpg?v=20261123-campus",
+        "duration": "0:45",
+        "width": 1280,
+        "height": 720
       },
       {
         "title": "科学一对一精英训练营",
