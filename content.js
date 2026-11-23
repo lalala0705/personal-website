@@ -684,6 +684,45 @@ const practiceLayouts = [
             "查看推文二",
             "https://mp.weixin.qq.com/s/kMOnTzXODi_FgzwRMwMpkw"
           ]
+        ],
+        "format": "公众号 · 活动传播",
+        "workflow": "参赛作品录制 → 视频剪辑 → 推文撰写与排版"
+      },
+      {
+        "kind": "article-campaign",
+        "category": "content",
+        "title": "诸暨小升初家长必看！报名时间、分班考、全年规划",
+        "subtitle": "公众号升学政策内容 · 单篇推文",
+        "status": "已关联原文",
+        "format": "公众号 · 升学政策",
+        "workflow": "选题策划 → 文案编辑 → 排版",
+        "goal": "结合关键时间节点讲解小升初升学政策，为家长提供报名时间、分班考及全年规划信息，帮助账号涨粉。",
+        "audience": "诸暨小升初学生家长",
+        "contribution": "负责选题策划、文案编辑以及公众号排版。",
+        "metrics": [
+          [
+            "228",
+            "阅读量"
+          ],
+          [
+            "41",
+            "点赞"
+          ],
+          [
+            "41",
+            "转发"
+          ],
+          [
+            "13",
+            "账号涨粉"
+          ]
+        ],
+        "metricNote": "单篇推文数据，由本人提供；阅读量不代表去重触达人数。",
+        "links": [
+          [
+            "阅读原文",
+            "https://mp.weixin.qq.com/s/EmmdIY-ZPqnVXJl5-P1_uQ"
+          ]
         ]
       },
       {
