@@ -100,20 +100,48 @@ document.querySelectorAll('[data-shelf-preview]').forEach(button=>button.addEven
 }));
 const gramophoneToggle=document.querySelector('.gramophone-toggle');
 const gramophoneCard=document.querySelector('.life-podcast');
-gramophoneToggle.addEventListener('click',()=>{
- const turning=gramophoneToggle.getAttribute('aria-pressed')!=='true';
- gramophoneToggle.setAttribute('aria-pressed',String(turning));
- gramophoneToggle.setAttribute('aria-label',turning?'暂停唱片转动，仅视觉效果':'开始转动唱片，仅视觉效果');
- gramophoneCard.classList.toggle('is-turning',turning);
- gramophoneToggle.querySelector('[data-record-symbol]').textContent=turning?'Ⅱ':'▶';
- gramophoneToggle.querySelector('[data-record-label]').textContent=turning?'暂停转动':'转动唱片';
- gramophoneCard.querySelector('[data-record-status]').textContent=turning?'唱片转动中 · 仅视觉效果，无声音':'轻触留声机，让唱片转起来 · 无声音';
+const recordAudio=document.querySelector('#gramophone-audio');
+const recordVolume=document.querySelector('#record-volume');
+const recordStatus=gramophoneCard.querySelector('[data-record-status]');
+recordAudio.volume=.35;
+function updateRecordPlayback(){
+ const playing=!recordAudio.paused&&!recordAudio.ended;
+ gramophoneToggle.setAttribute('aria-pressed',String(playing));
+ gramophoneToggle.setAttribute('aria-label',playing?'暂停轻音乐':'播放轻音乐');
+ gramophoneCard.classList.toggle('is-turning',playing);
+ gramophoneToggle.querySelector('[data-record-symbol]').textContent=playing?'Ⅱ':'▶';
+ gramophoneToggle.querySelector('[data-record-label]').textContent=playing?'暂停唱片':'播放唱片';
+ recordStatus.textContent=playing?'正在播放 · 慢慢来 · 循环轻音乐':'轻触留声机，听一段轻音乐';
+}
+recordAudio.addEventListener('playing',updateRecordPlayback);
+recordAudio.addEventListener('pause',updateRecordPlayback);
+recordAudio.addEventListener('ended',updateRecordPlayback);
+recordAudio.addEventListener('error',()=>{
+ updateRecordPlayback();recordStatus.textContent='轻音乐暂时无法加载，请稍后再试。';
 });
+gramophoneToggle.addEventListener('click',async()=>{
+ if(!recordAudio.paused){recordAudio.pause();return;}
+ recordStatus.textContent='正在打开唱片…';
+ try{await recordAudio.play();}
+ catch(error){
+  updateRecordPlayback();
+  if(error.name!=='AbortError')recordStatus.textContent='播放未能开始，请再次点击唱片。';
+ }
+});
+recordVolume.addEventListener('input',()=>{
+ recordAudio.volume=Number(recordVolume.value)/100;
+ document.querySelector('#record-volume-value').textContent=recordVolume.value+'%';
+});
+// 项目视频等其他媒体开始播放时，暂停背景轻音乐。
+document.addEventListener('play',event=>{
+ if(event.target!==recordAudio&&event.target instanceof HTMLMediaElement)recordAudio.pause();
+},true);
+window.addEventListener('pagehide',()=>recordAudio.pause());
 // 离开可见区域或切换标签页时暂停绘制，返回后恢复主动开启的状态。
 if('IntersectionObserver' in window){new IntersectionObserver(entries=>{
  for(const entry of entries)entry.target.classList.toggle('motion-offscreen',!entry.isIntersecting);
 }).observe(gramophoneCard);}
-document.addEventListener('visibilitychange',()=>gramophoneCard.classList.toggle('motion-background',document.hidden));
+document.addEventListener('visibilitychange',()=>{gramophoneCard.classList.toggle('motion-background',document.hidden);if(document.hidden)recordAudio.pause();});
 
 lifeDialog.addEventListener('close',()=>AmapTravel.destroy());
 

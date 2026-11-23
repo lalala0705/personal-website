@@ -128,3 +128,6 @@ article.life-portal{cursor:default}article.life-portal>.life-portal-action{width
 
 /* 三张生活卡片采用相同外层结构，门与底部入口显式撑满对齐 */
 .life-portal{align-items:stretch}.life-portal-action{width:100%;align-self:stretch}.portal-trigger{width:100%;height:100%;display:flex;align-items:center;justify-content:center;border:0;background:transparent;padding:0;cursor:pointer;border-radius:8px}.portal-trigger .portal-art{display:block;flex:0 0 175px;margin-inline:auto}.portal-trigger .portal-frame,.portal-trigger .portal-landscape,.portal-trigger .portal-step{display:block}.portal-trigger:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+
+.record-audio-controls{display:flex;align-items:center;gap:10px;min-height:26px;margin:-5px 0 14px;color:var(--muted);font-size:12px}.record-audio-controls input{min-width:0;flex:1;height:20px;accent-color:var(--green);cursor:pointer}.record-audio-controls output{width:34px;text-align:right;font-variant-numeric:tabular-nums}.record-audio-controls label{white-space:nowrap}.record-audio-controls input:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:3px}
+.life-portal-copy{margin-top:auto}
