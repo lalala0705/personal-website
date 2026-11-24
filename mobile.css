@@ -1,0 +1,72 @@
+/* Keep the desktop composition on smaller screens without shrinking the page. */
+@media (max-width: 760px) {
+  .header {height:auto;min-height:106px;flex-wrap:wrap;gap:12px;padding-top:16px;padding-bottom:10px}
+  .menu {display:none}
+  .header nav,.header nav.open {display:flex;position:static;width:100%;padding:0;gap:22px;overflow-x:auto;white-space:nowrap;background:transparent;box-shadow:none;font-size:14px;scrollbar-width:thin}
+  .header nav a {flex-shrink:0;min-height:44px;display:flex;align-items:center}
+  .hero {grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr);gap:18px 16px;align-items:center;padding-top:34px}
+  .hero-main {display:contents}
+  .hero-main>.eyebrow {grid-column:1;grid-row:1;align-self:end;line-height:1.8;overflow-wrap:anywhere}
+  .hero h1 {grid-column:1;grid-row:2;align-self:start;font-size:clamp(24px,5.8vw,40px);margin:0;line-height:1.5;letter-spacing:-.055em}
+  .hero-photo {grid-column:2;grid-row:1 / 3;padding:6px 4px 0;min-width:0;align-self:center}
+  .portrait-mount {width:100%;padding:6px 6px 25px;max-width:290px}
+  .portrait-paper-label {font-size:9px;bottom:7px;left:6px;right:6px;letter-spacing:.08em}
+  .hero-photo:has(.portrait-frame) figcaption {width:100%;margin-top:12px;font-size:12px;gap:2px}
+  .hero-photo figcaption span {font-size:9px;padding-left:17px}
+  .hero-main>.intro,.hero-main>.hero-actions,.hero-main>.identity,.hero-bottom {grid-column:1 / -1;min-width:0}
+  .hero-actions {margin-top:3px}
+  .identity {margin-top:8px;flex-wrap:wrap;gap:14px}
+  .identity dd,.identity dt {font-size:13px}
+  .hero-bottom {flex-wrap:wrap;font-size:12px}
+  .hero-bottom>span:last-child {font-size:10px}
+  .journey-layout {grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr);gap:18px}
+  .journey-story,.journey-experiences {min-width:0}
+  .journey-story {position:static}
+  .journey-story h2 {font-size:clamp(23px,4.6vw,30px);line-height:1.65;margin-top:14px}
+  .journey-story>p:not(.eyebrow) {font-size:16px;line-height:1.9}
+  .journey-story-note {padding-left:10px}
+  .journey-story-note>span {font-size:15px}
+  .journey-story-note p {font-size:13px}
+  .experience-timeline {padding-left:0}
+  .experience-timeline>li {padding-left:12px}
+  .timeline-card {padding:16px 12px}
+  .timeline-card-top {gap:5px;font-size:13px}
+  .timeline-company {font-size:20px;line-height:1.6;overflow-wrap:anywhere}
+  .timeline-scope,.timeline-project {font-size:16px;line-height:1.85}
+  .timeline-skill {font-size:13px;padding:4px 7px}
+  .timeline-caption,.timeline-card-bottom,.timeline-open {font-size:13px}
+  .timeline-card-bottom {align-items:start}
+  .timeline-open {white-space:normal;min-height:32px}
+  .journey-experiences>.editor-note {padding-left:12px;font-size:12px}
+  .future-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .future {min-width:0;padding-right:14px;border-bottom:0}
+  .future+.future {padding-left:14px;border-left:1px solid var(--line)}
+  .future h2 {font-size:clamp(19px,4.4vw,28px);flex-wrap:wrap}
+  .future h2 .asterisk {font-size:20px}
+  .future>p:not(.eyebrow),.empty p {font-size:16px}
+  .empty {padding:16px 12px;overflow-wrap:anywhere}
+  .empty-label {font-size:18px}
+  .future .tags span {font-size:12px;padding:3px 8px}
+  /* Keep the three desktop cards in a row; scroll only this region on phones. */
+  .life-portals {grid-template-columns:repeat(3,minmax(250px,1fr));gap:16px;overflow-x:auto;scroll-snap-type:x proximity;scroll-padding-inline:2px;padding:7px 2px 16px;scrollbar-width:thin}
+  .life-portal {scroll-snap-align:start;padding:20px}
+  .life-portal-art {height:230px}
+  .life-portal-copy strong {font-size:24px}
+  .life-portal-copy>span,.life-portal-action {font-size:14px}
+  .life-art-hint {font-size:12px}
+  .life-portal-action {min-height:48px}
+  .life-portals:focus-visible {outline:2px solid var(--green);outline-offset:4px}
+  .recognition-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .recognition-card {padding:18px 13px}
+  .recognition-item-name {font-size:14px}
+}
+@media (min-width:560px) and (max-width:760px) {
+  .about {grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);column-gap:28px}
+  .about-content>p {font-size:16px}
+  .contact-section {grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:24px}
+}
+@media (max-width:359px) {
+  .header,main,footer {padding-left:16px;padding-right:16px}
+  .journey-layout {grid-template-columns:1fr;gap:28px}
+  .recognition-grid {grid-template-columns:1fr}
+}
