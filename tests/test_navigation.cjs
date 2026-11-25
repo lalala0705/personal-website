@@ -1,0 +1,18 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const code=fs.readFileSync('app.js','utf8');
+const start=code.indexOf('function resolveNavSection(');
+const end=code.indexOf('\nconst navLinks=',start);
+const context={};vm.createContext(context);vm.runInContext(code.slice(start,end),context);
+const choose=context.resolveNavSection;
+const layout=(tops)=>['home','journey','lab','notes','life','contact'].map((id,i)=>({id,top:tops[i]}));
+const desktop=layout([-3000,-1000,120,120,900,2000]);
+assert.equal(choose(desktop,220,'lab'),'lab');
+assert.equal(choose(desktop,220,'notes'),'notes','shared scroll position must retain the selected right-hand section');
+assert.equal(choose(layout([-3000,-1000,-800,-800,100,1300]),220,'notes'),'life','leaving shared row must follow normal scrolling');
+assert.equal(choose(layout([-1000,100,900,900,1600,2200]),220,'notes'),'journey');
+assert.equal(choose(layout([-3000,-2000,-500,100,900,1800]),220,'lab'),'notes','stacked mobile sections must use their actual positions');
+assert.equal(choose(layout([-3000,-2000,100,800,1500,2200]),220,'notes'),'lab','stored desktop preference must not override mobile position');
+assert.equal(choose(layout([100,1000,2000,2000,3000,4000]),220,'lab'),'home');
+console.log('Navigation regression checks passed: stable side-by-side selection, mobile stacking, entering and leaving the shared row.');

@@ -64,7 +64,63 @@ document.querySelectorAll('[data-photo]').forEach(button=>button.addEventListene
 document.querySelectorAll('dialog').forEach(dialog=>{dialog.querySelector('.close').addEventListener('click',()=>dialog.close());dialog.addEventListener('close',()=>{if(!document.querySelector('dialog[open]'))document.body.classList.remove('modal-open');});dialog.addEventListener('click',event=>{const r=dialog.getBoundingClientRect();if(event.target===dialog&&(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom))dialog.close();});});
 const menu=document.querySelector('.menu'),nav=document.querySelector('nav');menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.textContent=open?'收起':'目录';});
 nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='目录';}));
-const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){nav.querySelectorAll('a').forEach(link=>link.classList.toggle('active',link.hash==='#'+entry.target.id));}});},{rootMargin:'-10% 0px -65% 0px',threshold:0});document.querySelectorAll('main section[id]').forEach(section=>observer.observe(section));
+// 同一行的两个板块共享滚动位置；以点击、鼠标进入或键盘焦点区分当前内容。
+function resolveNavSection(sections,probe,sharedChoice){
+ const lab=sections.find(section=>section.id==='lab');
+ const notes=sections.find(section=>section.id==='notes');
+ const sideBySide=lab&&notes&&Math.abs(lab.top-notes.top)<2;
+ let current=sections[0]?.id;
+ for(const section of sections){
+  if(sideBySide&&section.id==='notes')continue;
+  if(section.top<=probe){current=sideBySide&&section.id==='lab'?sharedChoice:section.id;}
+ }
+ return current;
+}
+const navLinks=[...nav.querySelectorAll('a[href^="#"]')];
+const navSections=navLinks.map(link=>document.getElementById(link.hash.slice(1))).filter(Boolean);
+let sharedNavChoice=location.hash==='#notes'?'notes':'lab';
+let navFramePending=false;
+function markCurrentNav(id){
+ for(const link of navLinks){
+  const active=link.hash==='#'+id;
+  link.classList.toggle('active',active);
+  if(active)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');
+ }
+}
+function updateCurrentNav(){
+ navFramePending=false;
+ const headerBottom=document.querySelector('.header').getBoundingClientRect().bottom;
+ const probe=headerBottom+Math.min(120,window.innerHeight*.18);
+ const sections=navSections.map(section=>({id:section.id,top:section.getBoundingClientRect().top}));
+ let id=resolveNavSection(sections,probe,sharedNavChoice);
+ if(window.scrollY+window.innerHeight>=document.documentElement.scrollHeight-2)id=navSections.at(-1).id;
+ markCurrentNav(id);
+}
+function scheduleCurrentNav(){
+ if(navFramePending)return;
+ navFramePending=true;requestAnimationFrame(updateCurrentNav);
+}
+function chooseSharedNav(id){sharedNavChoice=id;scheduleCurrentNav();}
+navLinks.forEach(link=>link.addEventListener('click',()=>{
+ const id=link.hash.slice(1);
+ if(id==='lab'||id==='notes')chooseSharedNav(id);
+ markCurrentNav(id);
+}));
+for(const id of ['lab','notes']){
+ const section=document.getElementById(id);
+ section.addEventListener('pointerenter',()=>chooseSharedNav(id));
+ section.addEventListener('focusin',()=>chooseSharedNav(id));
+ section.addEventListener('click',()=>chooseSharedNav(id));
+}
+window.addEventListener('scroll',scheduleCurrentNav,{passive:true});
+window.addEventListener('resize',scheduleCurrentNav);
+window.addEventListener('load',scheduleCurrentNav);
+window.addEventListener('hashchange',()=>{
+ if(location.hash==='#lab'||location.hash==='#notes')sharedNavChoice=location.hash.slice(1);
+ scheduleCurrentNav();
+});
+if('ResizeObserver' in window)new ResizeObserver(scheduleCurrentNav).observe(document.querySelector('main'));
+scheduleCurrentNav();
 
 // 内容默认可见；支持动效的浏览器才启用一次性入场动画。
 const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
