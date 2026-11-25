@@ -343,7 +343,7 @@ article.life-portal>.life-portal-action{align-items:center;gap:16px;font-size:14
 .bill-assistant{position:fixed;right:22px;bottom:max(16px,env(safe-area-inset-bottom));z-index:45;font-size:14px;color:var(--ink)}
 .bill-launcher{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:106px;min-height:155px;padding:0;border:0;background:transparent;position:relative;filter:drop-shadow(0 4px 5px #30433216)}
 .bill-launcher img{display:block;width:94px;height:141px;object-fit:contain;transition:transform .2s;pointer-events:none}
-.bill-launcher>span{font-size:14px;font-weight:500;color:white;background:var(--green);border:1px solid #2e4533;border-radius:24px;padding:7px 14px;line-height:1.6;margin-top:-3px;white-space:nowrap}
+.bill-launcher>.bill-launcher-label{font-size:14px;font-weight:500;color:white;background:var(--green);border:1px solid #2e4533;border-radius:24px;padding:7px 14px;line-height:1.6;margin-top:-3px;white-space:nowrap}
 .bill-launcher:hover img{transform:translateY(-4px) rotate(-2deg)}
 .bill-panel{position:absolute;right:112px;bottom:4px;width:min(406px,calc(100vw - 164px));height:min(620px,calc(100dvh - 42px));display:flex;flex-direction:column;background:#fffef9;border:1px solid #d8ddce;border-radius:17px;box-shadow:0 12px 48px #29362a24;overflow:hidden}
 .bill-panel[hidden]{display:none}
@@ -377,10 +377,19 @@ article.life-portal>.life-portal-action{align-items:center;gap:16px;font-size:14
 .bill-clear{border:0;background:none;min-height:26px;padding:0;font-size:12px;white-space:nowrap;color:#666f5d;text-decoration:underline;text-underline-offset:3px}
 .bill-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
-@media(max-width:760px){.bill-assistant{right:12px;bottom:max(12px,env(safe-area-inset-bottom))}.bill-launcher{width:80px;min-height:115px}.bill-launcher img{width:70px;height:105px}.bill-launcher>span{font-size:12px;padding:6px 10px}.bill-panel{position:fixed;right:12px;left:12px;bottom:max(12px,env(safe-area-inset-bottom));width:auto;height:min(660px,calc(100dvh - 105px));z-index:1}.bill-assistant:has(.bill-panel:not([hidden])) .bill-launcher{visibility:hidden}.bill-panel-head{padding:15px 16px 12px}.bill-panel-head h2{font-size:19px}.bill-quick{padding-inline:14px}.bill-input{margin-inline:14px}.bill-messages{padding-inline:14px}}
+@media(max-width:760px){.bill-assistant{right:12px;bottom:max(12px,env(safe-area-inset-bottom))}.bill-launcher{width:80px;min-height:115px}.bill-launcher img{width:70px;height:105px}.bill-launcher>.bill-launcher-label{font-size:12px;padding:6px 10px}.bill-panel{position:fixed;right:12px;left:12px;bottom:max(12px,env(safe-area-inset-bottom));width:auto;height:min(660px,calc(100dvh - 105px));z-index:1}.bill-assistant:has(.bill-panel:not([hidden])) .bill-launcher{visibility:hidden}.bill-panel-head{padding:15px 16px 12px}.bill-panel-head h2{font-size:19px}.bill-quick{padding-inline:14px}.bill-input{margin-inline:14px}.bill-messages{padding-inline:14px}}
 @media(prefers-reduced-motion:reduce){.bill-launcher img{transition:none}.bill-launcher:hover img{transform:none}.bill-messages{scroll-behavior:auto}}
 
 /* Desktop reading area: symmetric gutters keep the floating avatar outside content. */
 @media(min-width:1024px){
  .header,main,footer{padding-left:148px;padding-right:148px}
 }
+
+/* Registered animation frames, with the original image retained as a fallback. */
+.bill-avatar{display:block;width:106px;height:141px;flex:0 0 auto;background-repeat:no-repeat;background-size:400% 200%;pointer-events:none}
+.bill-avatar img{margin-inline:auto}
+.bill-avatar.is-animated{background-image:url('assets/assistant/bill-actions.png')}
+.bill-avatar.is-animated img{visibility:hidden}
+.bill-launcher:hover .bill-avatar img{transform:none}
+@media(max-width:760px){.bill-avatar{width:78.75px;height:105px}}
+@media(prefers-reduced-motion:reduce){.bill-avatar.is-animated{background-image:none}.bill-avatar.is-animated img{visibility:visible}}
