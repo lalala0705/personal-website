@@ -273,3 +273,32 @@ html{scroll-padding-top:120px}
 @media(max-width:760px){.role-duty-list{grid-template-columns:1fr;gap:20px}.role-duty-list li{padding-left:13px}.work-record-part p,.role-duty-list p,.practice-action-list p,.practice-tab-panel>p{font-size:16px}.work-record-results{padding:15px}.practice-work-record{margin-top:20px}}
 .practice-body .case-part p{font-size:16px;line-height:1.95}
 .practice-body .case-part h5{font-size:15px}
+
+/* 工作经历统一为 STAR：主案例直接读，补充实践与作品按需展开。 */
+.star-case-heading{margin:25px 0 22px}.star-case-heading>p{font-size:13px;letter-spacing:.06em;color:#9b6c4d;margin:0 0 7px}
+.star-case-heading h3{font-family:var(--serif);font-size:24px;font-weight:500;color:var(--green);line-height:1.65;margin:0}
+.star-context{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;padding:22px;background:#f0f3eb;border:1px solid #dce3d3;border-radius:8px}
+.star-stage{min-width:0}.star-stage h4{display:flex;align-items:center;gap:11px;margin:0 0 13px;font-size:17px;font-weight:500;color:var(--green)}
+.star-stage h4>span{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid #cbd6bf;border-radius:5px;font-size:15px;font-family:Georgia,serif;background:#fafbf7;flex-shrink:0}
+.star-stage p{font-size:16px;line-height:1.9;color:#62685f;margin:0}
+.star-action-stage{padding:26px 0}.star-action-list{padding:0 0 0 21px;margin:0;display:grid;gap:18px}.star-action-list li{padding-left:5px;color:#8e9e83}
+.star-action-list h5{font-size:16px;font-weight:500;color:var(--green);margin:0 0 5px;line-height:1.8}
+.star-result-stage{border-top:1px solid var(--line);padding:23px 0}
+.star-result-stage h4>span{background:#e7eddf}
+.star-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin:0}
+.star-metrics>div{padding:16px;background:#edf2e6;border-radius:6px;display:flex;flex-direction:column-reverse;justify-content:flex-end;min-width:0}
+.star-metrics dt{font-size:13px;color:#6d7865;margin-top:7px;line-height:1.7}.star-metrics dd{font-family:var(--serif);font-size:23px;color:var(--green);line-height:1.55;overflow-wrap:anywhere}
+.star-result-stage .star-result-note{font-size:14px;line-height:1.9;margin-top:14px}
+.star-more-results{margin-top:14px}.star-more-results summary{font-size:14px;color:var(--green);cursor:pointer;padding:8px 0;min-height:40px}.star-more-results p{font-size:14px;padding:8px 0}
+.star-extra-case,.star-assets{border:1px solid #d5ddcd;border-radius:8px;margin-top:16px;background:#fffefb;overflow:hidden}
+.star-extra-case>summary,.star-assets>summary{list-style:none;position:relative;padding:19px 48px 19px 20px;cursor:pointer;font-size:16px;line-height:1.8;color:var(--green);min-height:56px}
+.star-extra-case>summary::-webkit-details-marker,.star-assets>summary::-webkit-details-marker{display:none}
+.star-extra-case>summary:after,.star-assets>summary:after{content:'+';position:absolute;right:20px;top:17px;font-size:23px}
+.star-extra-case[open]>summary:after,.star-assets[open]>summary:after{content:'−'}
+.star-extra-case[open]>summary,.star-assets[open]>summary{border-bottom:1px solid #dce3d3;background:#f1f4ec}
+.star-extra-body{padding:22px}.star-extra-body .star-result-stage{padding-bottom:0}
+.star-assets>summary{display:flex;align-items:center;flex-wrap:wrap;gap:10px 18px}.star-assets small{font-size:13px;color:var(--muted)}
+.star-assets-body{padding:0 18px 18px}.star-assets-body .practice-view{border:0;padding:20px 0 0;margin:0}
+.star-growth h3,.star-documents h3{font-size:17px}.star-growth{padding:23px 0;margin-top:10px}.star-documents{border-bottom:0}
+.star-extra-case>summary:focus-visible,.star-assets>summary:focus-visible,.star-more-results>summary:focus-visible{outline:2px solid var(--green);outline-offset:-3px}
+@media(max-width:760px){.star-case-heading{margin:23px 0 18px}.star-case-heading h3{font-size:21px}.star-context{grid-template-columns:1fr;padding:18px;gap:22px}.star-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.star-metrics>div{padding:13px}.star-metrics dd{font-size:20px}.star-metrics dt{font-size:12px}.star-extra-body{padding:16px}.star-extra-case>summary,.star-assets>summary{font-size:15px;padding-left:16px}.star-action-stage{padding:23px 0}.star-assets-body{padding:0 13px 13px}}

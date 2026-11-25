@@ -110,3 +110,12 @@ function setupPracticeInteractions(container){
   });
  });
 }
+
+// 每个案例只沿 STAR 叙述一次；辅助实践默认收起。
+function renderStarCase(project,showTitle=true){
+ const metrics=project.results.map(([value,label])=>`<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('');
+ return `<article class="star-case">${showTitle?`<header class="star-case-heading"><p>主要实践</p><h3>${escapeHtml(project.title)}</h3></header>`:''}<div class="star-context"><section class="star-stage"><h4><span>S</span>背景</h4><p>${highlightText(project.situation)}</p></section><section class="star-stage"><h4><span>T</span>任务</h4><p>${highlightText(project.task)}</p></section></div><section class="star-stage star-action-stage"><h4><span>A</span>行动</h4><ol class="star-action-list">${project.actions.map(([title,body])=>`<li><h5>${escapeHtml(title)}</h5><p>${highlightText(body)}</p></li>`).join('')}</ol></section><section class="star-stage star-result-stage"><h4><span>R</span>结果</h4>${metrics?`<dl class="star-metrics">${metrics}</dl>`:''}${project.resultText?`<p class="star-result-note">${highlightText(project.resultText)}</p>`:''}${project.moreResults?`<details class="star-more-results"><summary>补充结果</summary><p>${highlightText(project.moreResults)}</p></details>`:''}</section></article>`;
+}
+function renderStarCases(item){
+ return item.starCases.map((project,index)=>index===0?renderStarCase(project):`<details class="star-extra-case"><summary>${escapeHtml(project.title)}</summary><div class="star-extra-body">${renderStarCase(project,false)}</div></details>`).join('');
+}

@@ -12,20 +12,20 @@ const timelineItems=experienceData.map((item,index)=>({item,index})).reverse();
 document.querySelector('#experience-timeline').innerHTML=timelineItems.map(({item,index})=>`<li><button class="timeline-card" data-tone="${['sage','clay','blue','sage','clay'][index]}" data-case="${index}" aria-haspopup="dialog" aria-controls="case-dialog" aria-label="查看${escapeHtml(item.fullName)}的工作履历与代表实践"><span class="timeline-card-top"><span class="timeline-period">${escapeHtml(item.period || '任职时间待补充')}</span><span class="timeline-role">${escapeHtml(item.role)}</span></span><span class="timeline-company">${escapeHtml(item.fullName)}</span><span class="timeline-scope">${escapeHtml(item.scope)}</span><span class="timeline-skill">${escapeHtml(item.skill)}</span><span class="timeline-card-bottom"><span>${highlightText(item.summary)}</span><span class="timeline-open">查看工作与实践 ＋</span></span></button></li>`).join('');
 const caseDialog=document.querySelector('#case-dialog');
 function renderExperience(item){
- const projects=[{title:item.primaryTitle,blocks:item.parts.filter(([title])=>!['背景与角色','能力积累'].includes(title))},...item.extraProjects];
- const metrics=item.metrics.map(([value,label])=>`<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('');
- const duties=item.duties.map(([title,body])=>`<li><h4>${escapeHtml(title)}</h4><p>${highlightText(body)}</p></li>`).join('');
- const growthTags=item.growthTags.map(tag=>`<li>${escapeHtml(tag)}</li>`).join('');
- const practices=renderPractices(item,projects);
- const hasDocumentLinks=item.documents.some(doc=>typeof doc==='object'&&/^https:\/\//.test(doc.url || ''));
-
- const documents=item.documents.length?`<section class="career-section"><h3>相关文档</h3><p class="career-caption">${hasDocumentLinks?'资料在新标签页打开，访问权限遵循原文档或文件夹设置。':'说明书中列出的相关材料，链接待补充。'}</p><ul class="document-list">${item.documents.map(doc=>typeof doc==='object'&&/^https:\/\//.test(doc.url || '')?`<li class="linked-document"><a href="${escapeHtml(doc.url)}" target="_blank" rel="noopener noreferrer"><span class="document-title">${escapeHtml(doc.title)}</span><span class="document-access">${escapeHtml(doc.access || '访问权限以文档设置为准')}</span><span class="document-action">${doc.kind==='folder'?'打开文件夹':'打开文档'}</span></a></li>`:`<li>${escapeHtml(typeof doc==='string'?doc:doc.title)}</li>`).join('')}</ul></section>`:'';
- return `<section class="career-section career-results"><h3>工作成果</h3><dl class="career-metrics">${metrics}</dl><p class="career-caption">${escapeHtml(item.note || '数据来自个人说明书；统计周期、指标口径与个人贡献边界待补充。不同实践的数据分别标明范围。')}</p></section><section class="career-section career-role"><h3>我的角色和职责</h3><p class="career-role-summary"><strong>${escapeHtml(item.role)}</strong><span>${escapeHtml(item.scope)}</span></p><ul class="role-duty-list" aria-label="职责概览">${duties}</ul></section><section class="career-section career-growth"><h3>能力成长</h3><ul class="career-growth-tags" aria-label="能力成长标签">${growthTags}</ul></section><section class="career-section"><h3>代表实践</h3><p class="career-caption">工作链路、实际作品与相关成果。</p>${practices}</section>${documents}`;
+ const tags=item.growthTags.map(tag=>`<li>${escapeHtml(tag)}</li>`).join('');
+ const documents=item.documents.length?`<section class="career-section star-documents"><h3>相关文档</h3><ul class="document-list">${item.documents.map(doc=>typeof doc==='object'&&/^https:\/\//.test(doc.url || '')?`<li class="linked-document"><a href="${escapeHtml(doc.url)}" target="_blank" rel="noopener noreferrer"><span class="document-title">${escapeHtml(doc.title)}</span><span class="document-access">${escapeHtml(doc.access || '访问权限以文档设置为准')}</span><span class="document-action">${doc.kind==='folder'?'打开文件夹':'打开文档'}</span></a></li>`:`<li>${escapeHtml(typeof doc==='string'?doc:doc.title)}</li>`).join('')}</ul></section>`:'';
+ let works='';
+ if(item.practiceLayout.type==='gallery'){
+  const gallery=item.practiceLayout.gallery;
+  const counts=[['视频',gallery.filter(x=>x.kind==='video').length],['海报',gallery.filter(x=>x.image).length],['图文案例',gallery.filter(x=>x.kind==='article-campaign').length]].filter(([,n])=>n).map(([label,n])=>`${n} ${label}`).join(' · ');
+  works=`<details class="star-assets"><summary><span>作品佐证</span><small>${counts}</small></summary><div class="star-assets-body">${renderGallery({title:'视频、海报与图文作品'},item.practiceLayout)}</div></details>`;
+ }
+ return `<div class="career-star-content">${renderStarCases(item)}${works}<section class="career-section star-growth"><h3>能力积累</h3><ul class="career-growth-tags" aria-label="能力成长标签">${tags}</ul></section>${documents}</div>`;
 }
 document.querySelectorAll('[data-case]').forEach(button=>button.addEventListener('click',()=>{
  const item=experienceData[Number(button.dataset.case)];
  document.querySelector('#case-title').textContent=item.fullName;
- document.querySelector('.dialog-sub').textContent=item.source || '工作履历与代表实践 · 根据个人说明书整理';
+ document.querySelector('.dialog-sub').textContent='项目复盘 · 背景 / 任务 / 行动 / 结果';
  document.querySelector('.detail-meta').textContent=[item.role,item.location,item.period || '任职时间待补充'].join(' · ');
  caseDialog.querySelector('.editor-note').textContent=item.note || '职责与业绩按个人说明书整理；待补充项不作为已确认事实。';
  document.querySelector('#case-body').innerHTML=renderExperience(item);
