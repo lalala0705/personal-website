@@ -11,7 +11,7 @@
  const validEndpoint=(()=>{try{return new URL(endpoint).protocol==='https:';}catch{return false;}})();
  function modeLabel(){mode.textContent=aiReady?'AI 对话 · 网站公开资料':'内容导览 · AI 尚未接通';notice.textContent=aiReady?'消息将发送至 DeepSeek，用于介绍网站公开内容。请勿输入私密信息。':'目前按网站资料提供导览，未调用 AI。';}
  function append(role,text,sources=[]){
-  const row=document.createElement('div');row.className='bill-message bill-'+role;
+  const row=document.createElement('div');row.className='bill-message '+(role==='user'?'bill-user':'bill-reply');
   const label=document.createElement('span');label.className='bill-sender';label.textContent=role==='user'?'你':'Bill 的分身';
   const bubble=document.createElement('p');bubble.textContent=text;
   row.append(label,bubble);
