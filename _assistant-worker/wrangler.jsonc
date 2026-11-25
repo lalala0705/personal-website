@@ -4,6 +4,7 @@
   "main": "worker.mjs",
   "compatibility_date": "2026-11-25",
   "workers_dev": true,
+  "keep_vars": true,
   "observability": { "enabled": false },
   "ratelimits": [
     { "name": "CHAT_RATE_LIMITER", "namespace_id": "1101", "simple": { "limit": 8, "period": 60 } },
