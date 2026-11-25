@@ -256,7 +256,7 @@ html{scroll-padding-top:120px}
 
 /* 外部卡片底栏：左侧能力标签，右侧详情入口。 */
 .timeline-card-bottom{align-items:flex-end;flex-wrap:nowrap;gap:14px}
-.timeline-tags{display:flex;flex:1;min-width:0;flex-wrap:wrap;gap:6px}
+.timeline-tags{display:grid;grid-template-columns:repeat(2,max-content);flex:0 1 auto;min-width:0;gap:6px 8px}
 .timeline-tags>span{display:inline-block;background:var(--card-tint,var(--paper));border:1px solid #dce2d5;border-radius:20px;padding:3px 9px;color:var(--card-accent,var(--green));font-size:13px;line-height:1.7;white-space:nowrap}
 .timeline-card-bottom .timeline-open{flex-shrink:0;margin-left:0;font-size:12px;line-height:1.8;padding-bottom:4px}
 @media(max-width:760px){.timeline-card-bottom{gap:10px}.timeline-tags{gap:6px}.timeline-tags>span{font-size:12px;padding:3px 8px}.timeline-card-bottom .timeline-open{font-size:11px}}
@@ -412,14 +412,17 @@ body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
 .aspiration-highlight{background:#efe6ce;color:var(--ink);padding:.12em .2em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 
 /* Personality as a small editorial side note beneath the introduction title. */
-.personality-note{display:flex;align-items:center;gap:16px;margin-top:28px;padding-left:18px;border-left:1px solid #a5b395;max-width:360px}
-.personality-portrait{display:block;flex:0 0 88px;width:88px;height:88px;border-radius:50%;overflow:hidden;background:#e9efdf;border:1px solid #d7dfcd}
+.personality-note{display:flex;align-items:center;gap:18px;margin-top:28px;padding-left:18px;border-left:1px solid #a5b395;max-width:380px}
+.personality-portrait{display:block;flex:0 0 104px;width:104px;height:104px;border-radius:50%;overflow:hidden;background:#e9efdf;border:1px solid #d7dfcd}
 .personality-portrait img{width:100%;height:100%;object-fit:contain;padding:4px}
 .personality-copy{min-width:0}
 .personality-eyebrow{font-size:12px;color:var(--muted);letter-spacing:.06em}
 .personality-type{display:flex;align-items:baseline;gap:10px;line-height:1.45;margin:3px 0 5px;color:var(--green)}
-.personality-type strong{font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:400;letter-spacing:.025em}
+.personality-type strong{font-family:Georgia,'Times New Roman',serif;font-size:32px;font-weight:400;letter-spacing:.025em}
 .personality-type>span{font-size:14px;white-space:nowrap}
 .personality-source{font-size:12px;color:var(--muted);text-decoration:underline;text-decoration-color:#c7cebf;text-underline-offset:3px}
 .personality-source:hover{color:var(--green)}
 @media(max-width:760px){.personality-note{margin-top:22px;padding-left:14px;gap:14px}.personality-portrait{flex-basis:72px;width:72px;height:72px}.personality-type strong{font-size:25px}}
+
+@media(min-width:761px){.about-heading{display:flex;flex-direction:column;align-self:stretch}.about-heading>.personality-note{margin-top:auto}}
+.timeline-tags>span{justify-self:start}
