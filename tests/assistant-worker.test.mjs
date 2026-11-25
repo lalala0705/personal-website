@@ -5,7 +5,7 @@ import worker,{readLimited,validPayload} from '../_assistant-worker/worker.mjs';
 const ORIGIN='https://lalala0705.github.io';
 const req=(body,origin=ORIGIN)=>new Request('https://worker.example/chat',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json','CF-Connecting-IP':'192.0.2.1'},body:JSON.stringify(body)});
 const ok={limit:async()=>({success:true})};
-const env={DEEPSEEK_API_KEY:'TEST_ONLY_NOT_A_REAL_KEY',CHAT_RATE_LIMITER:ok,SITE_RATE_LIMITER:ok};
+const env={DEEPSEEK_API_KEY:'sk-TEST_ONLY_NOT_A_REAL_KEY',CHAT_RATE_LIMITER:ok,SITE_RATE_LIMITER:ok};
 test('rejects unapproved origins and missing configuration before upstream calls',async()=>{
  assert.equal((await worker.fetch(req({question:'hi'},'https://untrusted.example'),env)).status,403);
  assert.equal((await worker.fetch(req({question:'hi'}),{})).status,503);

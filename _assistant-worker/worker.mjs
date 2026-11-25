@@ -1,4 +1,5 @@
 import bundledKnowledge from '../data/assistant-knowledge.json' with {type:'json'};
+const BUILD='20261125-runtime-2';
 const ORIGIN='https://lalala0705.github.io';
 const KNOWLEDGE_URL=ORIGIN+'/personal-website/data/assistant-knowledge.json';
 const SOURCES=[{label:'查看工作经历',url:'#journey'},{label:'体验旅策',url:'https://lalala0705.github.io/lvce-travel/'},{label:'工作之外',url:'#life'},{label:'联系 Bill',url:'#contact'}];
@@ -26,7 +27,11 @@ async function timedFetch(url,options,timeout){
 function safeFailureReason(error){
  const message=String(error?.message||'');
  if(message.includes('Illegal invocation'))return 'ILLEGAL_INVOCATION';
- if(message.includes('fetch failed'))return 'FETCH_FAILED';
+ if(/header/i.test(message))return 'INVALID_HEADER';
+ if(/redirect/i.test(message))return 'REDIRECT_MODE_UNSUPPORTED';
+ if(/signal/i.test(message))return 'INVALID_ABORT_SIGNAL';
+ if(/network|fetch failed|connection/i.test(message))return 'NETWORK_FAILURE';
+ if(/character/i.test(message))return 'INVALID_CHARACTER';
  if(message.includes('timeout is not a function'))return 'TIMEOUT_API_UNAVAILABLE';
  return ['TypeError','AbortError','TimeoutError'].includes(error?.name)?error.name:'REQUEST_ERROR';
 }
@@ -36,7 +41,7 @@ export default {
   if(origin!==ORIGIN)return json({error:'来源未获允许。'},403,'null');
   if(request.method==='OPTIONS')return new Response(null,{status:204,headers:{'Access-Control-Allow-Origin':ORIGIN,'Access-Control-Allow-Methods':'POST, GET, OPTIONS','Access-Control-Allow-Headers':'Content-Type','Access-Control-Max-Age':'600','Vary':'Origin'}});
   const ready=Boolean(env.DEEPSEEK_API_KEY&&env.CHAT_RATE_LIMITER&&env.SITE_RATE_LIMITER);
-  if(path==='/health'&&request.method==='GET')return json({ready,configuration:{apiKey:Boolean(env.DEEPSEEK_API_KEY),perVisitorLimit:Boolean(env.CHAT_RATE_LIMITER),siteLimit:Boolean(env.SITE_RATE_LIMITER)}});
+  if(path==='/health'&&request.method==='GET')return json({ready,build:BUILD,configuration:{apiKey:Boolean(env.DEEPSEEK_API_KEY),perVisitorLimit:Boolean(env.CHAT_RATE_LIMITER),siteLimit:Boolean(env.SITE_RATE_LIMITER)}});
   if(path!=='/chat')return json({error:'接口不存在。'},404);
   if(request.method!=='POST')return json({error:'请使用 POST。'},405,ORIGIN,{'Allow':'POST'});
   if(!ready)return json({error:'AI 还未配置完成，请使用网站内容导览。'},503);
@@ -65,10 +70,13 @@ export default {
    failureCode='KNOWLEDGE_INVALID';
    if(!knowledge.revision||!Array.isArray(knowledge.careers)||!knowledge.profile)throw new Error('source');
    const prompt=SYSTEM+'\n公开网站资料（JSON）：\n'+JSON.stringify(knowledge);
+   failureCode='DEEPSEEK_KEY_FORMAT_INVALID';
+   const apiKey=String(env.DEEPSEEK_API_KEY).trim();
+   if(!/^sk-[A-Za-z0-9_-]+$/.test(apiKey))throw new Error('key_format');
    failureCode='DEEPSEEK_REQUEST_FAILED';
    const response=await timedFetch('https://api.deepseek.com/chat/completions',{
     method:'POST',redirect:'manual',
-    headers:{'Content-Type':'application/json','Authorization':'Bearer '+env.DEEPSEEK_API_KEY},
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
     body:JSON.stringify({model:'deepseek-chat',messages:[{role:'system',content:prompt},...(payload.history||[]),{role:'user',content:payload.question.trim()}],max_tokens:650,temperature:.2,stream:false})
    },15000);
    if(!response.ok){failureCode='DEEPSEEK_HTTP_'+response.status;throw new Error('upstream');}
@@ -76,6 +84,6 @@ export default {
    const data=JSON.parse(await readLimited(response.body,40000));const answer=data.choices?.[0]?.message?.content;
    if(typeof answer!=='string'||!answer.trim()||answer.length>5000)throw new Error('reply');
    return json({answer,sources:SOURCES,revision:knowledge.revision});
-  }catch(error){return json({error:'AI 暂时无法回复，请稍后再试或使用网站导览。',code:failureCode,reason:safeFailureReason(error)},502);}
+  }catch(error){return json({error:'AI 暂时无法回复，请稍后再试或使用网站导览。',code:failureCode,reason:safeFailureReason(error),build:BUILD},502);}
  }
 };
