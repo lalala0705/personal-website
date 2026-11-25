@@ -1324,3 +1324,13 @@ const careerStarCases = [
   ]
 ];
 experienceData.forEach((item,index)=>item.starCases=careerStarCases[index]);
+
+// 外部经历卡片只展示工作范围与能力，成果留在 STAR 案例中。
+const careerPreviewCards = [
+ {scope:'企微私域裂变、社群促活与视频号运营体系搭建。',tags:['用户分层','裂变增长','社群促活','数据复盘']},
+ {scope:'抖音电商私域运营，连接用户研究、渠道增长与小程序落地。',tags:['用户研究','私域增长','小程序落地','达人合作']},
+ {scope:'研学文旅社群从 0 到 1，衔接获客、留存与顾问承接。',tags:['社群搭建','裂变获客','用户留存','顾问协作']},
+ {scope:'企微用户分层与直播课转化 SOP。',tags:['需求诊断','用户分层','转化 SOP','AI 辅助运营']},
+ {scope:'校区新媒体内容策划、独立拍摄剪辑与线下活动执行。',tags:['内容策划','拍摄剪辑','品牌传播','活动执行']}
+];
+experienceData.forEach((item,index)=>item.preview=careerPreviewCards[index]);

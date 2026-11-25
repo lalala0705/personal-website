@@ -302,3 +302,11 @@ html{scroll-padding-top:120px}
 .star-growth h3,.star-documents h3{font-size:17px}.star-growth{padding:23px 0;margin-top:10px}.star-documents{border-bottom:0}
 .star-extra-case>summary:focus-visible,.star-assets>summary:focus-visible,.star-more-results>summary:focus-visible{outline:2px solid var(--green);outline-offset:-3px}
 @media(max-width:760px){.star-case-heading{margin:23px 0 18px}.star-case-heading h3{font-size:21px}.star-context{grid-template-columns:1fr;padding:18px;gap:22px}.star-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.star-metrics>div{padding:13px}.star-metrics dd{font-size:20px}.star-metrics dt{font-size:12px}.star-extra-body{padding:16px}.star-extra-case>summary,.star-assets>summary{font-size:15px;padding-left:16px}.star-action-stage{padding:23px 0}.star-assets-body{padding:0 13px 13px}}
+
+/* 外部卡片底栏：左侧能力标签，右侧详情入口。 */
+.timeline-card-bottom{align-items:flex-end;flex-wrap:nowrap;gap:14px}
+.timeline-tags{display:flex;flex:1;min-width:0;flex-wrap:wrap;gap:6px}
+.timeline-tags>span{display:inline-block;background:var(--card-tint,var(--paper));border:1px solid #dce2d5;border-radius:20px;padding:3px 9px;color:var(--card-accent,var(--green));font-size:13px;line-height:1.7;white-space:nowrap}
+.timeline-card-bottom .timeline-open{flex-shrink:0;margin-left:0;font-size:12px;line-height:1.8;padding-bottom:4px}
+@media(max-width:760px){.timeline-card-bottom{gap:10px}.timeline-tags{gap:6px}.timeline-tags>span{font-size:12px;padding:3px 8px}.timeline-card-bottom .timeline-open{font-size:11px}}
+@media(max-width:359px){.timeline-card-bottom{flex-wrap:wrap}.timeline-tags{flex-basis:100%}.timeline-card-bottom .timeline-open{margin-left:auto;padding-bottom:0}}
