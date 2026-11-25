@@ -14,7 +14,7 @@ const caseDialog=document.querySelector('#case-dialog');
 function renderExperience(item){
  const projects=[{title:item.primaryTitle,blocks:item.parts.filter(([title])=>!['背景与角色','能力积累'].includes(title))},...item.extraProjects];
  const metrics=item.metrics.map(([value,label])=>`<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('');
- const duties=item.duties.map(([title])=>`<li>${escapeHtml(title)}</li>`).join('');
+ const duties=item.duties.map(([title,body])=>`<li><h4>${escapeHtml(title)}</h4><p>${highlightText(body)}</p></li>`).join('');
  const growthTags=item.growthTags.map(tag=>`<li>${escapeHtml(tag)}</li>`).join('');
  const practices=renderPractices(item,projects);
  const hasDocumentLinks=item.documents.some(doc=>typeof doc==='object'&&/^https:\/\//.test(doc.url || ''));
