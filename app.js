@@ -102,3 +102,15 @@ labTabs.forEach((tab,index)=>{
   event.preventDefault();selectLabTab(labTabs[next]);labTabs[next].focus();
  });
 });
+
+// 与思考卡片共用实际展示高度；窄屏按内容自然展开。
+const labShowcase=document.querySelector('.lab-showcase');
+const reflectionCard=document.querySelector('.reflection-card');
+const desktopShowcase=window.matchMedia('(min-width: 761px)');
+function matchShowcaseHeight(){
+ if(desktopShowcase.matches){labShowcase.style.setProperty('--lab-showcase-height',`${reflectionCard.getBoundingClientRect().height}px`);}
+ else{labShowcase.style.removeProperty('--lab-showcase-height');}
+}
+if('ResizeObserver' in window){new ResizeObserver(matchShowcaseHeight).observe(reflectionCard);}
+window.addEventListener('resize',matchShowcaseHeight);
+matchShowcaseHeight();

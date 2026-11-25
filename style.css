@@ -239,3 +239,20 @@ article.life-portal{cursor:default}article.life-portal>.life-portal-action{width
 html{scroll-padding-top:120px}
 .journey-story{top:128px}
 @media(max-width:760px){html{scroll-padding-top:100px}.header nav{max-height:calc(100dvh - 100px);overflow-y:auto}}
+
+/* 桌面端以相邻文章卡片的实际高度为基准，压缩作品区留白。 */
+@media(min-width:761px){
+ .lab-showcase{height:var(--lab-showcase-height,auto)}
+ .lab-visual{min-height:0;overflow:hidden}
+ .lab-visual img{height:calc(100% - 40px);min-height:0;aspect-ratio:auto;object-fit:contain}
+ .lab-visual figcaption{flex-shrink:0;padding:7px 12px 11px}
+ .lab-content{padding:24px;min-height:0}
+ .lab-tabs{padding-bottom:14px}
+ .lab-panels{margin-top:14px;flex:0}
+ .lab-panel{min-height:0}
+ .lab-panel h3{font-size:28px;line-height:1.5;margin:12px 0}
+ .lab-panel h3>span{display:inline;font-size:22px;margin:0 0 0 10px;line-height:1.5}
+ .lab-description{min-height:0;line-height:1.8}
+ .lab-project-note{min-height:0;margin-top:8px;line-height:1.7}
+ .lab-pending{margin-top:16px}
+}
