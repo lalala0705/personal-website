@@ -56,7 +56,7 @@ export default {
    // Bundle the same public knowledge as a fallback when the edge cannot fetch Pages.
    let knowledge=bundledKnowledge;
    try{
-    const source=await timedFetch(KNOWLEDGE_URL,{redirect:'error',cf:{cacheTtl:300,cacheEverything:true}},6000);
+    const source=await timedFetch(KNOWLEDGE_URL,{redirect:'manual',cf:{cacheTtl:300,cacheEverything:true}},6000);
     if(!source.ok)throw new Error('source');
     const fresh=JSON.parse(await readLimited(source.body,96000));
     if(!fresh.revision||!Array.isArray(fresh.careers)||!fresh.profile)throw new Error('source');
@@ -67,7 +67,7 @@ export default {
    const prompt=SYSTEM+'\n公开网站资料（JSON）：\n'+JSON.stringify(knowledge);
    failureCode='DEEPSEEK_REQUEST_FAILED';
    const response=await timedFetch('https://api.deepseek.com/chat/completions',{
-    method:'POST',redirect:'error',
+    method:'POST',redirect:'manual',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+env.DEEPSEEK_API_KEY},
     body:JSON.stringify({model:'deepseek-chat',messages:[{role:'system',content:prompt},...(payload.history||[]),{role:'user',content:payload.question.trim()}],max_tokens:650,temperature:.2,stream:false})
    },15000);

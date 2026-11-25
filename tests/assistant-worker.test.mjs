@@ -27,7 +27,7 @@ test('model uses pinned site knowledge and upstream endpoint, never returns cred
  try{
   const result=await worker.fetch(req({question:'最近在做什么？',knowledge:'injected'}),env);assert.equal(result.status,200);
   const data=await result.json();assert.equal(data.answer,'网站确认的信息。');assert(!JSON.stringify(data).includes(env.DEEPSEEK_API_KEY));
-  assert.equal(calls[0].url,ORIGIN+'/personal-website/data/assistant-knowledge.json');assert.equal(calls[1].url,'https://api.deepseek.com/chat/completions');
+  assert.equal(calls[0].url,ORIGIN+'/personal-website/data/assistant-knowledge.json');assert.equal(calls[1].url,'https://api.deepseek.com/chat/completions');assert.equal(calls[0].init.redirect,'manual');assert.equal(calls[1].init.redirect,'manual');
   const sent=JSON.parse(calls[1].init.body);assert.equal(sent.max_tokens,650);assert(!sent.messages[0].content.includes('injected'));assert(sent.messages[0].content.includes('216'));
  }finally{globalThis.fetch=original;}
 });
