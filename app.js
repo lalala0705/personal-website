@@ -82,6 +82,7 @@ document.querySelector('.reflection-read').addEventListener('click',()=>{
 // 作品分类：切换项目介绍，支持标准 tab 键盘导航。
 const labTabs=[...document.querySelectorAll('.lab-tabs [role="tab"]')];
 function selectLabTab(tab){
+ document.querySelectorAll('[data-lab-target]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.labTarget===tab.id)));
  for(const item of labTabs){
   const selected=item===tab;
   item.setAttribute('aria-selected',String(selected));item.tabIndex=selected?0:-1;
@@ -100,3 +101,11 @@ labTabs.forEach((tab,index)=>{
   event.preventDefault();selectLabTab(labTabs[next]);labTabs[next].focus();
  });
 });
+
+// 紧凑项目索引复用分类标签，状态随选择更新。
+const labProjectIndex=[...document.querySelectorAll('[data-lab-target]')];
+labProjectIndex.forEach(button=>button.addEventListener('click',()=>{
+ const tab=document.getElementById(button.dataset.labTarget);
+ selectLabTab(tab);tab.focus({preventScroll:true});
+ tab.scrollIntoView({block:'nearest',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+}));
