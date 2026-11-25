@@ -408,4 +408,7 @@ body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
 
 /* The working-style paragraph spans the introduction columns without a card. */
 .about-working-copy{grid-column:1/-1;width:100%;max-width:62em;justify-self:start;margin:0;font-size:16px;line-height:2.05;color:#62685f}
-.about-working-copy strong{font-weight:600;color:var(--green)}
+.about-content>p strong,.about-working-copy strong{font-weight:600;color:var(--green)}
+
+.about-content>p,.about-working-copy{text-wrap:pretty}
+.about-copy-ending{white-space:nowrap}
