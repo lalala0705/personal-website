@@ -31,3 +31,16 @@ test('model uses pinned site knowledge and upstream endpoint, never returns cred
   const sent=JSON.parse(calls[1].init.body);assert.equal(sent.max_tokens,650);assert(!sent.messages[0].content.includes('injected'));assert(sent.messages[0].content.includes('216'));
  }finally{globalThis.fetch=original;}
 });
+
+test('failure diagnostics expose only stage and HTTP status, never upstream secrets',async()=>{
+ const original=globalThis.fetch;
+ try{
+  globalThis.fetch=async()=>new Response('private upstream detail',{status:403});
+  let result=await worker.fetch(req({question:'hi'}),env);
+  assert.deepEqual(await result.json(),{error:'AI 暂时无法回复，请稍后再试或使用网站导览。',code:'KNOWLEDGE_HTTP_403'});
+  let count=0;
+  globalThis.fetch=async()=>++count===1?new Response(fs.readFileSync('data/assistant-knowledge.json','utf8')):new Response(env.DEEPSEEK_API_KEY,{status:401});
+  result=await worker.fetch(req({question:'hi'}),env);
+  const data=await result.json();assert.equal(data.code,'DEEPSEEK_HTTP_401');assert(!JSON.stringify(data).includes(env.DEEPSEEK_API_KEY));
+ }finally{globalThis.fetch=original;}
+});

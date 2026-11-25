@@ -38,21 +38,25 @@ export default {
   let payload;
   try{payload=JSON.parse(await readLimited(request.body,16000));}catch{return json({error:'请求过大或格式不正确。'},400);}
   if(!validPayload(payload))return json({error:'请将问题控制在400字内，历史消息最多6条。'},400);
+  let failureCode='KNOWLEDGE_REQUEST_FAILED';
   try{
    const source=await fetch(KNOWLEDGE_URL,{redirect:'error',signal:AbortSignal.timeout(6000),cf:{cacheTtl:300,cacheEverything:true}});
-   if(!source.ok)throw new Error('source');
+   if(!source.ok){failureCode='KNOWLEDGE_HTTP_'+source.status;throw new Error('source');}
+   failureCode='KNOWLEDGE_INVALID';
    const knowledge=JSON.parse(await readLimited(source.body,96000));
    if(!knowledge.revision||!Array.isArray(knowledge.careers)||!knowledge.profile)throw new Error('source');
    const prompt=SYSTEM+'\n公开网站资料（JSON）：\n'+JSON.stringify(knowledge);
+   failureCode='DEEPSEEK_REQUEST_FAILED';
    const response=await fetch('https://api.deepseek.com/chat/completions',{
     method:'POST',redirect:'error',signal:AbortSignal.timeout(15000),
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+env.DEEPSEEK_API_KEY},
     body:JSON.stringify({model:'deepseek-chat',messages:[{role:'system',content:prompt},...(payload.history||[]),{role:'user',content:payload.question.trim()}],max_tokens:650,temperature:.2,stream:false})
    });
-   if(!response.ok)throw new Error('upstream');
+   if(!response.ok){failureCode='DEEPSEEK_HTTP_'+response.status;throw new Error('upstream');}
+   failureCode='DEEPSEEK_REPLY_INVALID';
    const data=JSON.parse(await readLimited(response.body,40000));const answer=data.choices?.[0]?.message?.content;
    if(typeof answer!=='string'||!answer.trim()||answer.length>5000)throw new Error('reply');
    return json({answer,sources:SOURCES,revision:knowledge.revision});
-  }catch{return json({error:'AI 暂时无法回复，请稍后再试或使用网站导览。'},502);}
+  }catch{return json({error:'AI 暂时无法回复，请稍后再试或使用网站导览。',code:failureCode},502);}
  }
 };
