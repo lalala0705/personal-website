@@ -1,6 +1,6 @@
 # Bill 的 DeepSeek 对话接口
 
-前端已完成，当前 `assistant-config.js` 的 endpoint 为空，网站运行**内容导览模式**，不调用 DeepSeek。此目录为待部署后端，未上线。GitHub Pages 默认不发布以下划线开头的目录。
+前端已配置公开的 Worker `/chat` 地址，后端已部署并完成真实 DeepSeek 问答验证。网站打开面板后检查接口配置，正常时进入 AI 模式；请求失败时明确提示并回退内容导览。密钥仅保存在 Cloudflare 运行时 Secret。GitHub Pages 默认不发布以下划线开头的目录。
 
 ## 账号创建后接通
 
@@ -26,4 +26,4 @@
 - 资料优先从固定网站地址读取，边缘最多缓存300秒；边缘无法读取时使用随 Worker 构建打包的公开资料快照。Git 连接的 Worker 在仓库更新后应自动重新构建，以同步备用快照。生成脚本、内容变更自动同步工作流见主仓库。修改资料后不用重新部署 Worker。
 - 关闭 AI：清空 `assistant-config.js` 的 endpoint；访客继续使用导览模式。
 
-本地不需要 API Key 的验证：`node --test tests/assistant-worker.test.mjs tests/assistant-guide.test.mjs`（在仓库根目录）。真实 DeepSeek 调用需待账号与 Secret 配置后验证，目前不声称已接通。
+本地不需要 API Key 的验证：`node --test tests/assistant-worker.test.mjs tests/assistant-guide.test.mjs`（在仓库根目录）。真实问答已验证杭州坐标、荣怀学校运营平台、216 新增粉丝与招生团队成交承接归属。后续后端变更仍需重新验证。

@@ -58,3 +58,18 @@ test('edge fetch failure uses bundled public knowledge for a real model request'
  try{const result=await worker.fetch(req({question:'hi'}),env);assert.equal(result.status,200);assert.equal((await result.json()).revision,JSON.parse(fs.readFileSync('data/assistant-knowledge.json')).revision);}
  finally{globalThis.fetch=original;}
 });
+
+test('normalizes surrounding secret whitespace and rejects invalid header characters before provider calls',async()=>{
+ const original=globalThis.fetch;let count=0;
+ globalThis.fetch=async(url,init)=>{
+  if(++count===1)throw new Error('edge fetch unavailable');
+  assert.equal(init.headers.Authorization,'Bearer '+env.DEEPSEEK_API_KEY);
+  return new Response(JSON.stringify({choices:[{message:{content:'已确认公开资料。'}}]}));
+ };
+ try{
+  assert.equal((await worker.fetch(req({question:'hi'}),{...env,DEEPSEEK_API_KEY:' '+env.DEEPSEEK_API_KEY+'\n'})).status,200);
+  count=0;
+  const result=await worker.fetch(req({question:'hi'}),{...env,DEEPSEEK_API_KEY:'sk-invalid\ninternal'});
+  assert.equal((await result.json()).code,'DEEPSEEK_KEY_FORMAT_INVALID');assert.equal(count,1);
+ }finally{globalThis.fetch=original;}
+});
