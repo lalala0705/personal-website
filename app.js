@@ -79,7 +79,7 @@ document.querySelector('.reflection-read').addEventListener('click',()=>{
  reflectionDialog.showModal();reflectionDialog.scrollTop=0;document.body.classList.add('modal-open');
 });
 
-// 作品分类：图片与项目介绍同步切换，支持标准 tab 键盘导航。
+// 作品分类：切换项目介绍，支持标准 tab 键盘导航。
 const labTabs=[...document.querySelectorAll('.lab-tabs [role="tab"]')];
 function selectLabTab(tab){
  for(const item of labTabs){
@@ -87,8 +87,6 @@ function selectLabTab(tab){
   item.setAttribute('aria-selected',String(selected));item.tabIndex=selected?0:-1;
   document.getElementById(item.getAttribute('aria-controls')).hidden=!selected;
  }
- const image=document.querySelector('#lab-project-image');
- image.alt=tab.dataset.labAlt;image.src=tab.dataset.labImage;
 }
 labTabs.forEach((tab,index)=>{
  tab.addEventListener('click',()=>selectLabTab(tab));
@@ -102,15 +100,3 @@ labTabs.forEach((tab,index)=>{
   event.preventDefault();selectLabTab(labTabs[next]);labTabs[next].focus();
  });
 });
-
-// 与思考卡片共用实际展示高度；窄屏按内容自然展开。
-const labShowcase=document.querySelector('.lab-showcase');
-const reflectionCard=document.querySelector('.reflection-card');
-const desktopShowcase=window.matchMedia('(min-width: 761px)');
-function matchShowcaseHeight(){
- if(desktopShowcase.matches){labShowcase.style.setProperty('--lab-showcase-height',`${reflectionCard.getBoundingClientRect().height}px`);}
- else{labShowcase.style.removeProperty('--lab-showcase-height');}
-}
-if('ResizeObserver' in window){new ResizeObserver(matchShowcaseHeight).observe(reflectionCard);}
-window.addEventListener('resize',matchShowcaseHeight);
-matchShowcaseHeight();
