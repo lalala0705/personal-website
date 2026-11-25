@@ -44,3 +44,8 @@ test('failure diagnostics expose only stage and HTTP status, never upstream secr
   const data=await result.json();assert.equal(data.code,'DEEPSEEK_HTTP_401');assert(!JSON.stringify(data).includes(env.DEEPSEEK_API_KEY));
  }finally{globalThis.fetch=original;}
 });
+
+test('health reveals missing binding names without exposing credential values',async()=>{
+ const result=await worker.fetch(new Request('https://worker.example/health',{headers:{Origin:ORIGIN}}),{DEEPSEEK_API_KEY:env.DEEPSEEK_API_KEY});
+ const data=await result.json();assert.equal(data.ready,false);assert.deepEqual(data.configuration,{apiKey:true,perVisitorLimit:false,siteLimit:false});assert(!JSON.stringify(data).includes(env.DEEPSEEK_API_KEY));
+});

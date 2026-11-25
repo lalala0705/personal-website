@@ -23,7 +23,7 @@ export default {
   if(origin!==ORIGIN)return json({error:'来源未获允许。'},403,'null');
   if(request.method==='OPTIONS')return new Response(null,{status:204,headers:{'Access-Control-Allow-Origin':ORIGIN,'Access-Control-Allow-Methods':'POST, GET, OPTIONS','Access-Control-Allow-Headers':'Content-Type','Access-Control-Max-Age':'600','Vary':'Origin'}});
   const ready=Boolean(env.DEEPSEEK_API_KEY&&env.CHAT_RATE_LIMITER&&env.SITE_RATE_LIMITER);
-  if(path==='/health'&&request.method==='GET')return json({ready});
+  if(path==='/health'&&request.method==='GET')return json({ready,configuration:{apiKey:Boolean(env.DEEPSEEK_API_KEY),perVisitorLimit:Boolean(env.CHAT_RATE_LIMITER),siteLimit:Boolean(env.SITE_RATE_LIMITER)}});
   if(path!=='/chat')return json({error:'接口不存在。'},404);
   if(request.method!=='POST')return json({error:'请使用 POST。'},405,ORIGIN,{'Allow':'POST'});
   if(!ready)return json({error:'AI 还未配置完成，请使用网站内容导览。'},503);
