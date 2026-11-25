@@ -406,9 +406,7 @@ body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
 .hero-photo figcaption .portrait-handwritten:before{display:none}
 @media(max-width:760px){.hero h1{line-height:1.43}.hero-photo figcaption .portrait-handwritten{font-size:15px}}
 
-/* The working-style paragraph spans the introduction columns without a card. */
-.about-working-copy{grid-column:1/-1;width:100%;max-width:62em;justify-self:start;margin:0;font-size:16px;line-height:2.05;color:#62685f}
-.about-content>p strong,.about-working-copy strong{font-weight:600;color:var(--green)}
-
-.about-content>p,.about-working-copy{text-wrap:pretty}
-.about-copy-ending{white-space:nowrap}
+/* A single personal aspiration after the skill tags. */
+.about-content>p{text-wrap:pretty}
+.about-content>.about-aspiration{margin:24px 0 0;line-height:2.1}
+.aspiration-highlight{background:#efe6ce;color:var(--ink);padding:.12em .2em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
