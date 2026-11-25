@@ -78,3 +78,27 @@ const reflectionDialog=document.querySelector('#reflection-dialog');
 document.querySelector('.reflection-read').addEventListener('click',()=>{
  reflectionDialog.showModal();reflectionDialog.scrollTop=0;document.body.classList.add('modal-open');
 });
+
+// 作品分类：图片与项目介绍同步切换，支持标准 tab 键盘导航。
+const labTabs=[...document.querySelectorAll('.lab-tabs [role="tab"]')];
+function selectLabTab(tab){
+ for(const item of labTabs){
+  const selected=item===tab;
+  item.setAttribute('aria-selected',String(selected));item.tabIndex=selected?0:-1;
+  document.getElementById(item.getAttribute('aria-controls')).hidden=!selected;
+ }
+ const image=document.querySelector('#lab-project-image');
+ image.alt=tab.dataset.labAlt;image.src=tab.dataset.labImage;
+}
+labTabs.forEach((tab,index)=>{
+ tab.addEventListener('click',()=>selectLabTab(tab));
+ tab.addEventListener('keydown',event=>{
+  let next;
+  if(event.key==='ArrowRight')next=(index+1)%labTabs.length;
+  if(event.key==='ArrowLeft')next=(index+labTabs.length-1)%labTabs.length;
+  if(event.key==='Home')next=0;
+  if(event.key==='End')next=labTabs.length-1;
+  if(next===undefined)return;
+  event.preventDefault();selectLabTab(labTabs[next]);labTabs[next].focus();
+ });
+});
