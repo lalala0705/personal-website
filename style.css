@@ -171,3 +171,6 @@ article.life-portal{cursor:default}article.life-portal>.life-portal-action{width
 .itinerary-event h6{font-size:14px;font-weight:500;color:var(--green);margin:0 0 5px;line-height:1.8}
 .itinerary-event p{font-size:13px!important;line-height:1.9!important;white-space:pre-line;overflow-wrap:anywhere;margin:0}
 @media(max-width:760px){.trip-itinerary-day li{grid-template-columns:58px minmax(0,1fr);gap:10px}.trip-itinerary-heading h5{font-size:17px}}
+
+/* 已上传简历的可用下载入口 */
+.resume[href]{color:var(--green);border-color:#aab5a2}.resume[href]:hover{background:var(--paper)}
