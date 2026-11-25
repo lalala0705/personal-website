@@ -310,3 +310,5 @@ html{scroll-padding-top:120px}
 .timeline-card-bottom .timeline-open{flex-shrink:0;margin-left:0;font-size:12px;line-height:1.8;padding-bottom:4px}
 @media(max-width:760px){.timeline-card-bottom{gap:10px}.timeline-tags{gap:6px}.timeline-tags>span{font-size:12px;padding:3px 8px}.timeline-card-bottom .timeline-open{font-size:11px}}
 @media(max-width:359px){.timeline-card-bottom{flex-wrap:wrap}.timeline-tags{flex-basis:100%}.timeline-card-bottom .timeline-open{margin-left:auto;padding-bottom:0}}
+
+.lab-launch{margin-top:16px;min-height:44px;font-size:14px;border-radius:5px;border-color:var(--green);color:var(--green)}.lab-launch:hover{background:var(--green);color:#fff}
