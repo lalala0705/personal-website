@@ -75,11 +75,11 @@ if(!reducedMotion && 'IntersectionObserver' in window){
 
 // 首页标签进入分类内容；原生 details 承载条目详情，内容增加时继续追加条目。
 const libraryCategories={
- work:{group:'lab',label:'可体验作品',intro:'目前放了旅策的体验链接，打开条目可以查看说明。',items:[{title:'旅策 · 旅行规划助手',status:'可体验',summary:'正在做的旅行规划助手，已开放体验。',paragraphs:['旅策是我正在做的旅行规划助手。这里放的是当前可体验的版本。','功能还在完善，欢迎试用后把意见告诉我。'],link:'https://lalala0705.github.io/lvce-travel/',linkLabel:'体验旅策'}]},
- skill:{group:'lab',label:'Skills',intro:'想做一个能生成旅行研学手册的 Skill，目前还在构思。',items:[{title:'旅行研学手册生成器',status:'构思中',summary:'计划把旅行安排与研学任务整理成一份手册初稿。',paragraphs:['计划输入目的地、旅行天数与研学目标，生成行程与学习任务，辅助制作旅行研学手册。','目前处于构思阶段，示例手册与 Skill 下载后续补充。']}]},
- prd:{group:'lab',label:'PRD',intro:'旅策的 PRD 准备放在这里，Figma 链接尚未补充。',items:[{title:'旅策 · 产品需求文档',status:'链接待补充',summary:'在 Figma 中整理旅策的产品需求与设计思路。',paragraphs:['计划在这里展示旅策的需求背景、核心流程、功能范围与设计取舍。','Figma PRD 链接尚未补充，准备好后将在这里开放查看。']}]},
+ work:{group:'lab',label:'可体验作品',intro:'从想法到可使用的作品，点击条目查看说明或直接体验。',items:[{title:'旅策 · 旅行规划助手',status:'可体验',summary:'围绕旅行需求，探索更清晰的行程规划体验。',paragraphs:['旅策是我正在做的旅行规划助手，希望把旅行需求整理成更清晰、便于执行的行程计划。','作品仍在持续完善，可以打开体验链接查看当前版本。'],link:'https://lalala0705.github.io/lvce-travel/',linkLabel:'体验旅策'}]},
+ skill:{group:'lab',label:'Skills',intro:'把重复使用的方法，整理成可以复用的能力。',items:[{title:'旅行研学手册生成器',status:'构思中',summary:'计划把旅行安排与研学任务整理成一份手册初稿。',paragraphs:['计划输入目的地、旅行天数与研学目标，生成行程与学习任务，辅助制作旅行研学手册。','目前处于构思阶段，示例手册与 Skill 下载后续补充。']}]},
+ prd:{group:'lab',label:'PRD',intro:'记录产品的问题定义、核心流程与设计取舍。',items:[{title:'旅策 · 产品需求文档',status:'链接待补充',summary:'在 Figma 中整理旅策的产品需求与设计思路。',paragraphs:['计划在这里展示旅策的需求背景、核心流程、功能范围与设计取舍。','Figma PRD 链接尚未补充，准备好后将在这里开放查看。']}]},
  'work-notes':{group:'notes',label:'工作复盘',intro:'记录工作里的判断、方法与复盘。',items:[]},
- growth:{group:'notes',label:'个人成长',intro:'先放一篇复盘：一次关于交付质量的反馈。',items:[{title:'从“做完”到“做到位”',status:'成长复盘',summary:'一次关于交付质量的反馈，让我重新理解忙碌、复盘与成长。',article:true}]},
+ growth:{group:'notes',label:'个人成长',intro:'记录反馈、变化，以及正在练习的事。',items:[{title:'从“做完”到“做到位”',status:'成长复盘',summary:'一次关于交付质量的反馈，让我重新理解忙碌、复盘与成长。',article:true}]},
  'life-notes':{group:'notes',label:'生活观察',intro:'记录工作之外的好奇、观察与感受。',items:[]}
 };
 const libraryDialog=document.querySelector('#library-dialog');
@@ -90,11 +90,11 @@ function renderLibraryCategory(key){
  if(!category)return;
  const isLab=category.group==='lab';
  document.querySelector('#library-title').textContent=isLab?'Vibe Coding':'思考与创作';
- document.querySelector('#library-eyebrow').textContent=isLab?'最近在做':'写下来';
+ document.querySelector('#library-eyebrow').textContent=isLab?'BUILD & EXPERIMENT':'THINKING & CREATION';
  document.querySelector('#library-intro').textContent=category.intro;
  libraryFilters.innerHTML=Object.entries(libraryCategories).filter(([,item])=>item.group===category.group).map(([id,item])=>`<button type="button" data-library-category="${id}" aria-pressed="${id===key}">${escapeHtml(item.label)}</button>`).join('');
  if(!category.items.length){
-  libraryList.innerHTML='<div class="library-empty"><span>慢慢整理中</span><p>这里还没有文章。整理好后再放上来。</p></div>';
+  libraryList.innerHTML='<div class="library-empty"><span>慢慢整理中</span><p>这个分类还没有公开内容，写好后会放在这里。</p></div>';
  }else{
   libraryList.innerHTML=category.items.map(item=>{
    let detail;
