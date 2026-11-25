@@ -1,3 +1,4 @@
+import bundledKnowledge from '../data/assistant-knowledge.json' with {type:'json'};
 const ORIGIN='https://lalala0705.github.io';
 const KNOWLEDGE_URL=ORIGIN+'/personal-website/data/assistant-knowledge.json';
 const SOURCES=[{label:'查看工作经历',url:'#journey'},{label:'体验旅策',url:'https://lalala0705.github.io/lvce-travel/'},{label:'工作之外',url:'#life'},{label:'联系 Bill',url:'#contact'}];
@@ -40,10 +41,16 @@ export default {
   if(!validPayload(payload))return json({error:'请将问题控制在400字内，历史消息最多6条。'},400);
   let failureCode='KNOWLEDGE_REQUEST_FAILED';
   try{
-   const source=await fetch(KNOWLEDGE_URL,{redirect:'error',signal:AbortSignal.timeout(6000),cf:{cacheTtl:300,cacheEverything:true}});
-   if(!source.ok){failureCode='KNOWLEDGE_HTTP_'+source.status;throw new Error('source');}
+   // Bundle the same public knowledge as a fallback when the edge cannot fetch Pages.
+   let knowledge=bundledKnowledge;
+   try{
+    const source=await fetch(KNOWLEDGE_URL,{redirect:'error',signal:AbortSignal.timeout(6000),cf:{cacheTtl:300,cacheEverything:true}});
+    if(!source.ok)throw new Error('source');
+    const fresh=JSON.parse(await readLimited(source.body,96000));
+    if(!fresh.revision||!Array.isArray(fresh.careers)||!fresh.profile)throw new Error('source');
+    knowledge=fresh;
+   }catch{/* Use the public snapshot shipped with this Worker build. */}
    failureCode='KNOWLEDGE_INVALID';
-   const knowledge=JSON.parse(await readLimited(source.body,96000));
    if(!knowledge.revision||!Array.isArray(knowledge.careers)||!knowledge.profile)throw new Error('source');
    const prompt=SYSTEM+'\n公开网站资料（JSON）：\n'+JSON.stringify(knowledge);
    failureCode='DEEPSEEK_REQUEST_FAILED';

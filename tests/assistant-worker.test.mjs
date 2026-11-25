@@ -35,9 +35,7 @@ test('model uses pinned site knowledge and upstream endpoint, never returns cred
 test('failure diagnostics expose only stage and HTTP status, never upstream secrets',async()=>{
  const original=globalThis.fetch;
  try{
-  globalThis.fetch=async()=>new Response('private upstream detail',{status:403});
-  let result=await worker.fetch(req({question:'hi'}),env);
-  assert.deepEqual(await result.json(),{error:'AI 暂时无法回复，请稍后再试或使用网站导览。',code:'KNOWLEDGE_HTTP_403'});
+  let result;
   let count=0;
   globalThis.fetch=async()=>++count===1?new Response(fs.readFileSync('data/assistant-knowledge.json','utf8')):new Response(env.DEEPSEEK_API_KEY,{status:401});
   result=await worker.fetch(req({question:'hi'}),env);
@@ -48,4 +46,15 @@ test('failure diagnostics expose only stage and HTTP status, never upstream secr
 test('health reveals missing binding names without exposing credential values',async()=>{
  const result=await worker.fetch(new Request('https://worker.example/health',{headers:{Origin:ORIGIN}}),{DEEPSEEK_API_KEY:env.DEEPSEEK_API_KEY});
  const data=await result.json();assert.equal(data.ready,false);assert.deepEqual(data.configuration,{apiKey:true,perVisitorLimit:false,siteLimit:false});assert(!JSON.stringify(data).includes(env.DEEPSEEK_API_KEY));
+});
+
+test('edge fetch failure uses bundled public knowledge for a real model request',async()=>{
+ const original=globalThis.fetch;let count=0;
+ globalThis.fetch=async(url,init)=>{
+  if(++count===1)throw new Error('edge fetch failed');
+  const sent=JSON.parse(init.body);assert(sent.messages[0].content.includes('216'));
+  return new Response(JSON.stringify({choices:[{message:{content:'使用公开资料回答。'}}]}));
+ };
+ try{const result=await worker.fetch(req({question:'hi'}),env);assert.equal(result.status,200);assert.equal((await result.json()).revision,JSON.parse(fs.readFileSync('data/assistant-knowledge.json')).revision);}
+ finally{globalThis.fetch=original;}
 });
