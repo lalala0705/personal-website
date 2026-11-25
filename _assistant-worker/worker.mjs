@@ -18,6 +18,18 @@ export function validPayload(payload){
  if(payload.history!==undefined&&(!Array.isArray(payload.history)||payload.history.length>6))return false;
  return (payload.history||[]).every(x=>x&&['user','assistant'].includes(x.role)&&typeof x.content==='string'&&x.content.length<=2000);
 }
+async function timedFetch(url,options,timeout){
+ const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),timeout);
+ try{return await fetch(url,{...options,signal:controller.signal});}
+ finally{clearTimeout(timer);}
+}
+function safeFailureReason(error){
+ const message=String(error?.message||'');
+ if(message.includes('Illegal invocation'))return 'ILLEGAL_INVOCATION';
+ if(message.includes('fetch failed'))return 'FETCH_FAILED';
+ if(message.includes('timeout is not a function'))return 'TIMEOUT_API_UNAVAILABLE';
+ return ['TypeError','AbortError','TimeoutError'].includes(error?.name)?error.name:'REQUEST_ERROR';
+}
 export default {
  async fetch(request,env){
   const origin=request.headers.get('Origin');const path=new URL(request.url).pathname;
@@ -44,7 +56,7 @@ export default {
    // Bundle the same public knowledge as a fallback when the edge cannot fetch Pages.
    let knowledge=bundledKnowledge;
    try{
-    const source=await fetch(KNOWLEDGE_URL,{redirect:'error',signal:AbortSignal.timeout(6000),cf:{cacheTtl:300,cacheEverything:true}});
+    const source=await timedFetch(KNOWLEDGE_URL,{redirect:'error',cf:{cacheTtl:300,cacheEverything:true}},6000);
     if(!source.ok)throw new Error('source');
     const fresh=JSON.parse(await readLimited(source.body,96000));
     if(!fresh.revision||!Array.isArray(fresh.careers)||!fresh.profile)throw new Error('source');
@@ -54,16 +66,16 @@ export default {
    if(!knowledge.revision||!Array.isArray(knowledge.careers)||!knowledge.profile)throw new Error('source');
    const prompt=SYSTEM+'\n公开网站资料（JSON）：\n'+JSON.stringify(knowledge);
    failureCode='DEEPSEEK_REQUEST_FAILED';
-   const response=await fetch('https://api.deepseek.com/chat/completions',{
-    method:'POST',redirect:'error',signal:AbortSignal.timeout(15000),
+   const response=await timedFetch('https://api.deepseek.com/chat/completions',{
+    method:'POST',redirect:'error',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+env.DEEPSEEK_API_KEY},
     body:JSON.stringify({model:'deepseek-chat',messages:[{role:'system',content:prompt},...(payload.history||[]),{role:'user',content:payload.question.trim()}],max_tokens:650,temperature:.2,stream:false})
-   });
+   },15000);
    if(!response.ok){failureCode='DEEPSEEK_HTTP_'+response.status;throw new Error('upstream');}
    failureCode='DEEPSEEK_REPLY_INVALID';
    const data=JSON.parse(await readLimited(response.body,40000));const answer=data.choices?.[0]?.message?.content;
    if(typeof answer!=='string'||!answer.trim()||answer.length>5000)throw new Error('reply');
    return json({answer,sources:SOURCES,revision:knowledge.revision});
-  }catch{return json({error:'AI 暂时无法回复，请稍后再试或使用网站导览。',code:failureCode},502);}
+  }catch(error){return json({error:'AI 暂时无法回复，请稍后再试或使用网站导览。',code:failureCode,reason:safeFailureReason(error)},502);}
  }
 };
