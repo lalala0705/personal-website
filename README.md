@@ -164,3 +164,19 @@
 攻略按每日原生 details 展示，默认展开第一天。首次同步为 2026-10-11—13 的 3 天、21 项安排，源平台空白“待计划”分组不展示；保留原备注中的价格/交通等当次计划信息，不把计划推定为实际到访或当前报价。原有文字攻略和照片功能保留。
 
 后续 Actions → **Sync travel itineraries** → **Run workflow**，成功后自动提交和发布。无需账号或 Secret，目前手动触发。源分享撤销、接口失败或源日期与现有旅程不匹配时不覆盖上次数据。页面数据本地缓存更新跟随正常浏览器刷新。校验：`python3 -m unittest discover -s tests -p test_pitravel.py`、`node --check life.js`。
+
+
+## Bill 的网站分身
+
+右下角卡通 Bill 默认收起，点击打开非模态对话面板。目前为**内容导览模式**，不调用 AI、不把访客问题发给第三方；快捷问题和输入框根据网站资料提供工作、项目、教育、旅行、书架与播客导览。无法匹配的问题会说明资料不足，不冒充自由对话。
+
+- `assistant.js`：面板、纯文本消息、快捷入口和后续 API 客户端；对话只保留在当前页面内存中。
+- `assistant-guide.js`：本地导览匹配；不声称是模型生成。
+- `assistant-config.js`：公开 Worker 地址配置，默认留空；**不能存放 API Key**。
+- `scripts/build-assistant-knowledge.mjs`：从网站已公开资料生成 `data/assistant-knowledge.json`。
+- `.github/workflows/sync-assistant-knowledge.yml`：网站公开资料变化后自动更新知识文件，必要时重建 Pages。
+- `_assistant-worker/`：已准备但尚未部署的 DeepSeek Worker、限流配置和接通说明。需本人创建 Cloudflare 账号、在 Secret 中配置 Key 后部署，再填公开 `/chat` 地址。
+
+修改工作经历、教育、书架、播客或旅行资料后，运行 `node scripts/build-assistant-knowledge.mjs` 并一并提交。Worker 从固定的网站知识文件读取事实，不信任浏览器提交的知识库。线上 AI 需待实际部署后验收；本地测试使用模拟上游，不消耗额度。
+
+检查：`node --test tests/assistant-guide.test.mjs tests/assistant-worker.test.mjs`、`node tests/test_navigation.cjs`。

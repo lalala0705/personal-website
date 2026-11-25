@@ -7,3 +7,5 @@
 - 保持资源为相对路径，兼容项目子路径部署。
 - 不虚构个人经历、能力、项目成果或数据。未提供的信息保留为待补充。
 - 先前 Sites 发布不与 GitHub 自动双向同步。若从旧工作副本继续，先将改动迁移到本仓库，再提交发布。
+
+- 网站公开资料变动后，运行 `node scripts/build-assistant-knowledge.mjs`，提交生成的 `data/assistant-knowledge.json`。分身只有在真实后端配置并验证后才可标注 AI 已接通；密钥只放服务端 Secrets。

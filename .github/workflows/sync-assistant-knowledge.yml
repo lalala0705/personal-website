@@ -1,0 +1,53 @@
+name: Sync assistant public knowledge
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - content.js
+      - index.html
+      - life.js
+      - data/books.js
+      - data/podcasts.js
+      - scripts/build-assistant-knowledge.mjs
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: assistant-knowledge
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.save.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/build-assistant-knowledge.mjs
+      - name: Save changed public knowledge
+        id: save
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          git add data/assistant-knowledge.json
+          if git diff --cached --quiet; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Sync assistant public website knowledge'
+          git pull --rebase origin main
+          git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push origin HEAD:main
+          echo 'changed=true' >> "$GITHUB_OUTPUT"
+  deploy:
+    needs: sync
+    if: needs.sync.outputs.changed == 'true'
+    uses: ./.github/workflows/deploy.yml

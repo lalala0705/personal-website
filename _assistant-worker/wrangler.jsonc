@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "bill-website-assistant",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-25",
+  "workers_dev": true,
+  "observability": { "enabled": false },
+  "ratelimits": [
+    { "name": "CHAT_RATE_LIMITER", "namespace_id": "1101", "simple": { "limit": 8, "period": 60 } },
+    { "name": "SITE_RATE_LIMITER", "namespace_id": "1102", "simple": { "limit": 30, "period": 60 } }
+  ]
+}
