@@ -405,3 +405,7 @@ body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
 .hero-photo figcaption .portrait-handwritten{font-family:'Bill Handwritten','Kaiti SC',KaiTi,cursive;font-size:16px;letter-spacing:0;white-space:normal;padding-left:0;line-height:1.65;color:#786750}
 .hero-photo figcaption .portrait-handwritten:before{display:none}
 @media(max-width:760px){.hero h1{line-height:1.43}.hero-photo figcaption .portrait-handwritten{font-size:15px}}
+
+/* The working-style paragraph spans the introduction columns without a card. */
+.about-working-copy{grid-column:1/-1;width:100%;max-width:62em;justify-self:start;margin:0;font-size:16px;line-height:2.05;color:#62685f}
+.about-working-copy strong{font-weight:600;color:var(--green)}
