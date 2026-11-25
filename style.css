@@ -317,3 +317,17 @@ html{scroll-padding-top:120px}
 @media(prefers-reduced-motion:reduce){.library-entry-tags button{transition:none}}
 
 .library-experience .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+
+/* 生活与联系入口：使用功能图标取代通用箭头。 */
+.action-icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;flex:0 0 40px;border:1px solid #c4cfb9;border-radius:50%;background:#e5ebdc;color:#3c5140;transition:background .2s,border-color .2s,color .2s,box-shadow .2s}
+.action-icon svg{display:block;width:21px;height:21px;transition:transform .25s}
+article.life-portal>.life-portal-action{align-items:center;gap:16px;font-size:14px;min-height:60px}
+.life-reading .action-icon{background:#f0e2d3;border-color:#d7bda3;color:#895d3c}
+.life-podcast .action-icon{background:#e0e7e2;border-color:#becbc2;color:#486454}
+.contact-links>a{padding-right:64px;min-height:104px}
+.contact-links .contact-action-icon{width:44px;height:44px;background:#edf1e7;border-color:#c9d3bf}
+.contact-action-icon svg{width:22px;height:22px}
+@media(hover:hover){.life-portal-action:hover .action-icon,.contact-links>a:hover .action-icon{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 3px 9px #3c51401c}.life-travel .life-portal-action:hover svg{transform:rotate(20deg)}.life-reading .life-portal-action:hover svg{transform:rotate(-6deg)}.life-podcast .life-portal-action:hover svg{transform:translateY(-2px)}.contact-links>a[href^="tel:"]:hover svg{transform:rotate(-12deg)}.contact-links>a[href^="mailto:"]:hover svg{transform:translateY(-2px)}}
+.life-portal-action:focus-visible .action-icon,.contact-links>a:focus-visible .action-icon{background:var(--green);border-color:var(--green);color:#fff}
+@media(max-width:760px){.contact-links>a{padding-right:60px}.action-icon{width:40px;height:40px;flex-basis:40px}}
+@media(prefers-reduced-motion:reduce){.action-icon,.action-icon svg{transition:none}.life-portal-action:hover .action-icon svg,.contact-links>a:hover .action-icon svg{transform:none}}
