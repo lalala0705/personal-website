@@ -72,3 +72,52 @@ if(!reducedMotion && 'IntersectionObserver' in window){
  const revealObserver=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting){entry.target.classList.add('is-revealed');revealObserver.unobserve(entry.target);}}},{threshold:0.08,rootMargin:'0px 0px 24px 0px'});
  document.querySelectorAll('.about-content,.experience-timeline>li,.future,.photo-grid figure').forEach(element=>{element.classList.add('reveal-ready');revealObserver.observe(element);});
 }
+
+// 首页标签进入分类内容；原生 details 承载条目详情，内容增加时继续追加条目。
+const libraryCategories={
+ work:{group:'lab',label:'可体验作品',intro:'从想法到可使用的作品，点击条目查看说明或直接体验。',items:[{title:'旅策 · 旅行规划助手',status:'可体验',summary:'围绕旅行需求，探索更清晰的行程规划体验。',paragraphs:['旅策是我正在做的旅行规划助手，希望把旅行需求整理成更清晰、便于执行的行程计划。','作品仍在持续完善，可以打开体验链接查看当前版本。'],link:'https://lalala0705.github.io/lvce-travel/',linkLabel:'体验旅策'}]},
+ skill:{group:'lab',label:'Skills',intro:'把重复使用的方法，整理成可以复用的能力。',items:[{title:'旅行研学手册生成器',status:'构思中',summary:'计划把旅行安排与研学任务整理成一份手册初稿。',paragraphs:['计划输入目的地、旅行天数与研学目标，生成行程与学习任务，辅助制作旅行研学手册。','目前处于构思阶段，示例手册与 Skill 下载后续补充。']}]},
+ prd:{group:'lab',label:'PRD',intro:'记录产品的问题定义、核心流程与设计取舍。',items:[{title:'旅策 · 产品需求文档',status:'链接待补充',summary:'在 Figma 中整理旅策的产品需求与设计思路。',paragraphs:['计划在这里展示旅策的需求背景、核心流程、功能范围与设计取舍。','Figma PRD 链接尚未补充，准备好后将在这里开放查看。']}]},
+ 'work-notes':{group:'notes',label:'工作复盘',intro:'记录工作里的判断、方法与复盘。',items:[]},
+ growth:{group:'notes',label:'个人成长',intro:'记录反馈、变化，以及正在练习的事。',items:[{title:'从“做完”到“做到位”',status:'成长复盘',summary:'一次关于交付质量的反馈，让我重新理解忙碌、复盘与成长。',article:true}]},
+ 'life-notes':{group:'notes',label:'生活观察',intro:'记录工作之外的好奇、观察与感受。',items:[]}
+};
+const libraryDialog=document.querySelector('#library-dialog');
+const libraryFilters=libraryDialog.querySelector('.library-filters');
+const libraryList=document.querySelector('#library-list');
+function renderLibraryCategory(key){
+ const category=libraryCategories[key];
+ if(!category)return;
+ const isLab=category.group==='lab';
+ document.querySelector('#library-title').textContent=isLab?'Vibe Coding':'思考与创作';
+ document.querySelector('#library-eyebrow').textContent=isLab?'BUILD & EXPERIMENT':'THINKING & CREATION';
+ document.querySelector('#library-intro').textContent=category.intro;
+ libraryFilters.innerHTML=Object.entries(libraryCategories).filter(([,item])=>item.group===category.group).map(([id,item])=>`<button type="button" data-library-category="${id}" aria-pressed="${id===key}">${escapeHtml(item.label)}</button>`).join('');
+ if(!category.items.length){
+  libraryList.innerHTML='<div class="library-empty"><span>慢慢整理中</span><p>这个分类还没有公开内容，写好后会放在这里。</p></div>';
+ }else{
+  libraryList.innerHTML=category.items.map(item=>{
+   let detail;
+   if(item.article){
+    const source=document.querySelector('#reflection-dialog .reflection-article').cloneNode(true);
+    source.querySelectorAll('[id]').forEach(element=>element.removeAttribute('id'));
+    // 标题已在条目上展示，正文从引言开始。
+    source.querySelector('h2').remove();detail=source.outerHTML;
+   }else{
+    detail=item.paragraphs.map(text=>`<p>${escapeHtml(text)}</p>`).join('');
+    if(item.link)detail+=`<a class="button library-experience" href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.linkLabel)}<span class="sr-only">（新标签页打开）</span></a>`;
+   }
+   return `<details class="library-record"><summary><span class="library-record-heading"><span class="library-record-title">${escapeHtml(item.title)}</span><span class="library-record-status">${escapeHtml(item.status)}</span></span><span class="library-record-summary">${escapeHtml(item.summary)}</span><span class="library-record-action">${item.article?'阅读全文':'查看项目说明'}<span aria-hidden="true" class="library-expand">＋</span></span></summary><div class="library-record-body">${detail}</div></details>`;
+  }).join('');
+ }
+ libraryDialog.querySelector('.library-scroll').scrollTop=0;
+}
+libraryFilters.addEventListener('click',event=>{
+ const button=event.target.closest('[data-library-category]');if(!button)return;
+ const key=button.dataset.libraryCategory;renderLibraryCategory(key);
+ libraryFilters.querySelector(`[data-library-category="${key}"]`).focus({preventScroll:true});
+});
+document.querySelectorAll('[data-library-open]').forEach(button=>button.addEventListener('click',()=>{
+ renderLibraryCategory(button.dataset.libraryOpen);libraryDialog.showModal();
+ document.body.classList.add('modal-open');
+}));

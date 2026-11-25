@@ -263,3 +263,44 @@ html{scroll-padding-top:120px}
 @media(max-width:359px){.timeline-card-bottom{flex-wrap:wrap}.timeline-tags{flex-basis:100%}.timeline-card-bottom .timeline-open{margin-left:auto;padding-bottom:0}}
 
 .lab-launch{margin-top:16px;min-height:44px;font-size:14px;border-radius:5px;border-color:var(--green);color:var(--green)}.lab-launch:hover{background:var(--green);color:#fff}
+
+/* 保留首页占位式构图，分类标签进入独立内容面板。 */
+.library-entry-tags{gap:9px}
+.library-entry-tags button{display:inline-flex;align-items:center;justify-content:center;border:1px solid #a9b79c;border-radius:24px;padding:7px 16px;min-height:44px;background:#fafbf6;color:var(--green);font-size:14px;line-height:1.5;transition:background .18s,color .18s,border-color .18s}
+.library-entry-tags button:hover{background:var(--green);border-color:var(--green);color:white}
+#library-dialog{width:calc(100% - 48px);max-width:900px;max-height:88dvh;padding:0;border:1px solid #cdd5c5;border-radius:12px;background:var(--bg);overflow:hidden}
+#library-dialog[open]{display:flex;flex-direction:column}
+.library-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:26px 32px 22px;border-bottom:1px solid var(--line);flex-shrink:0}
+.library-heading h2{font-family:var(--serif);font-size:30px;line-height:1.5;font-weight:500;color:var(--green);margin-top:8px}
+#library-dialog .close{position:static;flex-shrink:0;min-height:44px;background:none}
+.library-scroll{overflow:auto;overscroll-behavior:contain;padding:25px 32px 32px;min-height:0}
+.library-filters{display:flex;flex-wrap:wrap;gap:10px;font-size:14px}
+.library-filters button{min-height:44px;padding:7px 17px;border:1px solid #b9c5af;border-radius:22px;background:transparent;color:var(--green);font-size:14px}
+.library-filters button[aria-pressed=true]{background:var(--green);color:#fff;border-color:var(--green)}
+.library-filters button:hover:not([aria-pressed=true]){background:#edf1e6}
+.library-intro{font-size:16px;line-height:1.9;color:#68705f;margin:20px 0}
+.library-record{border:1px solid #d4dccb;border-radius:9px;background:#fffef9;margin-top:16px;overflow:hidden}
+.library-record summary{list-style:none;padding:23px;cursor:pointer}
+.library-record summary::-webkit-details-marker{display:none}
+.library-record summary:hover{background:#f1f4eb}
+.library-record summary:focus-visible{outline:2px solid var(--green);outline-offset:-3px}
+.library-record-heading{display:flex;align-items:baseline;gap:12px;justify-content:space-between;flex-wrap:wrap}
+.library-record-title{font-family:var(--serif);font-size:23px;color:var(--green);line-height:1.6}
+.library-record-status{font-size:13px;background:#eaf0e2;border-radius:20px;padding:2px 10px;color:#637158;white-space:nowrap}
+.library-record-summary{display:block;font-size:16px;line-height:1.9;color:#68705f;margin-top:12px}
+.library-record-action{display:flex;align-items:center;justify-content:space-between;font-size:14px;color:var(--green);margin-top:19px}
+.library-expand{font-size:23px;line-height:1}
+.library-record[open] .library-expand{transform:rotate(45deg)}
+.library-record[open] summary{border-bottom:1px solid #dce3d4;background:#f1f4eb}
+.library-record-body{padding:23px;font-size:16px;line-height:2;color:#535d50}
+.library-record-body>p+p{margin-top:14px}
+.library-experience{margin-top:23px;background:var(--green);border-color:var(--green);color:#fff;border-radius:5px;font-size:16px;min-height:44px}
+.library-experience:hover{background:#2a3c2d}
+.library-record-body .reflection-article .reflection-lead{margin-top:0}
+.library-empty{padding:34px 25px;border:1px dashed #cbd4c1;border-radius:9px;background:var(--paper)}
+.library-empty>span{font-family:var(--serif);font-size:24px;color:var(--green)}
+.library-empty p{font-size:16px;line-height:1.9;color:#68705f;margin-top:13px}
+@media(max-width:760px){#library-dialog{width:100%;max-width:none;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0}.library-heading{padding:18px 22px}.library-heading h2{font-size:26px}.library-scroll{padding:22px}.library-filters{gap:8px}.library-filters button{padding-inline:13px}.library-record summary,.library-record-body{padding:20px}.library-record-title{font-size:21px}.library-record-heading{gap:8px}.library-empty{padding:27px 21px}}
+@media(prefers-reduced-motion:reduce){.library-entry-tags button{transition:none}}
+
+.library-experience .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
