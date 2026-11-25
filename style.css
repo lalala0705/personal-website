@@ -379,3 +379,8 @@ article.life-portal>.life-portal-action{align-items:center;gap:16px;font-size:14
 body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
 @media(max-width:760px){.bill-assistant{right:12px;bottom:max(12px,env(safe-area-inset-bottom))}.bill-launcher{width:80px;min-height:115px}.bill-launcher img{width:70px;height:105px}.bill-launcher>span{font-size:12px;padding:6px 10px}.bill-panel{position:fixed;right:12px;left:12px;bottom:max(12px,env(safe-area-inset-bottom));width:auto;height:min(660px,calc(100dvh - 105px));z-index:1}.bill-assistant:has(.bill-panel:not([hidden])) .bill-launcher{visibility:hidden}.bill-panel-head{padding:15px 16px 12px}.bill-panel-head h2{font-size:19px}.bill-quick{padding-inline:14px}.bill-input{margin-inline:14px}.bill-messages{padding-inline:14px}}
 @media(prefers-reduced-motion:reduce){.bill-launcher img{transition:none}.bill-launcher:hover img{transform:none}.bill-messages{scroll-behavior:auto}}
+
+/* Desktop reading area: symmetric gutters keep the floating avatar outside content. */
+@media(min-width:1024px){
+ .header,main,footer{padding-left:148px;padding-right:148px}
+}
