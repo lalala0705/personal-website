@@ -393,3 +393,15 @@ body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
 .bill-launcher:hover .bill-avatar img{transform:none}
 @media(max-width:760px){.bill-avatar{width:78.75px;height:105px}}
 @media(prefers-reduced-motion:reduce){.bill-avatar.is-animated{background-image:none}.bill-avatar.is-animated img{visibility:visible}}
+
+/* Small, locally hosted OFL font subsets for editorial titles and handwritten accents. */
+@font-face{font-family:'Bill Editorial';src:url('assets/fonts/bill-editorial.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Bill Handwritten';src:url('assets/fonts/bill-handwritten.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+.hero h1,#about-title,#journey-title,#notes>h2,#life-title,#contact-title,footer>h2{font-family:'Bill Editorial',var(--serif);font-weight:500;letter-spacing:-.025em}
+.hero h1{line-height:1.46;letter-spacing:-.035em}
+.hero h1 .serif,#about-title .serif,#journey-title .serif,#notes>h2 .serif,#contact-title .serif{font-family:inherit;font-weight:inherit}
+#lab>h2{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;letter-spacing:-.045em}
+.art-hand{display:inline-block;font-family:'Bill Handwritten','Kaiti SC',KaiTi,cursive;font-weight:400;font-size:1.08em;line-height:1.25;letter-spacing:0;transform:rotate(-2deg);background:none!important;padding:0 .03em .04em;color:var(--accent)}
+.hero-photo figcaption .portrait-handwritten{font-family:'Bill Handwritten','Kaiti SC',KaiTi,cursive;font-size:16px;letter-spacing:0;white-space:normal;padding-left:0;line-height:1.65;color:#786750}
+.hero-photo figcaption .portrait-handwritten:before{display:none}
+@media(max-width:760px){.hero h1{line-height:1.43}.hero-photo figcaption .portrait-handwritten{font-size:15px}}
