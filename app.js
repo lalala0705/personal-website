@@ -72,3 +72,9 @@ if(!reducedMotion && 'IntersectionObserver' in window){
  const revealObserver=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting){entry.target.classList.add('is-revealed');revealObserver.unobserve(entry.target);}}},{threshold:0.08,rootMargin:'0px 0px 24px 0px'});
  document.querySelectorAll('.about-content,.experience-timeline>li,.future,.photo-grid figure').forEach(element=>{element.classList.add('reveal-ready');revealObserver.observe(element);});
 }
+
+// 复盘文章复用原生 dialog 的键盘、焦点与关闭行为。
+const reflectionDialog=document.querySelector('#reflection-dialog');
+document.querySelector('.reflection-read').addEventListener('click',()=>{
+ reflectionDialog.showModal();reflectionDialog.scrollTop=0;document.body.classList.add('modal-open');
+});
