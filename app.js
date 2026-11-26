@@ -2,9 +2,13 @@ const escapeHtml=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<'
 // 只强调展示文本中的数字与方法词，链接、标题和原始数据保持不变。
 function highlightText(value){
  const text=String(value);
- const pattern=/(?:0\s*到\s*1|\d+(?:[.,]\d+)*(?:\s*(?:→|—|–|至|到|-)\s*\d+(?:[.,]\d+)*)?\s*(?:万元|万\+?|元|%|\+|个月|分钟|个|场|人|条|天)|SOP|AI|ERP|MRD)/g;
+ const pattern=/(?:相对提升\s*\d+(?:\.\d+)?%|0\s*到\s*1|\d+(?:[.,]\d+)*(?:\s*(?:→|—|–|至|到|-)\s*\d+(?:[.,]\d+)*)?\s*(?:万元|万\+?|元|%|\+|个月|分钟|个|场|人|条|天)|SOP|AI|ERP|MRD)/g;
  let html='',cursor=0;
- for(const match of text.matchAll(pattern)){html+=escapeHtml(text.slice(cursor,match.index))+`<mark class="text-highlight">${escapeHtml(match[0])}</mark>`;cursor=match.index+match[0].length;}
+ for(const match of text.matchAll(pattern)){
+  const keepTogether=match[0].startsWith('相对提升');
+  const marked=keepTogether?`<span class="text-keep-together">${escapeHtml(match[0].slice(0,4))}<mark class="text-highlight">${escapeHtml(match[0].slice(4))}</mark></span>`:`<mark class="text-highlight">${escapeHtml(match[0])}</mark>`;
+  html+=escapeHtml(text.slice(cursor,match.index))+marked;cursor=match.index+match[0].length;
+ }
  return html+escapeHtml(text.slice(cursor));
 }
 document.querySelector('#year').textContent=new Date().getFullYear();

@@ -470,3 +470,5 @@ body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
 /* Balance the gramophone's transparent margins with the taller door and cabinet. */
 .gramophone-model{transform:scale(1.12)}
 .shelf-art .book-cover b{font-size:10px;line-height:1.5;max-height:100%;padding:7px}
+
+.text-keep-together{white-space:nowrap}
