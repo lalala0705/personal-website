@@ -433,3 +433,37 @@ body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
 @media(hover:hover){dialog .close:hover,#library-dialog .close:hover,.bill-close:hover{background:#e9eee5;border-color:#a5b39e;color:#263c2b}}
 .close:active,.bill-close:active{background:#e2e9dc}
 .close:focus-visible,.bill-close:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+
+/* A shared walnut-and-brass collection, inspired by the gramophone. */
+.life-portals{--walnut-grain:repeating-linear-gradient(91deg,#e2ad6d0d 0 1px,transparent 1px 4px,#1e100b12 4px 5px,transparent 5px 11px);--walnut:linear-gradient(110deg,#9a6540 0%,#623c28 26%,#865536 52%,#482a1d 100%);--brass:linear-gradient(135deg,#f0d69a,#b18b48 42%,#7e5b2d 70%,#d8b46c)}
+.life-travel,.life-reading,.life-podcast{background:#f2efe7;border-color:#ded7c9}
+.life-portal-art:after{content:'';position:absolute;bottom:8px;left:18%;right:18%;height:13px;border-radius:50%;background:#44301b1c;filter:blur(7px);pointer-events:none}
+.portal-art{filter:drop-shadow(5px 9px 5px #38261724)}
+.portal-frame{border-color:#6b432c;border-bottom-color:#4c2f20;background:#422b20;box-shadow:inset 0 0 0 2px #cba274,2px 0 0 #c49a6e,7px 4px 0 #483023,8px 5px 0 #a88054}
+.portal-door{background:var(--walnut-grain),var(--walnut);box-shadow:inset 0 0 0 2px #c59a667d,inset 4px 0 5px #edc18e36,inset -5px 0 0 #3d2519,5px 2px 7px #24140f59}
+.portal-door i{border:3px solid #53321f;background:linear-gradient(100deg,#321d1340,#ab744527 45%,#2e1a1240);box-shadow:inset 1px 2px 3px #23150c66,1px 1px 0 #bc8a5a9c}
+.portal-door span{width:9px;height:25px;right:9px;top:56%;background:var(--brass);border:1px solid #79572c;box-shadow:1px 2px 2px #25150b66,inset 1px 0 1px #ffedbf;border-radius:5px}
+.portal-door span:after{content:'';position:absolute;width:15px;height:5px;left:-7px;top:6px;border-radius:4px;background:var(--brass);box-shadow:0 2px 2px #2c1c125e}
+.portal-step{background:var(--walnut-grain),linear-gradient(#b08458,#6c462c);border-bottom:3px solid #483020;box-shadow:0 2px 0 #c19b6b}
+.portal-landscape{filter:sepia(.18) saturate(.75);box-shadow:inset 0 3px 12px #21150c66}
+.shelf-art{position:relative;isolation:isolate;max-width:248px;padding:12px 9px 0;border:7px solid #6c432c;border-bottom-width:10px;border-radius:4px 4px 2px 2px;background:var(--walnut-grain),linear-gradient(90deg,#332219,#5a3d2a 50%,#302017);box-shadow:inset 2px 2px 6px #160e0a80,inset 0 0 0 1px #c1926266,5px 4px 0 #432a1d,6px 5px 0 #a57c50;filter:drop-shadow(4px 8px 5px #38261726)}
+.shelf-art:before{content:'';position:absolute;top:-12px;left:-12px;right:-12px;height:9px;border-radius:3px;background:var(--walnut-grain),linear-gradient(#b38456,#6a422b);border-bottom:2px solid #42291a;box-shadow:0 1px 0 #c19b6b}
+.shelf-books{position:relative;height:94px;gap:6px;padding:0 3px}
+.shelf-books.lower{height:85px;padding-top:10px}
+.shelf-plank{position:relative;margin-inline:-9px;height:9px;border-radius:1px;background:var(--walnut-grain),linear-gradient(#b78957,#7d5030 45%,#4c2f1f);border-bottom:2px solid #352116;box-shadow:0 5px 5px #180e0a52,inset 0 1px #d7b17f80}
+.shelf-art .book-cover,.shelf-art .spine{--binding:#6c4030;background:linear-gradient(90deg,#160e0c45,transparent 14%,#fff4d30d 46%,#160e0c30),var(--binding);border-left:4px solid #362219;box-shadow:inset 1px 0 #e3bd7473,inset 0 0 0 1px #edcf9633,3px 1px 3px #130c0759;border-radius:2px 3px 2px 2px}
+.shelf-art .book-cover{width:62px;height:90px}
+.shelf-art .book-cover.sage,.shelf-art .spine.sage{--binding:#3e5147}
+.shelf-art .book-cover.clay,.shelf-art .spine.clay{--binding:#85513a}
+.shelf-art .book-cover.pale,.shelf-art .spine.pale{--binding:#b19b74}
+.shelf-art .book-cover:before{content:'';position:absolute;inset:6px;border:1px solid #d5b77a73;border-radius:1px;pointer-events:none}
+.shelf-art .book-cover b{color:#f0dfba;font-size:11px;letter-spacing:.06em;text-shadow:0 1px 1px #291b154d;padding:8px;line-height:1.6}
+.shelf-art .book-cover.pale b{color:#3f3527;text-shadow:none}
+.shelf-art .spine{width:15px;height:79px}
+.shelf-art .spine:after{left:1px;right:1px;top:10px;height:46px;border-color:#d8b97991;border-width:2px}
+.shelf-art .lower .book-cover{height:72px}.shelf-art .lower .spine{height:64px}
+.gramophone-model{filter:drop-shadow(4px 8px 5px #3826171f)}
+.gramophone-control{border-color:#c8b692;color:#6a5035;background:#f6f1e7}
+@media(max-width:1000px) and (min-width:761px){.shelf-art{padding-inline:5px;border-width:5px;max-width:225px}.shelf-books{gap:4px;padding-inline:0}.shelf-art .book-cover{width:55px;min-width:0}.shelf-art .spine{width:10px;flex-shrink:0}.shelf-plank{margin-inline:-5px}.shelf-art .book-cover b{font-size:10px;padding:6px}}
+@media(hover:hover){.portal-trigger:hover .portal-door{transform:rotateY(-62deg)}.shelf-art .book-cover:hover{box-shadow:inset 1px 0 #e3bd7473,inset 0 0 0 1px #edcf9633,7px 8px 7px #21140c59}.gramophone-toggle:hover .gramophone-control{border-color:#a38b60;background:#ebe1cd}}
+@media(prefers-reduced-motion:reduce){.portal-trigger:hover .portal-door{transform:rotateY(-36deg)}}
