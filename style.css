@@ -467,3 +467,6 @@ body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
 @media(max-width:1000px) and (min-width:761px){.shelf-art{padding-inline:5px;border-width:5px;max-width:225px}.shelf-books{gap:4px;padding-inline:0}.shelf-art .book-cover{width:55px;min-width:0}.shelf-art .spine{width:10px;flex-shrink:0}.shelf-plank{margin-inline:-5px}.shelf-art .book-cover b{font-size:10px;padding:6px}}
 @media(hover:hover){.portal-trigger:hover .portal-door{transform:rotateY(-62deg)}.shelf-art .book-cover:hover{box-shadow:inset 1px 0 #e3bd7473,inset 0 0 0 1px #edcf9633,7px 8px 7px #21140c59}.gramophone-toggle:hover .gramophone-control{border-color:#a38b60;background:#ebe1cd}}
 @media(prefers-reduced-motion:reduce){.portal-trigger:hover .portal-door{transform:rotateY(-36deg)}}
+/* Balance the gramophone's transparent margins with the taller door and cabinet. */
+.gramophone-model{transform:scale(1.12)}
+.shelf-art .book-cover b{font-size:10px;line-height:1.5;max-height:100%;padding:7px}
