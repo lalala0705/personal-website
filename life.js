@@ -63,11 +63,20 @@ function renderTravel(){
  return `<p class="travel-summary">${items.length} 段旅程 <span aria-hidden="true">·</span> ${count} 个地点</p><div class="travel-layout">${renderTravelMap(items)}${renderTripIndex(items)}</div>`;
 }
 const bookStates={read:'读过',reading:'在读',wish:'想读',shelf:''};
+function renderBookDetail(book){
+ const status=bookStates[book.status]||'';
+ return `<div class="book-page-layout">${book.cover?`<img class="book-page-cover" src="${lifeEscape(book.cover)}" alt="${lifeEscape(book.title)}封面" referrerpolicy="no-referrer">`:''}<div class="book-detail book-page-copy"><h2 id="book-detail-title">${lifeEscape(book.title)}</h2>${book.author?`<p class="book-author">${lifeEscape(book.author)}</p>`:''}${status?`<span class="life-sample-label">${lifeEscape(status)}</span>`:''}<section><h5>阅读记录</h5><p>${lifeDemo?'当前为示例书目，尚未填入个人阅读记录。':'个人笔记整理后再分享。'}</p>${!lifeDemo&&book.url?`<a class="book-reader-link" href="${lifeEscape(book.url)}" target="_blank" rel="noopener noreferrer">在微信读书打开 ↗</a>`:''}</section></div></div>`;
+}
+function openBookDetail(id){
+ const book=lifeItems('books').find(book=>book.id===id);if(!book)return;
+ const dialog=document.querySelector('#book-detail-dialog');
+ dialog.querySelector('.book-page-body').innerHTML=renderBookDetail(book);
+ dialog.showModal();dialog.scrollTop=0;
+}
 function renderReading(){
- const items=lifeItems('books'),visible=items.filter(x=>lifeFilter==='all'||x.status===lifeFilter),selected=items.find(x=>x.id===lifeSelection);
+ const items=lifeItems('books'),visible=items.filter(x=>lifeFilter==='all'||x.status===lifeFilter);
  const filters=[['all','全部'],['reading','在读'],['read','读过'],...(lifeDemo?[['wish','想读']]:[])];
- const details=selected?(lifeDemo?`<span class="life-sample-label">${bookStates[selected.status]} · 示例书目</span><section><h5>留下的一点思考</h5><p>这里将放读书笔记、摘录和自己的想法。当前为交互样例，尚未填入个人阅读记录。</p></section>`:`<p class="book-author">${lifeEscape(selected.author||'')}</p><span class="life-sample-label">${bookStates[selected.status]?bookStates[selected.status]+' · ':''}微信读书</span><section><h5>阅读记录</h5><p>个人笔记整理后再分享。</p>${selected.url?`<a class="book-reader-link" href="${lifeEscape(selected.url)}" target="_blank" rel="noopener noreferrer">在微信读书打开</a>`:''}</section>`):'';
- return `<div class="life-view-title"><span class="eyebrow">02 / READING</span><h3>在文字里，慢慢长出自己。</h3><p>${!lifeDemo&&items.length?`微信读书 · ${items.length} 本非私密电子书`:'读过的、在读的，还有想读的。'}</p></div><div class="reading-layout"><div><div class="life-small-tabs" role="group" aria-label="阅读状态筛选">${filters.map(([key,label])=>`<button data-life-book-filter="${key}" aria-pressed="${lifeFilter===key}">${label}</button>`).join('')}</div><div class="reading-shelf">${visible.length?visible.map(x=>`<button class="shelf-book ${lifeEscape(x.tone)}${x.id===lifeSelection?' selected':''}" data-life-book="${lifeEscape(x.id)}" aria-label="查看${lifeEscape(x.title)}" aria-pressed="${x.id===lifeSelection}"><span class="shelf-book-front${x.cover?' has-cover':''}">${x.cover?`<img src="${lifeEscape(x.cover)}" alt="${lifeEscape(x.title)}封面" loading="lazy" referrerpolicy="no-referrer">`:`<strong>${lifeEscape(x.title)}</strong><small>${lifeDemo?'示例书目':'阅读记录'}</small>`}</span>${bookStates[x.status]?`<span class="book-state">${bookStates[x.status]}</span>`:''}</button>`).join(''):lifeEmpty('书架，留给下一本书','当前暂无这类书目。')}</div></div><aside class="book-detail">${selected?`<span class="eyebrow">READING / 我的书架</span><h4>${lifeEscape(selected.title)}</h4>${details}`:lifeEmpty('翻开一本书','点击书封，查看书名、作者与阅读状态。')}</aside></div>`;
+ return `<div class="life-view-title"><span class="eyebrow">02 / READING</span><h3>在文字里，慢慢长出自己。</h3><p>${!lifeDemo&&items.length?`微信读书 · ${items.length} 本非私密电子书`:'读过的、在读的，还有想读的。'}</p></div><div class="reading-layout"><div><div class="life-small-tabs" role="group" aria-label="阅读状态筛选">${filters.map(([key,label])=>`<button data-life-book-filter="${key}" aria-pressed="${lifeFilter===key}">${label}</button>`).join('')}</div><div class="reading-shelf">${visible.length?visible.map(x=>`<button type="button" class="shelf-book ${lifeEscape(x.tone)}" data-life-book="${lifeEscape(x.id)}" aria-label="查看${lifeEscape(x.title)}" aria-haspopup="dialog" aria-controls="book-detail-dialog"><span class="shelf-book-front${x.cover?' has-cover':''}">${x.cover?`<img src="${lifeEscape(x.cover)}" alt="${lifeEscape(x.title)}封面" loading="lazy" referrerpolicy="no-referrer">`:`<strong>${lifeEscape(x.title)}</strong><small>${lifeDemo?'示例书目':'阅读记录'}</small>`}</span>${bookStates[x.status]?`<span class="book-state">${bookStates[x.status]}</span>`:''}</button>`).join(''):lifeEmpty('书架，留给下一本书','当前暂无这类书目。')}</div></div></div>`;
 }
 function renderPodcast(){
  const demo=lifeDemo,episodes=lifePodcastTab==='episodes';
@@ -87,6 +96,7 @@ function selectLife(space){lifeSpace=space;if(space==='travel')lifeDemo=false;tr
 document.querySelectorAll('[data-life-open]').forEach(b=>b.addEventListener('click',()=>{lifeDemo=false;selectLife(b.dataset.lifeOpen);lifeDialog.showModal();lifeDialog.scrollTop=0;document.body.classList.add('modal-open');}));
 lifeDialog.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.lifeBook){openBookDetail(b.dataset.lifeBook);return;}
  if(b.hasAttribute('data-travel-expand')){travelExpanded=!travelExpanded;if(!travelExpanded&&lifeItems('trips').findIndex(trip=>trip.id===lifeSelection)>=4)lifeSelection=lifeItems('trips')[0]?.id||'';updateTravelDetail();lifeView.querySelector('[data-travel-expand]')?.focus({preventScroll:true});return;}
  if(b.dataset.lifeRecord){const id=b.dataset.lifeRecord;lifeSelection=lifeSelection===id?'':id;updateTravelDetail();lifeView.querySelector(`[data-life-record="${CSS.escape(id)}"]`)?.focus({preventScroll:true});if(travelProvider==='amap'&&lifeSelection)AmapTravel.focusTrip(lifeSelection);return;}
  if(b.dataset.travelProvider){travelProvider=b.dataset.travelProvider;renderLife();return;}
@@ -95,7 +105,7 @@ lifeDialog.addEventListener('click',e=>{
  if(b.dataset.lifeZoom&&travelProvider==='amap'){AmapTravel.zoom(b.dataset.lifeZoom);return;}
  if(b.hasAttribute('data-life-tab')){selectLife(b.dataset.lifeTab);return;}
  if(b.hasAttribute('data-life-demo')){lifeDemo=!lifeDemo;lifeSelection=lifeSpace==='travel'&&!lifeDemo?(lifeContent.trips[0]?.id||''):'';renderLife();lifeView.querySelector('[data-life-demo]').focus({preventScroll:true});return;}
- const handlers=[['lifeTrip',v=>{lifeSelection=v;}],['lifeTripTab',v=>{lifeTripTab=v;}],['lifeBookFilter',v=>{lifeFilter=v;lifeSelection='';}],['lifeBook',v=>{lifeSelection=v;}],['lifePodcastTab',v=>{lifePodcastTab=v;lifeSelection='';}],['lifePodcast',v=>{lifeSelection=v;}],['lifeZoom',v=>{lifeZoom=v==='reset'?1:Math.max(1,Math.min(1.6,Math.round((lifeZoom+(v==='in'?.2:-.2))*10)/10));}]];
+ const handlers=[['lifeTrip',v=>{lifeSelection=v;}],['lifeTripTab',v=>{lifeTripTab=v;}],['lifeBookFilter',v=>{lifeFilter=v;lifeSelection='';}],['lifePodcastTab',v=>{lifePodcastTab=v;lifeSelection='';}],['lifePodcast',v=>{lifeSelection=v;}],['lifeZoom',v=>{lifeZoom=v==='reset'?1:Math.max(1,Math.min(1.6,Math.round((lifeZoom+(v==='in'?.2:-.2))*10)/10));}]];
  for(const [key,handler] of handlers){if(b.dataset[key]!==undefined){const val=b.dataset[key];handler(val);renderLife();const attr='data-'+key.replace(/[A-Z]/g,c=>'-'+c.toLowerCase());const target=lifeView.querySelector(`[${attr}="${CSS.escape(val)}"]`);if(target&&!target.disabled)target.focus({preventScroll:true});return;}}
  if(b.dataset.lifePhoto){const photo=document.querySelector('#large-photo');photo.src=b.dataset.lifePhoto;photo.alt=b.dataset.lifePhotoAlt||'旅行照片';document.querySelector('#photo-caption').textContent=lifeDemo?'旅行相册 · 示意照片':b.dataset.lifePhotoTitle||'旅行相册';document.querySelector('#photo-dialog .small').textContent=lifeDemo?'摄影风格示意，非本人旅行作品。':'个人旅行照片';photoDialog.showModal();}
 });

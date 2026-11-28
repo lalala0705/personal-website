@@ -488,3 +488,16 @@ body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
 .trip-photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}.trip-photo-grid .trip-photo-button img{display:block;width:100%;height:150px;object-fit:cover}.trip-photo-grid .trip-photo-button{min-width:0}
 
 @media(min-width:761px){.star-metrics.star-metrics-four{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* 书架独立展示；书目详情在二级面板打开。 */
+#life-dialog .reading-layout{grid-template-columns:minmax(0,1fr)}
+#life-dialog .reading-shelf{grid-template-columns:repeat(6,minmax(0,1fr))}
+#book-detail-dialog{width:calc(100% - 40px);max-width:780px;max-height:88vh;padding:28px;overflow:auto;background:var(--bg)}
+.book-page-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
+.book-page-layout{display:grid;grid-template-columns:160px minmax(0,1fr);gap:30px;align-items:start}
+.book-page-layout:not(:has(.book-page-cover)){grid-template-columns:1fr}
+.book-page-cover{width:100%;height:auto;max-height:260px;object-fit:contain;border-radius:4px;box-shadow:4px 7px 14px #3c453020}
+.book-page-copy.book-detail{border:0;padding:0;background:transparent}
+.book-page-copy h2{font-family:var(--serif);font-size:27px;line-height:1.5;color:var(--green);margin:0 0 12px}
+@media(max-width:1000px){#life-dialog .reading-shelf{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:600px){#life-dialog .reading-shelf{grid-template-columns:repeat(3,minmax(0,1fr))}#book-detail-dialog{padding:20px}.book-page-layout{grid-template-columns:1fr;gap:24px}.book-page-cover{width:115px;max-height:180px}.book-page-copy h2{font-size:23px}}
