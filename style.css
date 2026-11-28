@@ -482,3 +482,5 @@ body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
 .bill-match-back{padding:0;border:0;background:none;white-space:nowrap;text-decoration:underline;text-underline-offset:3px;font-size:11px;color:var(--green);min-height:28px}
 .is-matching .bill-quick [data-bill-question]{display:none}.is-matching .bill-input textarea{max-height:150px;min-height:100px}
 .is-matching .bill-input>button{min-width:68px;padding-inline:8px;white-space:nowrap;font-size:13px}
+
+.trip-video{margin:16px 0}.trip-video video{display:block;width:100%;max-height:480px;border-radius:10px;background:#20251f}.trip-video figcaption{margin-top:8px;color:var(--muted);font-size:13px}
