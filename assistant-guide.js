@@ -22,7 +22,7 @@
   if(/播客|节目|小宇宙/.test(q))return {text:'目前公开收藏的播客包括：\n'+k.podcasts.slice(0,5).map(x=>'· '+x.title).join('\n'),sources:[source('打开播客收藏','life:podcast')]};
   if(/旅行|旅游|去过|兴趣|爱好|生活|工作之外/.test(q))return {text:'工作之外，网站里放了旅行、阅读和播客。旅行记录包括：\n'+k.travel.slice(0,6).map(x=>'· '+x.title+' / '+x.dates).join('\n')+'\n\n照片和感受还在陆续补充。',sources:[source('打开旅行任意门','life:travel'),source('查看工作之外','anchor:life')]};
   if(/认识|介绍|是谁|你好|一分钟|侯雪斌|bill/i.test(q))return {text:`${k.profile.name}，也可以叫他 ${k.profile.nickname}，目前在${k.profile.location}。\n\n做过电商私域、研学社群和课程转化，目前在荣怀学校负责视频号、公众号内容与校区活动执行。工作之外喜欢旅行、阅读和播客，也在做旅策旅行规划助手。`,sources:[link,source('看看工作之外','anchor:life')]};
-  return {text:'网站里暂时没有这方面的信息。当前是内容导览模式，还没有接通 AI 自由问答。\n\n你可以问工作经历、代表项目、教育背景、旅行、阅读或联系方式。',sources:[link,source('联系本人','anchor:contact')]};
+  return {text:'网站公开资料里暂时没有这方面的信息，内容导览无法进一步确认。\n\n你可以问工作经历、代表项目、教育背景、旅行、阅读或联系方式。',sources:[link,source('联系本人','anchor:contact')]};
  }
  root.BillGuide={reply};
 })(typeof window==='undefined'?globalThis:window);

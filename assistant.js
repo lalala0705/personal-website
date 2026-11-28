@@ -4,12 +4,30 @@
  const close=root.querySelector('.bill-close'),form=root.querySelector('form'),input=root.querySelector('textarea');
  const log=root.querySelector('.bill-messages'),status=root.querySelector('.bill-status');
  const mode=root.querySelector('.bill-mode'),notice=root.querySelector('.bill-notice');
- const sendButton=form.querySelector('button');
- let knowledge=null,pending=false,aiReady=false,checked=false,controller=null;
+ const sendButton=form.querySelector('button'),retry=root.querySelector('.bill-retry');
+ let knowledge=null,pending=false,aiReady=false,connectionCheck=null,checking=false,connectionAttempted=false,controller=null;
  const messages=[];
  const endpoint=window.BILL_ASSISTANT_CONFIG?.endpoint||'';
  const validEndpoint=(()=>{try{return new URL(endpoint).protocol==='https:';}catch{return false;}})();
- function modeLabel(){mode.textContent=aiReady?'AI 对话 · 网站公开资料':'内容导览 · AI 尚未接通';notice.textContent=aiReady?'消息将发送至 DeepSeek，用于介绍网站公开内容。请勿输入私密信息。':'目前按网站资料提供导览，未调用 AI。';}
+ function modeLabel(){
+  mode.textContent=aiReady?'AI 对话 · 网站公开资料':checking?'正在连接 AI…':validEndpoint?(connectionAttempted?'AI 连接暂不可用 · 内容导览':'等待检查 AI 连接'):'内容导览 · AI 尚未配置';
+  notice.textContent=aiReady?'消息将发送至 DeepSeek，用于介绍网站公开内容。请勿输入私密信息。':checking?'正在检查连接，请稍候。':'目前按网站资料提供导览，未调用 AI。';
+  retry.hidden=aiReady||!validEndpoint||!connectionAttempted;retry.disabled=checking;
+ }
+ async function checkConnection(){
+  if(!validEndpoint||aiReady)return;
+  if(connectionCheck)return connectionCheck;
+  connectionAttempted=true;checking=true;modeLabel();
+  connectionCheck=(async()=>{
+   const probe=new AbortController(),timer=setTimeout(()=>probe.abort(),8000);
+   try{
+    const r=await fetch(new URL('/health',endpoint),{signal:probe.signal,credentials:'omit',cache:'no-store'});
+    const d=await r.json();aiReady=r.ok&&d.ready===true;
+   }catch{aiReady=false;}
+   finally{clearTimeout(timer);checking=false;modeLabel();}
+  })();
+  try{await connectionCheck;}finally{connectionCheck=null;}
+ }
  function append(role,text,sources=[]){
   const row=document.createElement('div');row.className='bill-message '+(role==='user'?'bill-user':'bill-reply');
   const label=document.createElement('span');label.className='bill-sender';label.textContent=role==='user'?'你':'Bill 的分身';
@@ -28,15 +46,14 @@
  }
  async function load(){
   if(!knowledge){const response=await fetch('data/assistant-knowledge.json',{cache:'no-cache'});if(!response.ok)throw new Error('资料暂时无法加载，请稍后重试。');knowledge=await response.json();if(!Array.isArray(knowledge.careers))throw new Error('网站资料暂不可用。');}
-  if(!checked&&validEndpoint){checked=true;try{
-   const health=new URL('/health',endpoint);const r=await fetch(health,{signal:AbortSignal.timeout(5000),credentials:'omit'});const d=await r.json();aiReady=r.ok&&d.ready===true;
-  }catch{aiReady=false;}modeLabel();}
+  await checkConnection();
  }
  function show(){
   panel.hidden=false;launcher.setAttribute('aria-expanded','true');launcher.classList.add('is-open');
   input.focus({preventScroll:true});modeLabel();
   load().catch(error=>{status.textContent=error.message;});
  }
+ retry.addEventListener('click',()=>load().catch(error=>{status.textContent=error.message;}));
  function hide(){panel.hidden=true;launcher.setAttribute('aria-expanded','false');launcher.classList.remove('is-open');launcher.focus({preventScroll:true});}
  launcher.addEventListener('click',()=>panel.hidden?show():hide());close.addEventListener('click',hide);
  root.addEventListener('keydown',event=>{if(event.key==='Escape'&&!panel.hidden){event.preventDefault();hide();}});
@@ -65,9 +82,9 @@
      if(typeof data.answer!=='string'||data.answer.length>5000)throw new Error('回复暂不可用。');
      answer={text:data.answer,sources:Array.isArray(data.sources)?data.sources:[]};
     }catch{
-     answer=BillGuide.reply(question,knowledge);answer.text='AI 暂时未能回复，以下切换为网站内容导览：\n\n'+answer.text;
+     aiReady=false;modeLabel();answer=BillGuide.reply(question,knowledge);answer.text='AI 暂时未能回复，以下切换为网站内容导览：\n\n'+answer.text;
     }finally{clearTimeout(timer);controller=null;}
-   }else answer=BillGuide.reply(question,knowledge);
+   }else{answer=BillGuide.reply(question,knowledge);if(validEndpoint)answer.text='暂时无法连接 AI，以下按网站公开资料回答：\n\n'+answer.text;}
    append('assistant',answer.text,answer.sources);messages.push({role:'user',content:question},{role:'assistant',content:answer.text});if(messages.length>8)messages.splice(0,messages.length-8);status.textContent='';
   }catch(error){append('assistant',error.message||'暂时无法加载资料，请稍后重试。');status.textContent='';}
   finally{pending=false;sendButton.disabled=false;root.querySelectorAll('[data-bill-question]').forEach(b=>b.disabled=false);}
