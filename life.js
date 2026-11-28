@@ -88,7 +88,7 @@ document.querySelectorAll('[data-life-open]').forEach(b=>b.addEventListener('cli
 lifeDialog.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
  if(b.hasAttribute('data-travel-expand')){travelExpanded=!travelExpanded;if(!travelExpanded&&lifeItems('trips').findIndex(trip=>trip.id===lifeSelection)>=4)lifeSelection=lifeItems('trips')[0]?.id||'';updateTravelDetail();lifeView.querySelector('[data-travel-expand]')?.focus({preventScroll:true});return;}
- if(b.dataset.lifeRecord){lifeSelection=b.dataset.lifeRecord;updateTravelDetail();lifeView.querySelector(`[data-life-record="${CSS.escape(lifeSelection)}"]`)?.focus({preventScroll:true});if(travelProvider==='amap')AmapTravel.focusTrip(lifeSelection);return;}
+ if(b.dataset.lifeRecord){const id=b.dataset.lifeRecord;lifeSelection=lifeSelection===id?'':id;updateTravelDetail();lifeView.querySelector(`[data-life-record="${CSS.escape(id)}"]`)?.focus({preventScroll:true});if(travelProvider==='amap'&&lifeSelection)AmapTravel.focusTrip(lifeSelection);return;}
  if(b.dataset.travelProvider){travelProvider=b.dataset.travelProvider;renderLife();return;}
  if(b.dataset.lifeTrip){lifeSelection=b.dataset.lifeTrip;updateTravelDetail();return;}
  if(b.dataset.lifeTripTab){lifeTripTab=b.dataset.lifeTripTab;updateTravelDetail(lifeTripTab);return;}
