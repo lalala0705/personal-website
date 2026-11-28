@@ -1,5 +1,5 @@
 {
-  "revision": "9f552f79dbec",
+  "revision": "130be1585cb0",
   "profile": {
     "name": "侯雪斌",
     "nickname": "Bill",
@@ -530,6 +530,10 @@
     }
   ],
   "travel": [
+    {
+      "title": "浙江义乌",
+      "dates": "2026 年 11 月 25–27 日"
+    },
     {
       "title": "浙江嘉兴市区 · 乌镇",
       "dates": "2026 年 10 月 26–27 日"
