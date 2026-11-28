@@ -2,6 +2,12 @@
 
 前端已配置公开的 Worker `/chat` 地址，后端已部署并完成真实 DeepSeek 问答验证。网站打开面板后检查接口配置，正常时进入 AI 模式；请求失败时明确提示并回退内容导览。密钥仅保存在 Cloudflare 运行时 Secret。GitHub Pages 默认不发布以下划线开头的目录。
 
+## 当前生产域名
+
+- 前端接口：`https://ai.kuaitrip.cn/chat`；健康检查：`https://ai.kuaitrip.cn/health`。
+- 自定义域已绑定同一个 Worker，`wrangler.jsonc` 同步声明此绑定，保留现有限流和 Origin 限制。
+- 旧 `workers.dev` 地址保留，但网页不再依赖该地址。
+
 ## 账号创建后接通
 
 1. 在 https://dash.cloudflare.com/sign-up 创建 Cloudflare 账号并验证邮箱，无需购买域名。

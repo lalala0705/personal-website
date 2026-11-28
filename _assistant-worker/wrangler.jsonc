@@ -4,6 +4,7 @@
   "main": "worker.mjs",
   "compatibility_date": "2026-11-25",
   "workers_dev": true,
+  "routes": [{ "pattern": "ai.kuaitrip.cn", "custom_domain": true }],
   "keep_vars": true,
   "observability": { "enabled": false },
   "ratelimits": [
