@@ -135,7 +135,7 @@ if(!reducedMotion && 'IntersectionObserver' in window){
 
 // 首页标签进入分类内容；原生 details 承载条目详情，内容增加时继续追加条目。
 const libraryCategories={
- work:{group:'lab',label:'可体验作品',intro:'从想法到可使用的作品，点击条目查看说明或直接体验。',items:[{title:'旅策 · 旅行规划助手',status:'可体验',summary:'围绕旅行需求，探索更清晰的行程规划体验。',paragraphs:['旅策是我正在做的旅行规划助手，希望把旅行需求整理成更清晰、便于执行的行程计划。','作品仍在持续完善，可以打开体验链接查看当前版本。'],link:'https://lalala0705.github.io/lvce-travel/',linkLabel:'体验旅策'}]},
+ work:{group:'lab',label:'可体验作品',intro:'从想法到作品，记录正在推进的尝试。',items:[{title:'旅策 · 旅行规划助手',status:'准备中',summary:'围绕旅行需求，探索更清晰的行程规划体验。',paragraphs:['旅策是我正在做的旅行规划助手，希望把旅行需求整理成更清晰、便于执行的行程计划。','体验版仍有不少需要完善的地方，目前暂未开放体验。']}]},
  skill:{group:'lab',label:'Skills',intro:'把重复使用的方法，整理成可以复用的能力。',items:[{title:'旅行研学手册生成器',status:'构思中',summary:'计划把旅行安排与研学任务整理成一份手册初稿。',paragraphs:['计划输入目的地、旅行天数与研学目标，生成行程与学习任务，辅助制作旅行研学手册。','目前处于构思阶段，示例手册与 Skill 下载后续补充。']}]},
  growth:{group:'notes',label:'个人成长',intro:'记录反馈、变化，以及正在练习的事。',items:[{title:'从“做完”到“做到位”',status:'成长复盘',summary:'一次关于交付质量的反馈，让我重新理解忙碌、复盘与成长。',article:true}]},
  'work-notes':{group:'notes',label:'工作复盘',intro:'记录工作里的判断、方法与复盘。',items:[]},

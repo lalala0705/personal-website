@@ -36,7 +36,7 @@
   const links=document.createElement('div');links.className='bill-sources';
   for(const item of sources){
    if(item.action){const button=document.createElement('button');button.type='button';button.textContent=item.label;button.dataset.billAction=item.action;links.append(button);}
-   else if(['#journey','#home','#life','#lab','#contact','https://lalala0705.github.io/lvce-travel/'].includes(item.url)){
+   else if(['#journey','#home','#life','#lab','#contact'].includes(item.url)){
     const a=document.createElement('a');a.textContent=item.label;a.href=item.url;
     if(item.url.startsWith('https:')){a.target='_blank';a.rel='noopener noreferrer';}else a.addEventListener('click',hide);
     links.append(a);
@@ -65,7 +65,6 @@
   if(type==='career'&&/^\d$/.test(value))document.querySelector(`[data-case="${value}"]`)?.click();
   if(type==='life'&&['travel','reading','podcast'].includes(value))document.querySelector(`[data-life-open="${value}"]`)?.click();
   if(type==='library'&&['work','skill','growth'].includes(value))document.querySelector(`[data-library-open="${value}"]`)?.click();
-  if(type==='demo')window.open('https://lalala0705.github.io/lvce-travel/','_blank','noopener,noreferrer');
  });
  function setMatchMode(enabled){
   if(pending)return;

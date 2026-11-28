@@ -21,3 +21,13 @@ test('job histories retain all confirmed dates and current platform scope',()=>{
  const r=c.BillGuide.reply('工作经历',knowledge);assert.match(r.text,/2026.07—至今/);assert.match(r.text,/2025.03—2026.01/);assert.match(r.text,/视频号/);
 });
 test('off-the-clock questions resolve hobbies rather than the word work',()=>assert.match(c.BillGuide.reply('工作之外有什么兴趣',knowledge).text,/旅行、阅读和播客/));
+
+test('project guidance keeps the unavailable demo closed across entry questions',()=>{
+ for(const q of ['旅策能体验吗','最近在做什么','有哪些作品']){
+  const r=c.BillGuide.reply(q,knowledge);
+  assert.match(r.text,/准备中/);
+  assert.ok(r.sources.every(s=>s.action!=='demo'));
+ }
+ assert.equal(knowledge.projects[0].status,'准备中');
+ assert.ok(!JSON.stringify(knowledge).includes('https://lalala0705.github.io/lvce-travel/'));
+});

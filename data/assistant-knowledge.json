@@ -1,5 +1,5 @@
 {
-  "revision": "130be1585cb0",
+  "revision": "87fea9ca5602",
   "profile": {
     "name": "侯雪斌",
     "nickname": "Bill",
@@ -512,9 +512,9 @@
   "projects": [
     {
       "title": "旅策 · 旅行规划助手",
-      "status": "可体验",
-      "description": "正在做的旅行规划助手，已开放体验。",
-      "url": "https://lalala0705.github.io/lvce-travel/"
+      "status": "准备中",
+      "description": "正在做的旅行规划助手，体验版仍在完善，暂未开放体验。",
+      "url": "#lab"
     },
     {
       "title": "旅行研学手册生成器",
@@ -749,8 +749,8 @@
       "url": "#journey"
     },
     {
-      "label": "体验旅策",
-      "url": "https://lalala0705.github.io/lvce-travel/"
+      "label": "查看作品进度",
+      "url": "#lab"
     },
     {
       "label": "工作之外",

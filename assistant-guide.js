@@ -10,13 +10,13 @@
   }
   if(/最近|现在|目前|近况/.test(q)){
    const c=k.careers.at(-1);
-   return {text:`目前在${c.name}做${c.role}（${c.period}），${c.scope}\n\n工作之外，他也在做「旅策」旅行规划助手，可以打开体验。`,sources:[source('查看最近的工作',`career:${k.careers.length-1}`),source('体验旅策','demo')]};
+   return {text:`目前在${c.name}做${c.role}（${c.period}），${c.scope}\n\n工作之外，他也在做「旅策」旅行规划助手，目前准备中，暂未开放体验。`,sources:[source('查看最近的工作',`career:${k.careers.length-1}`),source('查看旅策进度','library:work')]};
   }
   if(/学校|学历|专业|教育背景|大学|证书|荣誉/.test(q))return {text:/证书|荣誉/.test(q)?k.profile.credentials:k.profile.education.join('\n\n'),sources:[source('查看教育与荣誉','anchor:home')]};
   if(/联系|邮箱|电话|合作/.test(q))return {text:`可以直接联系 Bill：\n电话：${k.profile.contact.phone}\n邮箱：${k.profile.contact.email}\n\n具体合作、时间安排和意向，需要由本人确认。`,sources:[source('查看联系方式','anchor:contact')]};
   if(/技能|skill|研学手册/i.test(q))return {text:k.projects[1].title+'目前还在构思中。\n'+k.projects[1].description,sources:[source('查看 Skill 计划','library:skill')]};
-  if(/旅策|coding|代码|工具/i.test(q))return {text:'旅策是 Bill 正在做的旅行规划助手，已经开放体验。功能仍在完善中。\n\n另一个想法是旅行研学手册生成器，目前还在构思阶段。',sources:[source('体验旅策','demo'),source('查看可体验作品','library:work')]};
-  if(/项目|作品|做过|案例/.test(q))return {text:'可以从这几项了解他的工作：\n'+k.careers.map(x=>'· '+x.name+'：'+x.cases[0].title.split('｜').at(-1)).join('\n')+'\n\n网站还放了旅策的体验入口。',sources:[link,source('体验旅策','demo')]};
+  if(/旅策|coding|代码|工具/i.test(q))return {text:'旅策是 Bill 正在做的旅行规划助手，目前准备中，体验版仍在完善，暂未开放体验。\n\n另一个想法是旅行研学手册生成器，目前还在构思阶段。',sources:[source('查看旅策进度','library:work'),source('查看可体验作品','library:work')]};
+  if(/项目|作品|做过|案例/.test(q))return {text:'可以从这几项了解他的工作：\n'+k.careers.map(x=>'· '+x.name+'：'+x.cases[0].title.split('｜').at(-1)).join('\n')+'\n\n旅策旅行规划助手目前准备中，可以查看项目介绍。',sources:[link,source('查看旅策进度','library:work')]};
   if(/经历|工作|职业|运营/.test(q)&&!/工作之外/.test(q))return {text:'他的工作经历，从最近的一站说起：\n\n'+[...k.careers].reverse().map(x=>`${x.period}｜${x.name}\n${x.role}：${x.scope}`).join('\n\n'),sources:[link]};
   if(/阅读|书|读什么/.test(q))return {text:'微信读书书架里有这些书：\n'+k.books.slice(0,5).map(x=>'· '+x.title+(x.author?' / '+x.author:'')).join('\n')+'\n\n这是公开书架，不代表每本都已读完。',sources:[source('打开我的书架','life:reading')]};
   if(/播客|节目|小宇宙/.test(q))return {text:'目前公开收藏的播客包括：\n'+k.podcasts.slice(0,5).map(x=>'· '+x.title).join('\n'),sources:[source('打开播客收藏','life:podcast')]};
