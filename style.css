@@ -501,3 +501,8 @@ body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
 .book-page-copy h2{font-family:var(--serif);font-size:27px;line-height:1.5;color:var(--green);margin:0 0 12px}
 @media(max-width:1000px){#life-dialog .reading-shelf{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:600px){#life-dialog .reading-shelf{grid-template-columns:repeat(3,minmax(0,1fr))}#book-detail-dialog{padding:20px}.book-page-layout{grid-template-columns:1fr;gap:24px}.book-page-cover{width:115px;max-height:180px}.book-page-copy h2{font-size:23px}}
+
+.star-project-title{display:block;font-family:var(--serif);font-size:19px;line-height:1.65}
+.star-project-preview{display:block;font-size:12px;font-weight:400;line-height:1.8;color:var(--muted);margin-top:7px}
+.star-project>summary:after{top:21px}
+@media(max-width:760px){.star-project-title{font-size:17px}.star-project-preview{font-size:12px}}

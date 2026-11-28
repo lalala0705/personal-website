@@ -111,11 +111,16 @@ function setupPracticeInteractions(container){
  });
 }
 
-// 每个案例只沿 STAR 叙述一次；辅助实践默认收起。
+// 项目均可展开或收起；默认展开主案例，其余展示标题与成果摘要。
 function renderStarCase(project,showTitle=true){
  const metrics=project.results.map(([value,label])=>`<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('');
  return `<article class="star-case">${showTitle?`<header class="star-case-heading"><p>主要实践</p><h3>${escapeHtml(project.title)}</h3></header>`:''}<div class="star-context"><section class="star-stage"><h4><span>S</span>背景</h4><p>${highlightText(project.situation)}</p></section><section class="star-stage"><h4><span>T</span>任务</h4><p>${highlightText(project.task)}</p></section></div><section class="star-stage star-action-stage"><h4><span>A</span>行动</h4><ol class="star-action-list">${project.actions.map(([title,body])=>`<li><h5>${escapeHtml(title)}</h5><p>${highlightText(body)}</p></li>`).join('')}</ol></section><section class="star-stage star-result-stage"><h4><span>R</span>结果</h4>${metrics?`<dl class="star-metrics${project.results.length===8?' star-metrics-four':''}">${metrics}</dl>`:''}${project.resultText?`<p class="star-result-note">${highlightText(project.resultText)}</p>`:''}${project.moreResults?`<details class="star-more-results"><summary>补充结果</summary><p>${highlightText(project.moreResults)}</p></details>`:''}</section></article>`;
 }
 function renderStarCases(item){
- return item.starCases.map((project,index)=>index===0?renderStarCase(project):`<details class="star-extra-case"><summary>${escapeHtml(project.title)}</summary><div class="star-extra-body">${renderStarCase(project,false)}</div></details>`).join('');
+ return item.starCases.map((project,index)=>{
+  const first=project.results[0],gmv=project.results.find(([,label])=>/GMV/.test(label));
+  const highlights=first?[first,gmv&&gmv!==first?gmv:project.results[1]].filter(Boolean):[];
+  const preview=highlights.length?highlights.map(([value,label])=>`${label} ${value}`).join(' · '):(project.resultText||'查看项目背景、行动与结果');
+  return `<details class="star-extra-case star-project"${index===0?' open':''}><summary><span class="star-project-title">${escapeHtml(project.title)}</span><span class="star-project-preview">${escapeHtml(preview)}</span></summary><div class="star-extra-body">${renderStarCase(project,false)}</div></details>`;
+ }).join('');
 }
