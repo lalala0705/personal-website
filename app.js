@@ -31,7 +31,7 @@ document.querySelectorAll('[data-case]').forEach(button=>button.addEventListener
  document.querySelector('#case-title').textContent=item.fullName;
  document.querySelector('.dialog-sub').textContent='项目复盘 · 背景 / 任务 / 行动 / 结果';
  document.querySelector('.detail-meta').textContent=[item.role,item.location,item.period || '任职时间待补充'].join(' · ');
- caseDialog.querySelector('.editor-note').textContent=item.note || '职责与业绩按个人说明书整理；待补充项不作为已确认事实。';
+ const note=caseDialog.querySelector('.editor-note');note.textContent=item.note||'';note.hidden=!item.note;
  document.querySelector('#case-body').innerHTML=renderExperience(item);
  setupPracticeInteractions(document.querySelector('#case-body'));
  caseDialog.showModal();caseDialog.scrollTop=0;document.body.classList.add('modal-open');
