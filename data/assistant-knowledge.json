@@ -1,5 +1,5 @@
 {
-  "revision": "ea38a4079d4b",
+  "revision": "e2069e2daffb",
   "profile": {
     "name": "侯雪斌",
     "nickname": "Bill",
@@ -539,6 +539,11 @@
     }
   ],
   "writing": [
+    {
+      "title": "有些委屈，先在我这里被承认",
+      "category": "个人成长",
+      "summary": "一篇关于回复压力、家庭沟通与个人边界的第一人称随笔。练习先承认自己的感受，把通话时间和交流节奏调整到自己能承受的程度。"
+    },
     {
       "title": "从“做完”到“做到位”",
       "category": "个人成长",

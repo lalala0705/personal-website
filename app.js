@@ -137,7 +137,7 @@ if(!reducedMotion && 'IntersectionObserver' in window){
 const libraryCategories={
  work:{group:'lab',label:'可体验作品',intro:'从想法到作品，记录正在推进的尝试。',items:[{title:'旅策 · 旅行规划助手',status:'准备中',summary:'围绕旅行需求，探索更清晰的行程规划体验。',paragraphs:['旅策是我正在做的旅行规划助手，希望把旅行需求整理成更清晰、便于执行的行程计划。','体验版仍有不少需要完善的地方，目前暂未开放体验。']}]},
  skill:{group:'lab',label:'Skills',intro:'把重复使用的方法，整理成可以复用的能力。',items:[{title:'旅行研学手册生成器',status:'构思中',summary:'计划把旅行安排与研学任务整理成一份手册初稿。',paragraphs:['计划输入目的地、旅行天数与研学目标，生成行程与学习任务，辅助制作旅行研学手册。','目前处于构思阶段，示例手册与 Skill 下载后续补充。']}]},
- growth:{group:'notes',label:'个人成长',intro:'记录反馈、变化，以及正在练习的事。',items:[{title:'从“做完”到“做到位”',status:'成长复盘',summary:'一次关于交付质量的反馈，让我重新理解忙碌、复盘与成长。',article:true}]},
+ growth:{group:'notes',label:'个人成长',intro:'记录反馈、变化，以及正在练习的事。',items:[{title:'有些委屈，先在我这里被承认',status:'成长随笔',summary:'从迟迟不回的消息，到家人间难以说完的话，练习承认自己的感受，也给联系留一点空间。',article:'#boundary-reflection'},{title:'从“做完”到“做到位”',status:'成长复盘',summary:'一次关于交付质量的反馈，让我重新理解忙碌、复盘与成长。',article:true}]},
  'work-notes':{group:'notes',label:'工作复盘',intro:'记录工作里的判断、方法与复盘。',items:[]},
  'life-notes':{group:'notes',label:'生活观察',intro:'记录工作之外的好奇、观察与感受。',items:[]}
 };
@@ -158,7 +158,8 @@ function renderLibraryCategory(key){
   libraryList.innerHTML=category.items.map(item=>{
    let detail;
    if(item.article){
-    const source=document.querySelector('#reflection-dialog .reflection-article').cloneNode(true);
+    const articleSource=typeof item.article==='string'?document.querySelector(item.article).content.querySelector('.reflection-article'):document.querySelector('#reflection-dialog .reflection-article');
+    const source=articleSource.cloneNode(true);
     source.querySelectorAll('[id]').forEach(element=>element.removeAttribute('id'));
     // 标题已在条目上展示，正文从引言开始。
     source.querySelector('h2').remove();detail=source.outerHTML;

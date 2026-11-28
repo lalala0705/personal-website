@@ -13,7 +13,7 @@ const knowledge={
  profile:{name:'侯雪斌',nickname:'Bill',mbti:html.match(/data-mbti="([A-Z]{4})"/)?.[1]||'',location:text(html.match(/<dt>坐标<\/dt><dd>(.*?)<\/dd>/)[1]),bio:[text(html.match(/<div class="about-content">([\s\S]*?)<div class="tags">/)[1]),text(html.match(/<p class="about-aspiration">([\s\S]*?)<\/p>/)?.[1]||'')].filter(Boolean).join(' '),education,credentials:text(edu),contact:{phone:html.match(/href="tel:([^"]+)"/)[1],email:html.match(/href="mailto:([^"]+)"/)[1]}},
  careers:context.careers.map(x=>({name:x.fullName,role:x.role,period:x.period,scope:x.scope,tags:x.growthTags,cases:x.starCases,documents:x.documents.map(d=>({title:typeof d==='string'?d:d.title}))})),
  projects:[{title:'旅策 · 旅行规划助手',status:'准备中',description:'正在做的旅行规划助手，体验版仍在完善，暂未开放体验。',url:'#lab'},{title:'旅行研学手册生成器',status:'构思中',description:'计划输入目的地、旅行天数和研学目标，生成行程与学习任务的手册初稿，尚未提供示例与下载。'}],
- writing:[{title:'从“做完”到“做到位”',category:'个人成长',summary:'根据个人说明书中关于反馈与交付的自述整理。做完之后，给检查和打磨留一点时间。'}],
+ writing:[{title:'有些委屈，先在我这里被承认',category:'个人成长',summary:'一篇关于回复压力、家庭沟通与个人边界的第一人称随笔。练习先承认自己的感受，把通话时间和交流节奏调整到自己能承受的程度。'},{title:'从“做完”到“做到位”',category:'个人成长',summary:'根据个人说明书中关于反馈与交付的自述整理。做完之后，给检查和打磨留一点时间。'}],
  travel:trips.map(x=>({title:x.title,dates:x.dateLabel})),
  books:(context.window.wereadBooks||[]).map(x=>({title:x.title,author:x.author})),
  podcasts:(context.window.xiaoyuzhouPodcasts?.shows||[]).map(x=>({title:x.title,author:x.author})),
