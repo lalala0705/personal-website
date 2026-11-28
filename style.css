@@ -474,3 +474,11 @@ body:has(dialog[open]) .bill-assistant{visibility:hidden;pointer-events:none}
 .text-keep-together{white-space:nowrap}
 
 .bill-retry{border:0;background:none;min-height:26px;padding:0;font:inherit;font-size:12px;white-space:nowrap;color:var(--green);text-decoration:underline;text-underline-offset:3px}.bill-retry[hidden]{display:none}.bill-retry:disabled{opacity:.6}
+
+.bill-quick .bill-match{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-basis:100%;border-radius:8px;background:#edf1e8;border-color:#aebda4;padding:8px 12px;text-align:left}
+.bill-quick .bill-match[aria-pressed=true]{background:var(--green);border-color:var(--green);color:#fff}
+.bill-match-hint{display:flex;align-items:flex-start;gap:8px;padding:3px 18px 0;color:var(--muted);font-size:11px;line-height:1.7;flex-shrink:0}
+.bill-match-hint[hidden]{display:none}.bill-match-hint p{flex:1}
+.bill-match-back{padding:0;border:0;background:none;white-space:nowrap;text-decoration:underline;text-underline-offset:3px;font-size:11px;color:var(--green);min-height:28px}
+.is-matching .bill-quick [data-bill-question]{display:none}.is-matching .bill-input textarea{max-height:150px;min-height:100px}
+.is-matching .bill-input>button{min-width:68px;padding-inline:8px;white-space:nowrap;font-size:13px}

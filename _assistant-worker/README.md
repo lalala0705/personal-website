@@ -24,7 +24,8 @@
 - `GET /health`（需携带网站 Origin）返回 ready；`POST /chat` 接收 `{question,history}`。
 - Origin 限定 `https://lalala0705.github.io`；Origin 不是身份认证，不能替代限流。
 - Key 只用于 Worker 向 `https://api.deepseek.com/chat/completions` 发起服务器请求，不会返回浏览器。
-- 模型为 `deepseek-chat`；单问400字，历史最多6条，输出最多650 token，15秒上游超时。
+- 模型为 `deepseek-chat`；普通单问400字、最多650 token、15秒上游超时；`mode: "match"` 为岗位/合作需求对照，最多2000字、1300 token、24秒上游超时。历史最多6条。
+- 匹配分析只对照业务技能和公开项目证据，不生成量化录用分数或招聘决定；未披露项标为待确认。前端匹配模式与普通问答分开传递历史，连接失败时不伪造分析。
 - 资料只取固定的本网站 `data/assistant-knowledge.json`，不接受浏览器提交的知识库、system prompt 或模型地址。
 - 不执行工具、第三方链接或模型输出代码。浏览器把回复当纯文本显示，内容入口使用固定白名单。
 - 不写入对话存储或日志。AI 模式会把问题、最近对话与公开网站资料发给 DeepSeek；前端在输入框下说明。
